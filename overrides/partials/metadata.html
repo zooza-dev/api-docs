@@ -1,0 +1,13 @@
+{% if page and page.meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ page.title | e }}",
+  "description": "{{ page.meta.description | default('Zooza documentation page') | e }}",
+  "datePublished": "{{ page.meta.date }}",
+  "dateModified": "{{ page.meta.updated }}",
+  "url": "{{ page.canonical_url }}"
+}
+</script>
+{% endif %}

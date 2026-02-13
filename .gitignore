@@ -1,0 +1,6 @@
+.idea/
+dist/
+site/
+__pycache__/
+*.pyc
+.venv/

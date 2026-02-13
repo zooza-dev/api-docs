@@ -1,0 +1,47 @@
+use_directory_urls: true
+site_name: Zooza Documentation
+site_url: https://docs.zooza.online/
+site_dir: dist
+theme:
+  name: material
+  custom_dir: overrides
+  features:
+    - navigation.tabs
+    - content.metadata
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+  - pymdownx.tabbed:
+      alternate_style: true
+plugins:
+  - search
+  - mermaid2
+  - swagger-ui-tag
+nav:
+  - Home: index.md
+  - Widgets:
+      - Overview: widgets/index.md
+      - Registration Widget: widgets/registration-widget.md
+      - Calendar Widget: widgets/calendar-widget.md
+      - Map Widget: widgets/map-widget.md
+      - Profile Widget: widgets/profile-widget.md
+      - Video Widget: widgets/video-widget.md
+      - Checkout Widget: widgets/checkout-widget.md
+  - API Reference:
+      - API Overview: api/index.md
+      - API Authentication: api/authentication.md
+      - API Endpoints: api/endpoints.md
+  - Enums Reference: enums.md
+extra:
+  robots: "robots.txt"

@@ -1,0 +1,3423 @@
+openapi: "3.0.0"
+info:
+    version: "1.0.0"
+    title: "Zooza API"
+    description: Api that provides basic functions
+
+servers:
+    - url: "https://api.zooza.app/v1"
+      description: Production server
+
+security:
+    - api_key: []
+    - token: []
+    - company: []
+
+paths:
+    /login:
+        post:
+            summary: |
+                Request user login token
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required: [login]
+                            properties:
+                                login:
+                                    type: string
+                                    format: email
+                                verification_method:
+                                    type: string
+                                    enum:
+                                        - email
+                                        - pin
+                                        - backoffice
+                                        - client_secret
+                                        - default
+                                    default: default
+            responses:
+                200:
+                    description: Request processed
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    login_email_sent:
+                                        type: boolean
+                                    message:
+                                        type: string
+                                        enum:
+                                            - email_sent
+                                    token:
+                                        type: string
+    /agreements/{ID}:
+        get:
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            summary: Get agreement
+            responses:
+                200:
+                    description: |
+                        Api will return agreement by it's ID (version id)
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Resource_Agreement"
+    /user:
+        get:
+            summary: Information about current User
+            responses:
+                200:
+                    description: Current user's data
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    user:
+                                        $ref: "#/components/schemas/User"
+                                    agreements:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Resource_Agreement"
+                                    app:
+                                        type: object
+                                    branding:
+                                        type: string
+                                    company:
+                                        type: object
+                                    widgets:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Widget"
+                                    msg:
+                                        type: object
+                                    discounts:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Credit"
+                                    free_events:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Credit"
+                                    credit_balance:
+                                        type: object
+    /user/{User_ID}/registrations:
+        get:
+            summary: List of registrations
+            parameters:
+                - in: path
+                  name: User_ID
+                  schema:
+                      type: integer
+                  required: true
+            responses:
+                200:
+                    description: List
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Registration"
+    /user/{User_ID}/registrations/{Registration_ID}:
+        get:
+            summary: Registration detail
+            parameters:
+                - in: path
+                  name: User_ID
+                  schema:
+                      type: integer
+                  required: true
+                - in: path
+                  name: Registration_ID
+                  schema:
+                      type: integer
+                  required: true
+            responses:
+                200:
+                    description: Registration
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Registration"
+    /user/{User_ID}/orders:
+        get:
+            summary: List of orders
+            parameters:
+                - in: path
+                  name: User_ID
+                  schema:
+                      type: integer
+                  required: true
+            responses:
+                200:
+                    description: List
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Order"
+    /user/{User_ID}/orders/{Order_ID}:
+        get:
+            summary: Order detail
+            parameters:
+                - in: path
+                  name: User_ID
+                  schema:
+                      type: integer
+                  required: true
+                - in: path
+                  name: Order_ID
+                  schema:
+                      type: integer
+                  required: true
+            responses:
+                200:
+                    description: Order
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Order"
+    /events:
+        get:
+            summary: Get List Events
+            parameters:
+                - in: query
+                  name: filter
+                  schema:
+                        type: boolean
+                  required: true
+                - $ref: "#/components/parameters/Schedule_ID"
+                - $ref: "#/components/parameters/Billing_Period_ID"
+                - $ref: "#/components/parameters/BP"
+                - $ref: "#/components/parameters/Place_ID"
+                - $ref: "#/components/parameters/Room_ID"
+                - $ref: "#/components/parameters/PID"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Page_Size"
+                - $ref: "#/components/parameters/From"
+                - $ref: "#/components/parameters/To"
+                - $ref: "#/components/parameters/Trainer_ID"
+                - $ref: "#/components/parameters/Course_ID"
+                - $ref: "#/components/parameters/Past"
+                - $ref: "#/components/parameters/Upcoming_Events"
+                - $ref: "#/components/parameters/Schedule_Active"
+                - $ref: "#/components/parameters/Events_Sort_By"
+            responses:
+                200:
+                    description: Event detail
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    total:
+                                        type: integer
+                                    page:
+                                        type: integer
+                                    page_size:
+                                        type: integer
+                                    settings:
+                                        type: object
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Resource_Event"
+        post:
+            summary: Create new events
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/New_Event"
+            responses:
+                200:
+                    description: New Events (TODO - Verify that the resource is exactly the same as GET)
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Event"
+    /events/{ID}:
+        get:
+            summary: Get event detail by ID
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            responses:
+                200:
+                    description: Event detail
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Event"
+        put:
+            summary: Update event
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Update_Event"
+            responses:
+                200:
+                    description: Updated event (TODO - Verify that the resource is exactly the same as GET)
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Event"
+    /extra-fields:
+        post:
+            summary: Create new extra field
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                registration_id:
+                                    type: integer
+                                column:
+                                    description: |
+                                        Name of extra field column
+                                    type: string
+                                    enum:
+                                        - dob
+                                        - full_name
+                                        - address
+                                        - slots
+                                        - business_name
+                                        - business_address
+                                        - business_id
+                                        - tax_id
+                                        - vat
+                                        - identification_number
+                                        - extra_field_1
+                                        - extra_field_2
+                                        - extra_field_3
+                                        - extra_field_4
+                                        - extra_field_5
+                                value:
+                                    type: string
+            responses:
+                200:
+                    description: Null on false or stored extra field value
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - type: object
+                                      properties:
+                                          value:
+                                              type: string
+    /extra-fields/{Registration_ID}:
+        put:
+            parameters:
+                - name: Registration_ID
+                  in: path
+                  required: true
+                  schema:
+                      type: integer
+            summary: Update extra field
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                column:
+                                    description: |
+                                        Name of extra field column
+                                    type: string
+                                    enum:
+                                        - dob
+                                        - full_name
+                                        - address
+                                        - slots
+                                        - business_name
+                                        - business_address
+                                        - business_id
+                                        - tax_id
+                                        - vat
+                                        - identification_number
+                                        - extra_field_1
+                                        - extra_field_2
+                                        - extra_field_3
+                                        - extra_field_4
+                                        - extra_field_5
+                                value:
+                                    type: string
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    value:
+                                        type: string
+    /attendance:
+        get:
+            summary: Get schedules
+            parameters:
+                - in: query
+                  name: event_id
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    oneOf:
+                                        - $ref: "#/components/schemas/Event_Attendance"
+    /calendar:
+        get:
+            summary: Events for given date range
+            description: |
+                - If start and end are sent, date is ignored and vice versa.
+                - Any date range set is converted to start on monday and end on sunday
+            parameters:
+                - in: query
+                  name: start
+                  schema:
+                      type: string
+                      format: date
+                - in: query
+                  name: end
+                  schema:
+                      type: string
+                      format: date
+                - in: query
+                  name: date
+                  schema:
+                      type: string
+                      format: date
+            responses:
+                200:
+                    description: List of events
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Calendar_Event"
+    /registrations:
+        get:
+            summary: Registrations
+            parameters:
+                - in: query
+                  name: advanced_search
+                  schema:
+                      type: integer
+                - $ref: "#/components/parameters/Schedule_ID"
+                - $ref: "#/components/parameters/Course_ID"
+                - $ref: "#/components/parameters/Place_ID"
+                - $ref: "#/components/parameters/Room_ID"
+                - $ref: "#/components/parameters/Trainer_ID"
+                - $ref: "#/components/parameters/Billing_Period_ID"
+                - $ref: "#/components/parameters/Billing_Status"
+                - $ref: "#/components/parameters/User"
+                - $ref: "#/components/parameters/User_ID"
+                - $ref: "#/components/parameters/Email"
+                - $ref: "#/components/parameters/Registration_ID"
+                - $ref: "#/components/parameters/Exclude"
+                - $ref: "#/components/parameters/Exclude_User"
+                - $ref: "#/components/parameters/Order_ID"
+                - $ref: "#/components/parameters/Parent"
+                - $ref: "#/components/parameters/Distinct"
+                - $ref: "#/components/parameters/Payment_ID"
+                - $ref: "#/components/parameters/Inactive_Customers"
+                - $ref: "#/components/parameters/Marketing_Messages"
+                - $ref: "#/components/parameters/Ef_Full_Name"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Page_Size"
+                - $ref: "#/components/parameters/Status"
+                - $ref: "#/components/parameters/Created_From"
+                - $ref: "#/components/parameters/Created_To"
+                - $ref: "#/components/parameters/Schedule_Groups"
+                - $ref: "#/components/parameters/Schedule_Query"
+            responses:
+                200:
+                    description: List of registrations
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    total:
+                                        type: integer
+                                    page:
+                                        type: integer
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/APP_Registration"
+    /registrations/{ID}:
+        get:
+            summary: Get single registration
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            responses:
+                200:
+                    description: Registration
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/APP_Registration_Detail"
+        put:
+            summary: Update a registrations, based on parameters sent in BODY
+            parameters:
+                - $ref: "#/components/parameters/ID"
+                - in: query
+                  name: confirm_registration
+                  schema:
+                      type: string
+                - in: query
+                  name: confirm_late
+                  schema:
+                      type: string
+            requestBody:
+                description: |
+                    Not all properties can be submitted at the same time
+                    talk to martin about it:)
+                    ## Setting Attendance
+                    Send action: set_attendance along with minimum of these:
+                        - event_id
+                        - attendance
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                action:
+                                    type: string
+                                    enum:
+                                        - set_attendance
+                                        - set_replacement
+                                        - change_user_id
+                                        - change_status
+                                        - delete_attendance
+                                        - set_waitlist
+                                        - cancel_waitlist
+                                notify_alternate_email:
+                                    type: string
+                                notify_alternate_email_only:
+                                    type: boolean
+                                slots:
+                                    type: integer
+                                notify:
+                                    type: boolean
+                                notify_about_upcoming_events:
+                                    type: boolean
+                                schedule_id:
+                                    type: integer
+                                extra_replacements_limit:
+                                    type: integer
+                                company_note:
+                                    type: string
+                                public_note:
+                                    type: string
+                                payments_managed_by:
+                                    description: Registraton ID
+                                    type: integer
+                                invoice_profile:
+                                    type: integer
+                                event_id:
+                                    description: Used with Set_Attendance
+                                    format: integer
+                                attendance:
+                                    description: |
+                                        Used with Set_Attendance
+                                        * attended - Attended the event
+                                        * going - Planning to attend the meeting.
+                                        * ignore - Hide this attendance record from attendance overview. Zooza will set attendance as ignored when moving to a schedule that already started for events in the past
+                                        * deleted - Deleted attendance record. Zooza will set this automatically for example when cancelling replacement event
+                                        * canceled - Event canceled
+                                        * canceled_late - If canceled after cancellation limit (not used)
+                                        * hold - used as a waitlist for single events (not used)
+                                        * noshow - Did not attend
+                                        * waitlist - Replacement waitlist
+                                    type: string
+                                    enum:
+                                        - attended
+                                        - going
+                                        - ignore
+                                        - deleted
+                                        - canceled
+                                        - canceled_late
+                                        - hold
+                                        - noshow
+                                        - waitlist
+                                consent:
+                                    description: Used with Set_Attendance (not required)
+                                    type: string
+                                other_company:
+                                    description: Used with Set_Attendance
+                                    type: string
+                                cancellation_reason:
+                                    description: Used with Set_Attendance
+                                    type: string
+                                use_voucher:
+                                    description: Used with Set_Attendance
+                                    type: boolean
+            responses:
+                200:
+                    description: Depending on action it may return various responses
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items: {}
+    /courses:
+        get:
+            summary: Get list of courses
+            responses:
+                200:
+                    description: List of courses
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Resource_Course"
+        post:
+            summary: Create course
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                public:
+                                    type: boolean
+                                online_registration:
+                                    type: boolean
+                                registration_type:
+                                    type: string
+                                    enum:
+                                        - full2
+                                        - single
+                                        - openapi
+                                course_type:
+                                    type: string
+                                    enum:
+                                        - course
+                                        - event
+                                        - online_event
+                                        - photography
+            responses:
+                200:
+                    description: Course Resource
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Resource_Course"
+    /courses/{ID}:
+        get:
+            summary: Get course detail
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            responses:
+                200:
+                    description: Course detail
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Resource_Course"
+        put:
+            summary: Update course
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                registration_type:
+                                    type: string
+                                course_type:
+                                    type: string
+                                description:
+                                    type: string
+                                url:
+                                    type: string
+                                name:
+                                    type: string
+                                custom_label_note:
+                                    type: string
+                                custom_label_first_name:
+                                    type: string
+                                custom_label_last_name:
+                                    type: string
+                                custom_label_phone:
+                                    type: string
+                                custom_label_email:
+                                    type: string
+                                collect_feedback_start:
+                                    type: string
+                                    format: date-time
+                                waitlist:
+                                    type: string
+                                late_registrations:
+                                    type: string
+                                online_card_provider:
+                                    type: string
+                                online_transfer_provider:
+                                    type: string
+                                online_registration:
+                                    type: boolean
+                                auto_waitlist_notification:
+                                    type: boolean
+                                hide_if_full:
+                                    type: boolean
+                                use_extra_fields:
+                                    type: boolean
+                                feedback_during_course:
+                                    type: boolean
+                                feedback_after_course:
+                                    type: boolean
+                                cash:
+                                    type: boolean
+                                online_card:
+                                    type: boolean
+                                online_transfer:
+                                    type: boolean
+                                fees_included_in_price:
+                                    type: boolean
+                                public:
+                                    type: boolean
+                                archive:
+                                    type: boolean
+                                for_children:
+                                    type: boolean
+                                allow_guest_registration:
+                                    type: boolean
+                                payments_managed_by_buyer:
+                                    type: boolean
+                                allow_reschedule_of_replacements:
+                                    type: boolean
+                                flexible_replacements_limit:
+                                    type: boolean
+                                replacements_limit_per_events:
+                                    type: integer
+                                allow_replacements_from_other_companies:
+                                    type: boolean
+                                payment_schedule_is_mandatory:
+                                    type: boolean
+                                allow_replacements:
+                                    type: boolean
+                                allow_replacements_waitlist:
+                                    type: boolean
+                                allow_custom_replacements:
+                                    type: boolean
+                                custom_email:
+                                    description: Custom registration confirmation email ID
+                                    type: integer
+                                custom_email_event_notification:
+                                    description: Custom event notification email ID
+                                    type: integer
+                                allow_replacement_cancellation:
+                                    type: boolean
+                                allow_using_replacement_credits_as_discount:
+                                    type: boolean
+                                auto_approve_custom_replacements:
+                                    type: boolean
+                                upcoming_events_notification:
+                                    type: boolean
+                                event_notfication:
+                                    type: boolean
+                                replacements_settings:
+                                    type: object
+                                replacements_settings_other_companies:
+                                    type: object
+                                hide_before:
+                                    type: integer
+                                replacements_limit:
+                                    type: integer
+                                price:
+                                    type: integer
+                                    format: float
+                                registration_fee:
+                                    type: integer
+                                    format: float
+                                iban:
+                                    type: string
+                                color:
+                                    type: string
+                                swift:
+                                    type: string
+                                registration_slots_max:
+                                    type: integer
+                                registration_slots_min:
+                                    type: integer
+                                get_basic_fields_from:
+                                    type: string
+                                    enum:
+                                        - registrant
+                                        - all
+                                get_extra_fields_from:
+                                    type: string
+                                    enum:
+                                        - all
+                                        - other
+                                extra_fields:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            id:
+                                                description: If submitted - existing field will be updated
+                                                type: integer
+                                            active:
+                                                type: boolean
+                                            custom_label:
+                                                type: string
+                                            field_options:
+                                                type: object
+                                            course_id:
+                                                description: Required if creating new field
+                                                type: integer
+                                            field_id:
+                                                description: Required if creating new field. It's the field id from the definition, not stored instance on course
+                                                type: integer
+            responses:
+                200:
+                    description: Updated course
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Resource_Course"
+    /schedules:
+        get:
+            summary: Get list of schedules
+            parameters:
+                - $ref: "#/components/parameters/Trainer_ID"
+                - $ref: "#/components/parameters/Billing_Period_ID"
+                - $ref: "#/components/parameters/Course_ID"
+                - $ref: "#/components/parameters/Place_ID"
+                - $ref: "#/components/parameters/Room_ID"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Page_Size"
+                - $ref: "#/components/parameters/Day"
+                - $ref: "#/components/parameters/IDs"
+                - $ref: "#/components/parameters/Name"
+                - $ref: "#/components/parameters/Registration_Type"
+                - $ref: "#/components/parameters/Labels"
+                - $ref: "#/components/parameters/Schedule_Status"
+                - $ref: "#/components/parameters/Sort_By_Schedules"
+                - $ref: "#/components/parameters/Start"
+                - $ref: "#/components/parameters/End"
+                - $ref: "#/components/parameters/Online_Registration"
+                - $ref: "#/components/parameters/Lead_Only"
+                - $ref: "#/components/parameters/In_Progress"
+                - $ref: "#/components/parameters/Ended"
+                - $ref: "#/components/parameters/Not_Started"
+                - $ref: "#/components/parameters/Billing_Period_Active"
+                - $ref: "#/components/parameters/Under_Billable"
+                - $ref: "#/components/parameters/Over_Billable"
+                - $ref: "#/components/parameters/Load_Labels"
+                - $ref: "#/components/parameters/Load_Trainers"
+            responses:
+                200:
+                    description: Course detail
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    total:
+                                        type: integer
+                                    page:
+                                        type: integer
+                                    page_size:
+                                        type: integer
+                                    settings:
+                                        type: object
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Resource_Schedule"
+        post:
+            summary: Create schedule
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                course_id:
+                                    type: integer
+                                trainer_rate_type_id:
+                                    type: integer
+                                trainer_id:
+                                    type: integer
+                                place_id:
+                                    type: integer
+                                room_id:
+                                    type: integer
+                                capacity:
+                                    type: integer
+                                online_registration:
+                                    type: boolean
+                                price:
+                                    type: integer
+                                    format: float
+                                registration_fee:
+                                    type: integer
+                                    format: float
+                                billing_period_id:
+                                    type: integer
+                                duration:
+                                    type: integer
+                                payment_schedules:
+                                    type: array
+                                    items: {}
+            responses:
+                200:
+                    description: New Schedule
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+
+    /schedules/{ID}:
+        put:
+            summary: Update schedule
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            requestBody:
+                required: false
+                description: Any parameter can be sent, there's no mandatory parameters
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                price:
+                                    type: integer
+                                    format: float
+                                registration_fee:
+                                    type: integer
+                                    format: float
+                                capacity:
+                                    type: integer
+                                registrations_cap:
+                                    type: integer
+                                status:
+                                    type: string
+                                    enum:
+                                        - active
+                                        - archive
+                                        - inactive
+                                notify_trainer_on_cancellation:
+                                    type: string
+                                    enum:
+                                        - always
+                                        - never
+                                        - week
+                                name:
+                                    type: string
+                                note:
+                                    type: string
+                                extra_capacity:
+                                    type: integer
+                                extra_capacity_usage:
+                                    type: string
+                                billing_period_id:
+                                    type: integer
+                                course_id:
+                                    type: integer
+                                trainer_id:
+                                    type: integer
+                                update_mode_trainer:
+                                    type: string
+                                    description: If sent along with trainer_id will update either all or just upcoming events
+                                    enum:
+                                        - upcoming
+                                        - all
+                                trainer_rate_type_id:
+                                    type: integer
+                                update_mode_trainer_rate_type:
+                                    type: string
+                                    description: If sent along with trainer_rate_type_id will update either all or just upcoming events
+                                    enum:
+                                        - upcoming
+                                        - all
+                                duration:
+                                    type: integer
+                                update_mode_duration:
+                                    type: string
+                                    description: If sent along with duration will update either all or just upcoming events
+                                    enum:
+                                        - upcoming
+                                        - all
+                                place_id:
+                                    type: integer
+                                room_id:
+                                    type: integer
+                                update_mode_place:
+                                    type: string
+                                    description: If sent along with place_id and room_id will update either all or just upcoming events
+                                    enum:
+                                        - upcoming
+                                        - all
+            responses:
+                200:
+                    description: Updated schedule
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Resource_Schedule"
+
+    /mass_emails:
+        post:
+            summary: Send email or SMS
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                type:
+                                    type: string
+                                    enum:
+                                        - email
+                                        - sms
+                                message:
+                                    type: string
+                                    format: email
+                                subject:
+                                    type: string
+                                registration_id:
+                                    description: Required if sending only single message
+                                    type: integer
+                                params:
+                                    type: array
+                                    items:
+                                        type: object
+                                        description: Same parameters as when filtering registrations
+                                        properties:
+                                            advanced_search:
+                                                type: boolean
+                                            schedule_id:
+                                                type: integer
+                                            course_id:
+                                                type: integer
+                                            place_id:
+                                                type: integer
+                                            room_id:
+                                                type: integer
+                                            trainer_id:
+                                                type: integer
+                                            billing_period_id:
+                                                type: integer
+                                            billing_status:
+                                                $ref: "#/components/schemas/Prop_Billing_Status"
+                                            user:
+                                                type: string
+                                            user_id:
+                                                type: integer
+                                            email:
+                                                type: string
+                                            registration_id:
+                                                type: integer
+                                            exclude:
+                                                type: string
+                                            exclude_user:
+                                                type: string
+                                            order_id:
+                                                type: integer
+                                            parent:
+                                                type: integer
+                                            distinct:
+                                                type: boolean
+                                            payment_id:
+                                                type: integer
+                                            inactive_customers:
+                                                type: boolean
+                                            marketing_messages:
+                                                type: boolean
+                                            ef_full_name:
+                                                type: string
+                                            status:
+                                                type: string
+                                            created_from:
+                                                type: string
+                                            created_to:
+                                                type: string
+                                            schedule_groups:
+                                                type: string
+                                            schedule_query:
+                                                type: string
+            responses:
+                200:
+                    description: Result of the operation
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    result:
+                                        type: boolean
+
+    /payments:
+        post:
+            summary: Insert payment
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                type: object
+                                required:
+                                    - order_type
+                                    - order_id
+                                    - amount
+                                    - transaction_type
+                                properties:
+                                    order_type:
+                                        type: string
+                                        enum:
+                                            - course
+                                            - order
+                                    order_id:
+                                        $ref: "#/components/parameters/ID"
+                                    amount:
+                                        type: number
+                                        format: float
+                                    transaction_type:
+                                        type: string
+                                        enum:
+                                            - credit_via_transfer
+                                            - credit
+                                            - credit_correction
+                                            - course_payment
+                                            - course_payment_correction
+                                            - registration_fee
+                                            - registration_fee_correction
+                                            - discount
+                                            - discount_correction
+                                            - refund
+                                            - simple_refund
+                                    credits:
+                                        type: array
+                                        items:
+                                            type: number
+                                    create_invoice:
+                                        type: boolean
+                                    variable_symbol:
+                                        type: number
+                                    posting_date:
+                                        type: string
+                                        format: date
+                                    value_date:
+                                        type: string
+                                        format: date
+                                    payers_reference:
+                                        type: string
+                                    payers_bank_reference:
+                                        type: string
+                                    currency:
+                                        type: string
+                                        enum:
+                                            - EUR
+                                            - CZK
+                                            - PLN
+                                            - GBP
+                                            - RON
+                                    note:
+                                        type: string
+                                    information_for_beneficiary:
+                                        type: string
+                                    bic:
+                                        type: string
+                                    payers_iban:
+                                        type: string
+                                    origin:
+                                        type: string
+                                        enum:
+                                            - import
+                                            - inbound
+                                            - manual
+                                    created_by:
+                                        type: string
+                                        format: email
+                                    modified_by:
+                                        type: string
+                                        format: email
+
+            responses:
+                200:
+                    description: |
+                        API will return back posted array of transactions with added property: *payment_processed* with boolean true if payment has been written or false if not
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items: {}
+    /customer_invoices:
+        post:
+            summary: Create an invoice for customer
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                order_type:
+                                    type: string
+                                    enum:
+                                        - course
+                                        - order
+                                order_id:
+                                    $ref: "#/components/parameters/ID"
+                                options:
+                                    type: array
+                                    items:
+                                        type: object
+            responses:
+                200:
+                    description: Newly created invoice
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Resource_Customer_Invoice"
+        get:
+            summary: Get all customer invoices
+            parameters:
+                - name: order_id
+                  in: query
+                  schema:
+                      type: integer
+                - name: page_size
+                  in: query
+                  schema:
+                      type: integer
+                - name: page
+                  in: query
+                  schema:
+                      type: integer
+                - name: start
+                  in: query
+                  schema:
+                      type: string
+                      format: date
+                - name: end
+                  in: query
+                  schema:
+                      type: string
+                      format: date
+                - name: order_type
+                  in: query
+                  schema:
+                      type: string
+                      enum:
+                          - course
+                          - product
+            responses:
+                200:
+                    description: Get list of invoices
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Resource_Customer_Invoice"
+    /customer_invoices/{ID}:
+        get:
+            summary: Get Customer invoice
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            responses:
+                200:
+                    description: Get invoice
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Resource_Customer_Invoice"
+    /customer_invoices/{ID}/download:
+        get:
+            summary: Get Download URL for invoice
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            responses:
+                200:
+                    description: Download URL
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    url:
+                                        type: string
+                                        format: URL
+    /customer_invoices/download:
+        get:
+            summary: Get Download URL for multiple invoices at once
+            parameters:
+                - name: invoices
+                  in: query
+                  description: Comma separated list of invoice ids
+                  schema:
+                      type: string
+                - name: name
+                  in: query
+                  description: File name without an extension
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: URL for download
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    url:
+                                        type: string
+                                        format: URL
+    /companies/{ID}/places:
+        get:
+            summary: Get places that belong to a company
+            parameters:
+                - $ref: "#/components/parameters/ID"
+            responses:
+                200:
+                    description: List of places
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items: {}
+    /users:
+        get:
+            summary: List of users
+            responses:
+                200:
+                    description: List of users
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+components:
+    parameters:
+        ID:
+            name: ID
+            in: path
+            description: Resource ID
+            required: true
+            schema:
+                type: integer
+        Api_Key:
+            name: api_key
+            in: query
+            description: Application's Api Key
+            required: true
+            schema:
+                type: string
+        Schedule_ID:
+            name: schedule_id
+            in: query
+            schema:
+                type: string
+            examples:
+                single:
+                    value: 1
+                    summary: Single Schedule Id
+                multiple:
+                    value: 1|2|3
+                    summary: pass multiple IDs delimited with pipe
+        Course_ID:
+            name: course_id
+            in: query
+            schema:
+                type: integer
+        Schedule_Active:
+            name: schedule_active
+            in: query
+            schema:
+                type: boolean
+        Past:
+            name: past
+            in: query
+            schema:
+                type: boolean
+        Upcoming_Events:
+            name: upcoming_events
+            in: query
+            schema:
+                type: boolean
+        Events_Sort_By:
+            name: sort_by
+            in: query
+            schema:
+                type: string
+                enum:
+                 - created_desc
+                 - created_asc
+                 - upcoming_asc
+                 - date_asc
+                 - date_desc
+                 - event_no_asc
+                 - event_no_desc
+        Place_ID:
+            name: place_id
+            in: query
+            schema:
+                type: integer
+        Room_ID:
+            name: room_id
+            in: query
+            schema:
+                type: integer
+        PID:
+            name: pid
+            in: query
+            description: Place and Room ID's combined delimited by underscore
+            example: 123_3
+            schema:
+                type: integer
+        Trainer_ID:
+            name: trainer_id
+            in: query
+            schema:
+                type: integer
+        Billing_Period_ID:
+            name: billing_period_id
+            in: query
+            schema:
+                type: integer
+        BP:
+            name: bp
+            in: query
+            description: List of Billing Period IDs delimited by pipe |
+            schema:
+                type: string
+        Billing_Status:
+            name: billing_status
+            in: query
+            schema:
+                type: string
+                enum:
+                    - paid
+                    - unpaid
+                    - partially_paid
+                    - overpaid
+        User:
+            name: user
+            in: query
+            schema:
+                type: string
+            example: Partial first name, last name, phone, email or registrations's variable symbol
+        User_ID:
+            name: user_id
+            in: query
+            schema:
+                type: integer
+        Email:
+            name: email
+            in: query
+            schema:
+                type: string
+                format: email
+        Registration_ID:
+            name: registration_id
+            in: query
+            schema:
+                type: integer
+        Exclude:
+            name: exclude
+            in: query
+            description: Exclude certain registrations from results
+            schema:
+                type: string
+            examples:
+                single:
+                    value: 1
+                    summary: Single Registration_ID
+                multiple:
+                    value: 1|2|3
+                    summary: pass multiple IDs delimited with pipe
+        Exclude_User:
+            name: exclude_user
+            in: query
+            description: Exclude certain users from results
+            schema:
+                type: string
+            examples:
+                single:
+                    value: 1
+                    summary: Single User_ID
+                multiple:
+                    value: 1|2|3
+                    summary: pass multiple IDs delimited with pipe
+        Order_ID:
+            name: order_id
+            in: query
+            description: Search registrations by related order id
+            schema:
+                type: integer
+        Parent:
+            name: parent
+            in: query
+            description: Show related / linked orders by their parent
+            schema:
+                type: integer
+        Distinct:
+            name: distinct
+            in: query
+            description: Return only distinct users (one registration per user)
+            schema:
+                type: boolean
+        Payment_ID:
+            name: payment_id
+            in: query
+            description: Find registration related to payment
+            schema:
+                type: integer
+        Inactive_Customers:
+            name: inactive_customers
+            in: query
+            description: Show registrations for inactive customers
+            schema:
+                type: boolean
+                default: false
+        Marketing_Messages:
+            name: marketing_messages
+            in: query
+            description: Return registrations that belong to users which have enabled marketing messages
+            schema:
+                type: boolean
+                default: false
+        Ef_Full_Name:
+            name: ef_full_name
+            in: query
+            schema:
+                type: string
+        Page:
+            name: page
+            in: query
+            schema:
+                type: integer
+        Page_Size:
+            name: page_size
+            in: query
+            schema:
+                type: integer
+                default: 20
+        Day:
+            name: day
+            description: Day of the schedule (Monday through Sunday)
+            in: query
+            schema:
+                type: integer
+        IDs:
+            name: ids
+            description: List of schedule ID's concatenated by |
+            in: query
+            schema:
+                type: string
+        Name:
+            name: name
+            in: query
+            schema:
+                type: string
+        Registration_Type:
+            name: registration_type
+            in: query
+            schema:
+                type: string
+                enum:
+                    - full2
+                    - open
+                    - single
+        Labels:
+            name: Labels
+            description: List of label ID's concatenated by |
+            in: query
+            schema:
+                type: string
+        Schedule_Status:
+            name: status
+            in: query
+            schema:
+                type: string
+        Sort_By_Schedules:
+            name: sort_by
+            in: query
+            schema:
+                type: string
+                enum:
+                    - created_desc
+                    - created_asc
+                    - date_asc
+                    - date_desc
+                    - registrations_asc
+                    - registrations_desc
+                    - name_asc
+                    - place_asc
+        Start:
+            name: start
+            in: query
+            schema:
+                type: string
+                format: date
+        End:
+            name: end
+            in: query
+            schema:
+                type: string
+                format: date
+        From:
+            name: from
+            in: query
+            schema:
+                type: string
+                format: date
+        To:
+            name: to
+            in: query
+            schema:
+                type: string
+                format: date
+        Online_Registration:
+            name: online_registration
+            in: query
+            schema:
+                type: boolean
+        Lead_Only:
+            name: lead_only
+            in: query
+            schema:
+                type: boolean
+        In_Progress:
+            name: in_progress
+            in: query
+            schema:
+                type: boolean
+        Ended:
+            name: ended
+            in: query
+            schema:
+                type: boolean
+        Not_Started:
+            name: not_started
+            in: query
+            schema:
+                type: boolean
+        Billing_Period_Active:
+            name: billing_period_active
+            in: query
+            schema:
+                type: boolean
+        Under_Billable:
+            name: under_billable
+            in: query
+            schema:
+                type: boolean
+        Over_Billable:
+            name: over_billable
+            in: query
+            schema:
+                type: boolean
+        Load_Labels:
+            name: load_labels
+            in: query
+            schema:
+                type: boolean
+        Load_Trainers:
+            name: load_trainers
+            in: query
+            schema:
+                type: boolean
+        Status:
+            name: status
+            in: query
+            schema:
+                type: string
+                enum:
+                    - registered
+                    - deleted
+                    - late
+                    - waitlist
+                    - quest
+                    - canceled
+        Created_From:
+            name: created_from
+            in: query
+            schema:
+                type: string
+                format: date
+        Created_To:
+            name: created_to
+            in: query
+            schema:
+                type: string
+                format: date
+        Schedule_Groups:
+            name: schedule_groups
+            in: query
+            schema:
+                type: string
+            examples:
+                single:
+                    value: 1
+                    summary: Single Schedule group ID
+                multiple:
+                    value: 1|2|3
+                    summary: pass multiple IDs delimited with pipe
+        Schedule_Query:
+            name: schedule_query
+            in: query
+            description: Filter registration based on a Query of schedules - Use JSON.stringify() to pass query as string
+            schema:
+                type: string
+    schemas:
+        Prop_ID:
+            description: Resource ID
+            type: integer
+        Prop_Resource_ID:
+            description: Resource ID
+            type: integer
+        Prop_Company_ID:
+            description: ID of company that record belongs to
+            type: string
+        Prop_Billing_Status:
+            type: string
+            enum:
+                - paid
+                - unpaid
+                - partially_paid
+                - overpaid
+        Prop_Trainer_ID:
+            description: Trainer_ID is a synonym to User_ID
+            type: integer
+        Resource_Customer_Invoice:
+            type: object
+            properties:
+                id:
+                    type: integer
+                invoice_no:
+                    type: integer
+                order_id:
+                    type: integer
+                order_type:
+                    type: string
+                    enum:
+                        - course
+                        - product
+                company_id:
+                    type: integer
+                box_id:
+                    type: integer
+                faktury_online_error_code:
+                    type: integer
+                faktury_online_code:
+                    type: string
+                created:
+                    type: string
+                    format: date-time
+                updated:
+                    type: string
+                    format: date-time
+                options:
+                    type: object
+                    properties:
+                        date:
+                            type: string
+                            format: date
+                        text:
+                            description: |
+                                Text of the item on the invoice
+                            type: string
+                        payment_method:
+                            type: string
+                            enum:
+                                - hotovost
+                                - prevod
+                                - karta
+                                - eprovider
+                invoice_data:
+                    type: object
+                    properties:
+                        d:
+                            description: Supplier information
+                            type: object
+                            properties:
+                                d_name:
+                                    type: string
+                                d_street:
+                                    type: string
+                                d_city:
+                                    type: string
+                                d_state:
+                                    type: string
+                                d_zip:
+                                    type: string
+                                d_ico:
+                                    type: string
+                                d_dic:
+                                    type: string
+                                d_icdph:
+                                    type: string
+                                d_vatpayer:
+                                    type: string
+                                d_viewpayer:
+                                    type: string
+                                d_iban:
+                                    type: string
+                                d_email:
+                                    type: string
+                                d_web:
+                                    type: string
+                                d_phone:
+                                    type: string
+                        o:
+                            description: Buyer information
+                            type: object
+                            properties:
+                                o_name:
+                                    type: string
+                                o_street:
+                                    type: string
+                                o_email:
+                                    type: string
+                                o_phone:
+                                    type: string
+                        f:
+                            description: Invoice information
+                            type: object
+                            properties:
+                                f_number:
+                                    type: integer
+                                f_vs:
+                                    type: integer
+                                f_qr:
+                                    type: integer
+                                f_payment:
+                                    type: string
+                                f_paid:
+                                    type: integer
+                                    format: float
+                                f_date_issue:
+                                    type: string
+                                    format: date
+                                f_date_delivery:
+                                    type: string
+                                    format: date
+                        p:
+                            description: Invoice items
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    p_text:
+                                        type: string
+                                    p_quantity:
+                                        type: integer
+                                    p_unit:
+                                        type: string
+                                    p_price:
+                                        type: integer
+                                        format: float
+                        key:
+                            type: string
+                        email:
+                            type: string
+        Resource_Course:
+            type: object
+            properties:
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                id:
+                    $ref: "#/components/schemas/Prop_Resource_ID"
+                registration_slots_min:
+                    type: integer
+                registration_slots_max:
+                    type: integer
+                registration_open:
+                    type: boolean
+                show_on_site:
+                    type: boolean
+                allow_cancel_until:
+                    type: integer
+                replacements_limit:
+                    type: integer
+                custom_email:
+                    type: integer
+                custom_email_event_notification:
+                    type: integer
+                hide_before:
+                    type: integer
+                replacements_limit_per_events:
+                    type: integer
+                cash:
+                    type: boolean
+                online_card:
+                    type: boolean
+                online_transfer:
+                    type: boolean
+                fees_included_in_price:
+                    type: boolean
+                public:
+                    type: boolean
+                archive:
+                    type: boolean
+                online_registration:
+                    type: boolean
+                on_behalf:
+                    type: boolean
+                feedback_during_course:
+                    type: boolean
+                feedback_after_course:
+                    type: boolean
+                hide_if_full:
+                    type: boolean
+                allow_replacements:
+                    type: boolean
+                allow_custom_replacements:
+                    type: boolean
+                auto_approve_custom_replacements:
+                    type: boolean
+                allow_replacements_waitlist:
+                    type: boolean
+                auto_waitlist_notification:
+                    type: boolean
+                use_extra_fields:
+                    type: boolean
+                for_children:
+                    type: boolean
+                event_notfication:
+                    type: boolean
+                allow_registration_after_end:
+                    type: boolean
+                allow_replacement_cancellation:
+                    type: boolean
+                upcoming_events_notification:
+                    type: boolean
+                allow_guest_registration:
+                    type: boolean
+                allow_replacements_from_other_companies:
+                    type: boolean
+                payment_schedule_is_mandatory:
+                    type: boolean
+                allow_using_replacement_credits_as_discount:
+                    type: boolean
+                flexible_replacements_limit:
+                    type: boolean
+                allow_reschedule_of_replacements:
+                    type: boolean
+                payments_managed_by_buyer:
+                    type: boolean
+                online_card_provider:
+                    type: string
+                    enum:
+                        - tatra_banka
+                        - tatra_banka_cz
+                        - stripe
+                online_transfer_provider:
+                    type: string
+                    enum:
+                        - besteron
+                created:
+                    type: string
+                    format: date-time
+                name:
+                    type: string
+                url:
+                    type: string
+                get_extra_fields_from:
+                    description: |
+                        Extra fields are required for:
+                        - all: Every person
+                        - other: Every person but registrant (first person)
+                    type: string
+                    enum:
+                        - all
+                        - other
+                get_basic_fields_from:
+                    description: |
+                        Basic fields ( First name, last name, email, phone ) are required for:
+                        - all: Every person
+                        - registrant: Just first person
+                    type: string
+                    enum:
+                        - all
+                        - registrant
+                registration_type:
+                    type: string
+                    enum:
+                        - full2
+                        - open
+                        - single
+                course_type:
+                    type: string
+                    enum:
+                        - course
+                        - event
+                        - online_event
+                        - photography
+                waitlist:
+                    type: string
+                    enum:
+                        - any
+                        - this
+                description:
+                    type: string
+                theme:
+                    type: string
+                late_registrations:
+                    type: string
+                    enum:
+                        - confirmation_required
+                        - auto_approve
+                custom_label_note:
+                    type: string
+                custom_label_first_name:
+                    type: string
+                custom_label_last_name:
+                    type: string
+                custom_label_phone:
+                    type: string
+                custom_label_email:
+                    type: string
+                collect_feedback_start:
+                    type: string
+                    format: date-time
+                iban:
+                    type: string
+                swift:
+                    type: string
+                color:
+                    type: string
+                price:
+                    type: number
+                    format: float
+                registration_fee:
+                    type: number
+                    format: float
+                __calc__fee_cash:
+                    type: number
+                    format: float
+                __calc__fee_online_card:
+                    type: number
+                    format: float
+                __calc__fee_online_transfer:
+                    type: number
+                    format: float
+                replacements_settings:
+                    type: object
+                    properties:
+                        type:
+                            format: string
+                        courses:
+                            oneOf:
+                                - type: array
+                                  items: {}
+                                - type: string
+                        billing_periods:
+                            oneOf:
+                                - type: array
+                                  items: {}
+                                - type: string
+                        places:
+                            oneOf:
+                                - type: array
+                                  items: {}
+                                - type: string
+                replacements_settings_other_companies:
+                    type: object
+                    properties:
+                        type:
+                            format: string
+                        companies:
+                            type: array
+                            items: {}
+                        billing_periods:
+                            oneOf:
+                                - type: array
+                                  items: {}
+                                - type: string
+                        places:
+                            oneOf:
+                                - type: array
+                                  items: {}
+                                - type: string
+                        schedules:
+                            oneOf:
+                                - type: array
+                                  items: {}
+                                - type: string
+                extra_fields:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Resource_Extra_Field"
+                feedback_questions:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Resource_Feedback_Question"
+        Resource_Extra_Field:
+            type: object
+            properties:
+                id:
+                    $ref: "#/components/schemas/Prop_Resource_ID"
+                field_order:
+                    type: integer
+                course_id:
+                    $ref: "#/components/schemas/Prop_Resource_ID"
+                column_name:
+                    type: string
+                    enum:
+                        - dob
+                        - full_name
+                        - address
+                        - slots
+                        - business_name
+                        - business_address
+                        - business_id
+                        - tax_id
+                        - vat
+                        - identification_number
+                        - extra_field_1
+                        - extra_field_2
+                        - extra_field_3
+                        - extra_field_4
+                        - extra_field_5
+                name:
+                    type: string
+                description:
+                    type: string
+                custom_label:
+                    type: string
+                active:
+                    type: boolean
+                field_options:
+                    oneOf:
+                        - $ref: "#/components/schemas/Extra_Field_Dob_Limit"
+        Extra_Field_Dob_Limit:
+            type: object
+            description: |
+                Age limit is used with field `dob` to limit values submitted within this extra field.
+                ###Limit types
+                There are three possible types:
+                    1. `none` - limit is not used
+                    2. `date` - date range is used for validation. Submitted value must be formated as date string
+                    3. `age` - age range is used for validation. Submitted value must be formatted as integer
+                ###Limit units
+                If limit type is set to `age`, limit unit describes whether submitted integer is considered to be in years or months
+                ###Limit usage
+                Limit usage defines range that is used for validation:
+                    1. `both` - both minimum limit and maximum limits are used. That means that submitted value must fall between these two values
+                    2. `min`- only minimum value of limit is used. For example if minimum limit is set to 3 months, then any number equal or larger than 3 will pass the test
+                    3. `max`- the opposite of minimum value
+                ###Minimum and maximum limit values
+                Depending on limit type this can either be a number (in case of age) or date string (in case of date)
+            properties:
+                age_limit_type:
+                    type: string
+                    enum:
+                        - none
+                        - date
+                        - age
+                age_limit_units:
+                    type: string
+                    enum:
+                        - years
+                        - months
+                age_limit_min:
+                    oneOf:
+                        - type: integer
+                        - type: string
+                age_limit_max:
+                    oneOf:
+                        - type: integer
+                        - type: string
+                age_limit_use:
+                    type: string
+                    enum:
+                        - both
+                        - min
+                        - max
+        Resource_Feedback_Question:
+            type: object
+            properties:
+                course_id:
+                    $ref: "#/components/schemas/Prop_Resource_ID"
+                company_id:
+                    $ref: "#/components/schemas/Prop_Resource_ID"
+                question_id:
+                    $ref: "#/components/schemas/Prop_Resource_ID"
+                question_active_during:
+                    type: boolean
+                question_active_after:
+                    type: boolean
+                is_mandatory:
+                    type: boolean
+                name:
+                    type: string
+                type:
+                    type: string
+        Resource_Event:
+            type: object
+            properties:
+                id:
+                    type: integer
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                course_id:
+                    type: integer
+                schedule_id:
+                    type: integer
+                trainer_id:
+                    $ref: "#/components/schemas/Prop_Trainer_ID"
+                place_id:
+                    type: integer
+                room_id:
+                    type: integer
+                name:
+                    type: string
+                is_custom_replacement_event:
+                    type: boolean
+                summary:
+                    type: string
+                summary_public:
+                    type: string
+                summary_public_locked:
+                    type: boolean
+                summary_public_filled_by:
+                    type: integer
+                summary_public_unlocked_by:
+                    type: integer
+                summary_public_filled_at:
+                    type: string
+                    format: date-time
+                status:
+                    type: string
+                    enum:
+                        - scheduled
+                        - unplanned
+                date:
+                    type: string
+                    format: date-time
+                attendance:
+                    type: integer
+                created:
+                    type: string
+                    format: date-time
+                updated:
+                    type: string
+                    format: date-time
+                trainer_rate_type_id:
+                    type: integer
+                trainer_payout_percentage:
+                    type: integer
+                __calc__attendance__going:
+                    type: integer
+                __calc__attendance__canceled:
+                    type: integer
+                __calc__attendance__waitlist:
+                    type: integer
+                __calc__attendance__canceled_late:
+                    type: integer
+                __calc__attendance__noshow:
+                    type: integer
+                __calc__attendance__ignore:
+                    type: integer
+                __calc__attendance__deleted:
+                    type: integer
+                __calc__attendance__hold:
+                    type: integer
+                duration:
+                    type: integer
+                __calc__event_trainer:
+                    type: string
+                billable:
+                    type: boolean
+        Resource_Schedule:
+            type: object
+            properties:
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                id:
+                    $ref: "#/components/schemas/Prop_Resource_ID"
+                course_id:
+                    type: integer
+                time:
+                    description: Time in minutes from midnights when schedule starts
+                    type: integer
+                duration:
+                    type: integer
+                place_id:
+                    type: integer
+                room_id:
+                    type: integer
+                trainer_id:
+                    $ref: "#/components/schemas/Prop_Trainer_ID"
+                registrations_cap:
+                    type: integer
+                capacity:
+                    type: integer
+                extra_capacity:
+                    type: integer
+                total_events:
+                    type: integer
+                __calc__total_avg_nps_score:
+                    type: integer
+                __calc__total_requests:
+                    description: total feedback requests sent
+                    type: integer
+                __calc__registered:
+                    description: |
+                        Total registrations with status: registered
+                    type: integer
+                __calc__waitlist:
+                    description: |
+                        Total registrations with status: waitlist
+                    type: integer
+                __calc__late:
+                    description: |
+                        Total registrations with status: late
+                trainer_rate_type_id:
+                    type: integer
+                __calc__remaining_events:
+                    type: integer
+                type:
+                    type: string
+                name:
+                    type: string
+                start:
+                    type: string
+                    format: date
+                end:
+                    type: string
+                    format: date
+                extra_capacity_usage:
+                    type: string
+                status:
+                    type: string
+                note:
+                    type: string
+                notify_trainer_on_cancellation:
+                    type: string
+                public:
+                    type: boolean
+                online_registration:
+                    type: boolean
+                price:
+                    type: integer
+                    format: float
+                registration_fee:
+                    type: integer
+                    format: float
+        New_Event:
+            type: object
+            required:
+                - duration
+                - date_string
+                - time_string
+                - course_id
+                - schedule_id
+                - trainer_id
+                - place_id
+                - room_id
+            properties:
+                duration:
+                    type: integer
+                date_string:
+                    type: string
+                    example: YYYY-MM-DD
+                time_string:
+                    type: string
+                    example: HH:MM
+                course_id:
+                    type: integer
+                schedule_id:
+                    type: integer
+                trainer_id:
+                    $ref: "#/components/schemas/Prop_Trainer_ID"
+                trainer_rate_type_id:
+                    description: If not set, schedule_id trainer_rate_type_id is used
+                    type: integer
+                place_id:
+                    type: integer
+                room_id:
+                    type: integer
+        Update_Event:
+            type: object
+            properties:
+                notify:
+                    type: boolean
+                    description: Notify attendees about changes in the event
+                event_name:
+                    type: string
+                duration:
+                    type: integer
+                status:
+                    type: string
+                    enum:
+                        - unplanned
+                        - scheduled
+                trainer_id:
+                    $ref: "#/components/schemas/Prop_Trainer_ID"
+                room_id:
+                    type: integer
+                place_id:
+                    type: integer
+                trainer_rate_type_id:
+                    type: integer
+                date:
+                    type: string
+                    format: date-time
+                attendance:
+                    type: string
+                    description: not used
+                video_expires_in:
+                    type: string
+                video_expiry:
+                    type: string
+                schedule_id:
+                    type: integer
+                additional_trainers:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            trainer_id:
+                                $ref: "#/components/schemas/Prop_Trainer_ID"
+                            is_active:
+                                type: boolean
+        APP_Registration_Detail:
+            type: object
+            properties:
+                id:
+                    type: integer
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                course_id:
+                    type: integer
+                schedule_id:
+                    type: integer
+                event_id:
+                    type: integer
+                    description: not used
+                user_id:
+                    type: integer
+                slots:
+                    type: integer
+                billing_period_id:
+                    type: integer
+                parent:
+                    type: integer
+                total_events:
+                    type: integer
+                status:
+                    type: string
+                    enum:
+                        - pre_registered
+                        - registered
+                        - pre_late
+                        - late
+                        - pre_waitlist
+                        - waitlist
+                        - pre_guest
+                        - guest
+                        - deleted
+                        - canceled
+                business_order:
+                    type: boolean
+                created:
+                    type: string
+                    format: date-time
+                updated:
+                    type: string
+                    format: date-time
+                note:
+                    type: string
+                company_note:
+                    type: string
+                public_note:
+                    type: string
+                payment_method:
+                    type: string
+                    description: not used
+                notify:
+                    type: boolean
+                    default: true
+                paid:
+                    type: integer
+                    format: float
+                payment_status:
+                    type: string
+                value:
+                    type: integer
+                    format: float
+                preferred_payment_schedule:
+                    type: integer
+                __users__full_name:
+                    type: string
+                __users__phone:
+                    type: string
+                __users__email:
+                    type: string
+                    format: email
+                __calc__debt:
+                    type: integer
+                    format: float
+                __calc__paid:
+                    type: integer
+                    format: float
+                __calc__balance:
+                    type: integer
+                    format: float
+                notify_about_upcoming_events:
+                    type: boolean
+                notify_alternate_email:
+                    type: string
+                notify_alternate_email_only:
+                    type: boolean
+                guest_id:
+                    type: integer
+                __calc__guest_email:
+                    type: string
+                    format: email
+                __calc__guest_user_id:
+                    type: integer
+                __calc__guest_user_notify:
+                    type: boolean
+                attendance_management:
+                    type: string
+                extra_replacements_limit:
+                    type: integer
+                payments_managed_by:
+                    type: integer
+                iban:
+                    type: string
+                swift:
+                    type: string
+                invoice_profile:
+                    type: integer
+                extra_fields:
+                    type: object
+                    properties:
+                        full_name:
+                            type: string
+                        dob:
+                            type: string
+                        address:
+                            type: string
+                        business_name:
+                            type: string
+                        business_address:
+                            type: string
+                        business_id:
+                            type: string
+                        tax_id:
+                            type: string
+                        vat:
+                            type: string
+                        identification_number:
+                            type: string
+                        extra_field_1:
+                            type: string
+                        extra_field_2:
+                            type: string
+                        extra_field_3:
+                            type: string
+                        extra_field_4:
+                            type: string
+                        extra_field_5:
+                            type: string
+                role:
+                    $ref: "#/components/schemas/User_Role"
+                linked_registrations:
+                    type: object
+                    properties:
+                        total:
+                            type: integer
+                        page:
+                            type: integer
+                        page_size:
+                            type: integer
+                        settings:
+                            type: object
+                        data:
+                            type: array
+                            items: {}
+        APP_Registration:
+            type: object
+            properties:
+                registration_id:
+                    type: integer
+                note:
+                    type: string
+                created:
+                    type: string
+                    format: date-time
+                updated:
+                    type: string
+                    format: date-time
+                course_id:
+                    type: integer
+                schedule_id:
+                    type: integer
+                company_note:
+                    type: string
+                billing_period_id:
+                    type: integer
+                paid:
+                    type: integer
+                    format: float
+                payment_method:
+                    type: string
+                status:
+                    type: string
+                user_id:
+                    type: integer
+                first_name:
+                    type: string
+                last_name:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+                full_name:
+                    type: string
+                payment_balance:
+                    type: integer
+                    format: float
+                payment_debt:
+                    type: integer
+                    format: float
+                payment_paid:
+                    type: integer
+                    format: float
+                __calc__paid:
+                    type: integer
+                    format: float
+                __calc__course_payment:
+                    type: integer
+                    format: float
+                __calc__registration_fee:
+                    type: integer
+                    format: float
+                payment_status:
+                    type: string
+                internal_note:
+                    type: string
+                ef_full_name:
+                    type: string
+                ef_dob:
+                    type: string
+                ef_address:
+                    type: string
+                ef_business_name:
+                    type: string
+                ef_business_address:
+                    type: string
+                ef_business_id:
+                    type: string
+                ef_tax_id:
+                    type: string
+                ef_vat:
+                    type: string
+                ef_extra_field_1:
+                    type: string
+                ef_extra_field_2:
+                    type: string
+                ef_extra_field_3:
+                    type: string
+                ef_extra_field_4:
+                    type: string
+                ef_extra_field_5:
+                    type: string
+                role:
+                    type: string
+                first_event:
+                    type: string
+                    format: date-time
+                events_attended:
+                    type: integer
+                registrations_count:
+                    type: integer
+                total_events:
+                    type: integer
+        User_Role:
+            type: object
+            properties:
+                id:
+                    type: integer
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                user_id:
+                    type: integer
+                role:
+                    type: string
+                created:
+                    type: string
+                    format: date-time
+                updated:
+                    type: string
+                    format: date-time
+        Extra_Field:
+            type: object
+        Calendar_Event:
+            type: object
+        Registration:
+            type: object
+        Credit:
+            type: object
+            properties:
+                id:
+                    type: integer
+                type:
+                    type: string
+                    enum:
+                        - replacement
+                        - discount
+                        - replacement_transfer
+                        - free_event
+                        - prepaid_credit
+                active:
+                    type: boolean
+                origin_user_id:
+                    type: integer
+                origin_company_id:
+                    type: integer
+                origin_order_id:
+                    type: integer
+                origin_event_id:
+                    type: integer
+                origin_attendance_id:
+                    type: integer
+                used_on_user_id:
+                    type: integer
+                used_on_company_id:
+                    type: integer
+                used_on_order_id:
+                    type: integer
+                used_on_event_id:
+                    type: integer
+                used_on_attendance_id:
+                    type: integer
+                value:
+                    type: integer
+                    format: float
+                code:
+                    type: string
+                settings:
+                    # toto je iba ak je to free event
+                    type: string
+                expiration:
+                    type: string
+                    format: date-time
+                used:
+                    type: string
+                    format: date-time
+                used_by:
+                    type: integer
+                usage:
+                    type: string
+                    enum:
+                        - used
+                        - not_used
+                created:
+                    type: string
+                    format: date-time
+                created_by:
+                    type: string
+                updated:
+                    type: string
+                    format: date-time
+                expired:
+                    type: boolean
+                events:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Event"
+                attendance:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Attendance"
+        Attendance:
+            type: object
+            properties:
+                id:
+                    type: integer
+                event_id:
+                    type: integer
+                registration_id:
+                    type: integer
+                attendance:
+                    type: string
+                    enum:
+                        - going
+                        - attended
+                        - canceled
+                        - canceled_late
+                        - deleted
+                        - going
+                        - hold
+                        - ignore
+                        - noshow
+                        - waitlist
+                replacement_for:
+                    type: integer
+                resolution:
+                    type: string
+                created:
+                    type: string
+                    format: date-time
+                modified:
+                    type: string
+                    format: date-time
+                cancellation_reason:
+                    type: string
+                credit_id:
+                    type: integer
+        Event_Attendance:
+            type: object
+            properties:
+                id:
+                    type: integer
+                event_id:
+                    type: integer
+                cancellation_reason:
+                    type: string
+                replacement_for:
+                    type: integer
+                created:
+                    type: string
+                modified:
+                    type: string
+                attendance:
+                    type: string
+                moved:
+                    type: boolean
+                replacement:
+                    type: boolean
+                credit_id:
+                    type: integer
+                is_free_event:
+                    type: integer
+                waitlist_credit_id:
+                    type: integer
+                user_id:
+                    type: integer
+                full_name:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                registration_id:
+                    type: integer
+                note:
+                    type: string
+                paid:
+                    type: integer
+                    format: float
+                slots:
+                    type: integer
+                attendance_management:
+                    type: string
+                registration_status:
+                    type: string
+                calc__unused_replacements:
+                    type: integer
+                payment_balance:
+                    type: integer
+                    format: float
+                payment_debt:
+                    type: integer
+                    format: float
+                payment_paid:
+                    type: integer
+                    format: float
+                __calc__paid:
+                    type: integer
+                    format: float
+                payment_status:
+                    type: string
+                ef_dob:
+                    type: string
+                ef_full_name:
+                    type: string
+                ef_address:
+                    type: string
+                replacement_in:
+                    type: integer
+                internal_note:
+                    type: string
+                other_company_attendance:
+                    type: array
+                    items: {}
+                video_statistic:
+                    type: array
+                    items: {}
+        Event_Detail:
+            type: object
+            properties:
+                id:
+                    type: integer
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                course_id:
+                    type: integer
+                schedule_id:
+                    type: integer
+                trainer_id:
+                    $ref: "#/components/schemas/Prop_Trainer_ID"
+                place_id:
+                    type: integer
+                room_id:
+                    type: integer
+                name:
+                    type: string
+                is_custom_replacement_event:
+                    type: boolean
+                summary:
+                    type: string
+                summary_public:
+                    type: string
+                summary_public_locked:
+                    type: boolean
+                summary_public_filled_by:
+                    type: integer
+                summary_public_unlocked_by:
+                    type: integer
+                summary_public_filled_at:
+                    type: string
+                    format: date-time
+                status:
+                    type: string
+                    enum:
+                        - scheduled
+                        - unplanned
+                date:
+                    type: string
+                    format: date-time
+                attendance:
+                    type: integer
+                created:
+                    type: string
+                    format: date-time
+                updated:
+                    type: string
+                    format: date-time
+                trainer_rate_type_id:
+                    type: integer
+                trainer_payout_percentage:
+                    type: integer
+                __calc__attendance__going:
+                    type: integer
+                __calc__attendance__canceled:
+                    type: integer
+                __calc__attendance__waitlist:
+                    type: integer
+                __calc__attendance__canceled_late:
+                    type: integer
+                __calc__attendance__noshow:
+                    type: integer
+                __calc__attendance__ignore:
+                    type: integer
+                __calc__attendance__deleted:
+                    type: integer
+                __calc__attendance__hold:
+                    type: integer
+                duration:
+                    type: integer
+        Event:
+            type: object
+            properties:
+                id:
+                    type: integer
+                name:
+                    type: string
+                status:
+                    type: string
+                    enum:
+                        - scheduled
+                        - unplanned
+                date:
+                    type: string
+                    format: date-time
+                happened:
+                    type: boolean
+                live_stream:
+                    type: integer
+                has_live_stream:
+                    type: boolean
+                replacement:
+                    type: boolean
+                end:
+                    type: string
+                    format: date-time
+                duration:
+                    type: integer
+                cancellation_limit:
+                    type: string
+                    format: date-time
+                can_cancel:
+                    type: boolean
+                has_video:
+                    type: boolean
+                has_files:
+                    type: boolean
+                places:
+                    type: object
+                courses:
+                    type: object
+                trainers:
+                    type: object
+                additional_trainers:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            role:
+                                type: string
+                            full_name:
+                                type: string
+        Resource_Agreement:
+            description: |
+                Agreement will contain masked fields if it is not requested by eligible user.
+                Masked fields:
+                    - company_id
+                    - order
+                    - mandatory
+                    - valid_from
+                    - type
+                    - for
+                    - apply_for
+                Also only following types of agreements are returned:
+                    - checkout
+                    - registration
+                    - feedback
+            type: object
+            properties:
+                id:
+                    description: |
+                        Agreement version ID
+                    type: integer
+                agreement_id:
+                    description: |
+                        Agreement ID
+                    type: integer
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                order:
+                    description: |
+                        Denotes order in which the agreement will appear in the form
+                    type: integer
+                name:
+                    description: |
+                        Name is shown in the registration form. This is the name of the agreement
+                        and can contain *|AGREEMENT_URL|*. If present, this var needs to be replaced with url: https://agreements.zooza.app/{ID}.
+                        Should you want to display agreement inline within the registration form, use also Title and Description for full text of the agreement.
+                    type: string
+                title:
+                    description: |
+                        Title is shown to user when displaying agreement's detail.
+                    type: string
+                description:
+                    description: |
+                        Description is shown to user when displaying agreement's detail.
+                    type: string
+                mandatory:
+                    description: |
+                        All mandatory agreements need to be posted back to API (with full object containing title, description and name).
+                        Non-mandatory agreements should be sent only when given consent (e.g. Radio button is selected or checkbox is selected).
+                    type: boolean
+                valid_from:
+                    description: |
+                        Date from which this agreement version is valid
+                    type: string
+                    format: date-time
+                type:
+                    description: |
+                        Type of form input used to give consent with agreement.
+                        *none: No input is used. The consent is given by clicking the Register button
+                        *radio: Yes and No options are shown to user. If mandatory, any one of those two choices need to be selected
+                        *checkbox: Checkbox is shown to user. If mandatory, checkbox needs to be checked
+                    type: string
+                    enum:
+                        - none
+                        - radio
+                        - checkbox
+                for:
+                    description: |
+                        Denotes to which application this agreement is targeted.
+                        *registration: When doing POST/registrations
+                        *checkout: When doing POST/orders
+                        *feedback: When doing POST/feedback_requests
+                    type: string
+                    enum:
+                        - registration
+                        - checkout
+                        - feedback
+                created:
+                    type: string
+                    format: date-time
+                updated:
+                    type: string
+                    format: date-time
+                apply_for:
+                    description: |
+                        *everyone: The agreement is always shown
+                        *course: Agreement is required only for courses that match course_ids within courses property
+                        *feedback: Feedback form
+                        *members: Internal consents for company members
+                    type: string
+                    enum:
+                        - everyone
+                        - course
+                        - feedback
+                        - members
+                region:
+                    type: string
+                courses:
+                    description: |
+                        Used to match agreement to particular course. Use only if property apply_for is set to: course
+                    type: array
+                    items:
+                        type: integer
+        User_ID:
+            description: User's ID YYY
+            type: integer
+        User:
+            type: object
+            properties:
+                id:
+                    type: integer
+                first_name:
+                    type: string
+                last_name:
+                    type: string
+                email:
+                    type: string
+                    format: email
+                phone:
+                    type: string
+                role:
+                    type: string
+                    enum:
+                        - customer
+                        - inactive_customer
+                        - owner
+                        - member
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                user_fields:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        marketing_messages:
+                            type: boolean
+                        3rd_party:
+                            type: boolean
+                        nick:
+                            type: string
+                        show_only_nick:
+                            type: boolean
+                billing_periods:
+                    type: array
+                    items:
+                        type: integer
+                permissions:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Permission"
+                companies:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Company"
+        Company:
+            type: object
+            properties:
+                id:
+                    type: integer
+                name:
+                    type: string
+                email:
+                    type: string
+                role:
+                    type: string
+                    enum:
+                        - owner
+                        - customer
+                        - inactive_customer
+                        - member
+                        - inactive
+                        - assistant
+                        - external_member
+        Permission:
+            type: object
+            properties:
+                permission:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                user_can:
+                    type: boolean
+        Order:
+            type: object
+            properties:
+                id:
+                    type: integer
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                product_id:
+                    type: integer
+                payment_status:
+                    type: string
+                    enum:
+                        - paid
+                        - unpaid
+                        - overpaid
+                        - partially_paid
+                debt:
+                    type: integer
+                    format: float
+                balance:
+                    type: integer
+                    format: float
+                paid:
+                    type: integer
+                    format: float
+                status:
+                    type: string
+                    enum:
+                        - completed
+                products:
+                    type: object
+                payment_requests:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Payment_Request"
+                payments:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Payment"
+                order_items:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Order_Item"
+                invoices:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Invoice"
+                created:
+                    type: string
+                    format: date-time
+                modified:
+                    type: string
+                    format: date-time
+        Order_Item:
+            type: object
+            properties:
+                id:
+                    type: integer
+                item_id:
+                    type: integer
+                    description: Video or File ID
+                item_type:
+                    type: string
+                    enum:
+                        - video
+                        - document
+                created:
+                    type: string
+                    format: date-time
+                modified:
+                    type: string
+                    format: date-time
+                name:
+                    type: string
+                thumbnail_url:
+                    type: string
+                    format: uri
+        Invoice:
+            type: object
+            properties:
+                id:
+                    type: integer
+                invoice_no:
+                    type: integer
+                order_id:
+                    type: integer
+                order_type:
+                    type: string
+                    enum:
+                        - product
+                        - course
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                faktury_online_code:
+                    type: string
+                invoice_data:
+                    type: object
+                box_id:
+                    type: integer
+                faktury_online_error_code:
+                    type: integer
+                options:
+                    type: string
+                created:
+                    type: string
+                    format: date-time
+                modified:
+                    type: string
+                    format: date-time
+        Payment:
+            type: object
+            properties:
+                id:
+                    type: integer
+                variable_symbol:
+                    type: integer
+                posting_date:
+                    type: string
+                    format: date
+                value_date:
+                    type: string
+                    format: date
+                due_date:
+                    type: integer
+                amount:
+                    type: integer
+                transaction_type:
+                    type: string
+                created:
+                    type: string
+                    format: date-time
+                modified:
+                    type: string
+                    format: date-time
+        Payment_Request:
+            type: object
+            properties:
+                id:
+                    type: integer
+                check_response:
+                    type: string
+                checked:
+                    type: boolean
+                order_id:
+                    type: integer
+                order_type:
+                    type: string
+                    enum:
+                        - product
+                        - course
+                company_id:
+                    $ref: "#/components/schemas/Prop_Company_ID"
+                payment_id:
+                    type: integer
+                result:
+                    type: string
+                request:
+                    type: string
+                response:
+                    type: string
+                created:
+                    type: string
+                    format: date-time
+                modified:
+                    type: string
+                    format: date-time
+                expires:
+                    type: string
+                    format: date-time
+                provider:
+                    type: string
+                    enum:
+                        - tatra_banka
+                        - tatra_banka_cz
+                        - besteron
+                        - stripe
+                sign:
+                    type: string
+                course:
+                    type: object
+                schedule:
+                    type: object
+        Widget:
+            type: object
+            properties:
+                id:
+                    type: integer
+                application_id:
+                    type: integer
+                url:
+                    type: string
+                options:
+                    type: object
+        Error:
+            type: object
+            required:
+                - message
+            properties:
+                message:
+                    description: A human readable error message
+                    type: string
+    securitySchemes:
+        api_key:
+            type: apiKey
+            in: header
+            name: X-ZOOZA-API-KEY
+            description: |
+                Applications's API key. API key can be found in Settings > Registration forms
+        token:
+            type: apiKey
+            in: header
+            name: X-ZOOZA-TOKEN
+        company:
+            type: apiKey
+            in: header
+            name: X-ZOOZA-COMPANY
