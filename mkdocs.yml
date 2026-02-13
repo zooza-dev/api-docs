@@ -30,18 +30,21 @@ plugins:
   - swagger-ui-tag
 nav:
   - Home: index.md
+  - Concepts: concepts.md
+  - Quickstart: quickstart.md
   - Widgets:
       - Overview: widgets/index.md
-      - Registration Widget: widgets/registration-widget.md
-      - Calendar Widget: widgets/calendar-widget.md
-      - Map Widget: widgets/map-widget.md
-      - Profile Widget: widgets/profile-widget.md
-      - Video Widget: widgets/video-widget.md
-      - Checkout Widget: widgets/checkout-widget.md
-  - API Reference:
-      - API Overview: api/index.md
-      - API Authentication: api/authentication.md
-      - API Endpoints: api/endpoints.md
-  - Enums Reference: enums.md
+      - Registration widget: widgets/registration-widget.md
+      - Calendar widget: widgets/calendar-widget.md
+      - Map widget: widgets/map-widget.md
+      - Profile widget: widgets/profile-widget.md
+      - Video widget: widgets/video-widget.md
+      - Checkout widget: widgets/checkout-widget.md
+  - API reference:
+      - Overview: api/index.md
+      - Authentication: api/authentication.md
+      - Endpoints: api/endpoints.md
+      - Error handling: api/errors.md
+  - Enums reference: enums.md
 extra:
   robots: "robots.txt"

@@ -1,116 +1,131 @@
 ---
-title: Zooza API Authentication
-description: Tutorial on how to approach authorization and authentication to Zooza API
-authors:
-  - Martin Rapavý
-date: 2025-10-05
-updated: 2025-12-05
+title: Authentication
+description: How to authenticate with the Zooza REST API — headers, token acquisition, and examples.
 ---
 
-# How to connect to the API
+# Authentication
 
-## Basic approach to getting started with authenticated API calls
+This page covers authentication for the **REST API** only. Widgets do not require authentication — see the [widget docs](../widgets/index.md) for embedding instructions.
 
-In general, **Zooza recognizes two types of applications**:
-
-- **Widget**
-- **Application**
-
-The type of application limits what data you can obtain from the API and what endpoints are available.
+Zooza uses **passwordless login**. Instead of relying on a password, identity is verified via email verification, PIN code, or client secret.
 
 ---
 
-## Widget application type
+## Required headers
 
-- All data you request is limited to **a customer**.
-  In other words, the data you see is represented from the perspective of a single company or that company's customer.
-- Most of the endpoints are **not available** to use (will trigger `unauthorized` response).
+Every REST API request requires these three headers:
 
----
-
-## Application type
-
-- Majority of endpoints require **valid headers** in each request:
-  - `X-ZOOZA-TOKEN`
-  - `X-ZOOZA-API-KEY`
-  - `X-ZOOZA-COMPANY-ID`
+| Header | Description |
+|--------|-------------|
+| `X-ZOOZA-API-KEY` | Your REST API key |
+| `X-ZOOZA-TOKEN` | Identifies the current user |
+| `X-ZOOZA-COMPANY` | Scopes requests to a specific company |
 
 ---
 
-## Which application type to use?
+## Obtaining your REST API key
 
-- If you want to build an application that works only with public data or with customer's data → **use Widget**.  
-- If you want to build an administration application or an application that will be doing administrative operations (manage attendance, courses, places, payments, etc.) → **use Application**.
-
----
-
-## Login approach
-
-Zooza uses **passwordless login**. Instead of relying on a password, the second factor is provided via an alternative method.
-
-For all requests that handle sensitive data, you'll need these three headers:
-
-- `X-ZOOZA-API-KEY` — Required to identify the application  
-- `X-ZOOZA-TOKEN` — Required to identify current user  
-- `X-ZOOZA-COMPANY-ID` — Required to downscope results for a specific company that current user has a role with  
-
-> **Note:** `X-ZOOZA-COMPANY-ID` is not required for applications of type **Widget**.  
-> For all other types, it is required in almost all API calls.
+REST API keys are different from widget API keys and must be requested through [Zooza support](mailto:support@zooza.com). A widget API key **cannot** be used for REST API calls.
 
 ---
 
-## Obtaining API key
+## Obtaining a user token
 
-1. Log into the main application.  
-2. Head to **Settings > Registration forms**.  
-   - There, you'll see the API key for your widgets.  
-3. If you need to create an application of type **Application**, please contact our customer support.
+There are three ways to obtain a token, depending on your use case.
 
----
+### Via email verification
 
-## Obtaining user token via email
+The most common approach for customer-facing applications.
 
-This is the most common way to obtain a valid token.  
-
-1. Send a **POST request** to the API with an email passed in the body.  
-2. Zooza will send a verification email to the user.  
-3. That email contains a link with a query parameter `key` (the token).
+1. Send a POST request with the user's email.
+2. Zooza sends a verification email containing a link with a `key` query parameter.
+3. Extract the token from the URL and store it.
 
 **Example verification link:**
 
 ```
-https://yoursite.com?key=123
+https://yoursite.com?key=abc123token
 ```
 
-Store the token in **session, cookie, localStorage, etc.**, and include this header in each request:
+=== "cURL"
+
+    ```bash
+    curl -X POST https://api.zooza.app/v1/login \
+      -H "Content-Type: application/json" \
+      -H "X-ZOOZA-API-KEY: your_api_key" \
+      -d '{
+        "login": "customer@example.com",
+        "verification_method": "email"
+      }'
+    ```
+
+=== "JavaScript"
+
+    ```javascript
+    const response = await fetch("https://api.zooza.app/v1/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-ZOOZA-API-KEY": "your_api_key",
+      },
+      body: JSON.stringify({
+        login: "customer@example.com",
+        verification_method: "email",
+      }),
+    });
+    const data = await response.json();
+    ```
+
+<!-- TODO: add example — /login response body for email verification -->
+
+Store the token in a **session, cookie, or localStorage**, and include it in subsequent requests:
 
 ```
 X-ZOOZA-TOKEN: <token>
 ```
 
-> **Note:** This is a long-term token, but it may be invalidated by Zooza at any time.
+!!! note
+    This is a long-term token, but it may be invalidated by Zooza at any time.
 
 ---
 
-## Obtaining user token via PIN code
+### Via PIN code
 
-Instead of the verification link, you can also use a **PIN code** (valid for 5 minutes) sent in the same email.
+Instead of clicking a verification link, users can enter a **PIN code** (valid for 5 minutes) from the same email.
 
-**Request:**
+=== "cURL"
 
-```http
-POST /v1/verify HTTP/1.1
-Host: api.zooza.app
-Content-Type: application/json
-Accept: application/json
-X-ZOOZA-API-KEY: <api_key>
+    ```bash
+    curl -X POST https://api.zooza.app/v1/verify \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -H "X-ZOOZA-API-KEY: your_api_key" \
+      -d '{
+        "action": "validate_pin",
+        "email": "customer@example.com",
+        "pin": "123456"
+      }'
+    ```
 
-{
-  "action": "validate_pin",
-  "email": "<email>",
-  "pin": "<pin>"
-}
-```
+=== "JavaScript"
+
+    ```javascript
+    const response = await fetch("https://api.zooza.app/v1/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-ZOOZA-API-KEY": "your_api_key",
+      },
+      body: JSON.stringify({
+        action: "validate_pin",
+        email: "customer@example.com",
+        pin: "123456",
+      }),
+    });
+    const data = await response.json();
+    // data.token contains the user token
+    ```
 
 **Response:**
 
@@ -121,110 +136,113 @@ X-ZOOZA-API-KEY: <api_key>
 }
 ```
 
-On successful response, you'll get:  
-- `message` — Human-readable response
-- `token` — The actual token you can use in API requests  
+---
+
+### Via client secret (server-to-server)
+
+For server-side or automated applications where no human interaction is possible. Use a **client secret** to authenticate directly.
+
+=== "cURL"
+
+    ```bash
+    curl -X POST https://api.zooza.app/v1/login \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -H "X-ZOOZA-API-KEY: your_api_key" \
+      -d '{
+        "login": "admin@example.com",
+        "verification_method": "client_secret",
+        "client_secret": "your_client_secret"
+      }'
+    ```
+
+=== "JavaScript"
+
+    ```javascript
+    const response = await fetch("https://api.zooza.app/v1/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-ZOOZA-API-KEY": "your_api_key",
+      },
+      body: JSON.stringify({
+        login: "admin@example.com",
+        verification_method: "client_secret",
+        client_secret: "your_client_secret",
+      }),
+    });
+    const data = await response.json();
+    // data.token contains the user token
+    ```
+
+<!-- TODO: add example — /login response body for client_secret -->
+
+!!! warning "Important"
+    - The email must belong to a **valid Zooza user** with a role in the target company.
+    - Use a user with the **Owner role** for full access.
+    - Responses are always scoped to the user's role (e.g. a Lecturer only sees classes where they are assigned).
+
+To obtain a client secret, contact [Zooza support](mailto:support@zooza.com).
 
 ---
 
-## Obtaining user token without human interaction
+## Getting the company ID
 
-For server-side or automated applications, use **client secret**.
+Once you have a token, retrieve the company ID from the `/v1/user` endpoint.
 
-**Request:**
+=== "cURL"
 
-```http
-POST /v1/login HTTP/1.1
-Host: api.zooza.app
-Content-Type: application/json
-Accept: application/json
-X-ZOOZA-API-KEY: <api_key>
+    ```bash
+    curl -X GET https://api.zooza.app/v1/user \
+      -H "X-ZOOZA-API-KEY: your_api_key" \
+      -H "X-ZOOZA-TOKEN: your_token"
+    ```
 
-{
-  "login": "<email>",
-  "verification_method": "client_secret",
-  "client_secret": "<client_secret>"
-}
-```
+=== "JavaScript"
 
-- The email must be a **valid Zooza user** with a role in the target company.  
-- It is recommended to use a user with the **Owner role** for full access.  
-- Responses are always scoped to the user’s role (e.g., a Lecturer only sees schedules where they are assigned).  
+    ```javascript
+    const response = await fetch("https://api.zooza.app/v1/user", {
+      headers: {
+        "X-ZOOZA-API-KEY": "your_api_key",
+        "X-ZOOZA-TOKEN": "your_token",
+      },
+    });
+    const data = await response.json();
+    // Find your company in data.user.companies
+    ```
 
-To obtain a **client secret**, contact Zooza support.
-
----
-
-## Getting the Company ID
-
-The last required element is the **Company ID**.
-
-**Request:**
-
-```http
-GET /v1/user HTTP/1.1
-Host: api.zooza.app
-X-ZOOZA-API-KEY: <api_key>
-X-ZOOZA-COMPANY: <company_id>
-X-ZOOZA-TOKEN: <user_token>
-```
-
-The response returns:  
-- A valid company list  
-- Useful information about the current user
+**Response (abbreviated):**
 
 ```json
 {
-    "user_valid": true,
-    "user": {
-        "id": 1,
-        "first_name": "John",
-        "last_name": "Smith",
-        "email": "[redacted]",
-        "phone": "[redacted]",
-        "role": "member",
-        "company_id": 65,
-        "avatar": null,
-        "email_rejected": false,
-        "email_verified": false,
-        "phone_verified": true,
-        "billing_periods": [],
-        "user_fields": {
-            "id": 3929,
-            "marketing_messages": false
-        },
-        "permissions": [
-            { "permission": "get_course", "user_can": true },
-            { "permission": "get_trainers", "user_can": true },
-            { "permission": "edit_course", "user_can": true },
-            { "permission": "add_course", "user_can": false }
-        ],
-        "companies": [
-            { "id": 65, "name": "Company A", "role": "member" },
-            { "id": 76, "name": "Company B", "role": "owner" }
-        ],
-        "onboarding_url": "",
-        "app_usage": {
-            "registrations": false,
-            "payments": true,
-            "courses": true
-        }
-    },
-    "agreements": [],
-    "app": {
-        "application_id": 1,
-        "company_id": 65,
-        "type": "application",
-        "company_name": "Company A"
-    },
-    "branding": "[redacted]",
-    "company": {
-        "name": "Company A",
-        "email": "[redacted]",
-        "online_payments": true,
-        "region": "en",
-        "language": "en",
-        "currency": "EUR"
-    }
+  "user_valid": true,
+  "user": {
+    "id": 1,
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "john@example.com",
+    "companies": [
+      { "id": 65, "name": "Company A", "role": "member" },
+      { "id": 76, "name": "Company B", "role": "owner" }
+    ]
+  },
+  "app": {
+    "application_id": 1,
+    "company_id": 65,
+    "type": "application"
+  }
 }
 ```
+
+Use the `id` from the appropriate company in the `X-ZOOZA-COMPANY` header for subsequent requests.
+
+---
+
+## Token lifecycle
+
+<!-- TODO: requires more content — token expiry, refresh, invalidation behavior -->
+
+- Tokens are **long-lived** but may be invalidated by Zooza at any time.
+- There is no explicit refresh mechanism — if a token becomes invalid, re-authenticate using one of the methods above.
+- Store tokens securely and handle `401 Unauthorized` responses by re-initiating the login flow.

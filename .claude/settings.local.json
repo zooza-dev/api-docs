@@ -6,7 +6,10 @@
       "Bash(python3:*)",
       "Bash(source:*)",
       "Bash(mkdocs build:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)"
     ]
   }
 }
