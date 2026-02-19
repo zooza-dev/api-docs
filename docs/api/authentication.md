@@ -29,7 +29,7 @@ Every REST API request requires these three headers:
 
 ## Obtaining your REST API key
 
-REST API keys are different from widget API keys and must be requested through [Zooza support](mailto:support@zooza.com). A widget API key **cannot** be used for REST API calls.
+REST API keys are different from widget API keys and must be requested through [Zooza support](mailto:support@zooza.online). A widget API key **cannot** be used for REST API calls.
 
 ---
 
@@ -204,7 +204,7 @@ const data = await response.json();
 - Responses are always scoped to the user's role (e.g. a Lecturer only sees classes where they are assigned).
 :::
 
-To obtain a client secret, contact [Zooza support](mailto:support@zooza.com).
+To obtain a client secret, contact [Zooza support](mailto:support@zooza.online).
 
 ---
 
