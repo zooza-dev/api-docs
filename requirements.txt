@@ -1,5 +1,0 @@
-mkdocs
-mkdocs-material
-mkdocs-mermaid2-plugin
-mkdocs-swagger-ui-tag
-pymdown-extensions

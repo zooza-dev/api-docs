@@ -1,0 +1,1 @@
+{"parameters":[{"in":"query","name":"event_id","schema":{"type":"integer"}}]}

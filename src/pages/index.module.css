@@ -1,0 +1,112 @@
+.homePage {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+.homeHero {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.homeHero h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-font-color-base);
+}
+
+.homeHero p {
+  font-size: 1.15rem;
+  color: var(--zooza-gray-light);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+[data-theme='dark'] .homeHero p {
+  color: #a3a795;
+}
+
+.pathCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+  .pathCards {
+    grid-template-columns: 1fr;
+  }
+  .homeHero h1 {
+    font-size: 1.8rem;
+  }
+}
+
+.pathCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border: 1.5px solid var(--ifm-color-emphasis-200);
+  border-radius: var(--ifm-card-border-radius);
+  background: var(--ifm-background-surface-color);
+  text-decoration: none !important;
+  color: inherit;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.pathCard:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 16px rgba(250, 105, 0, 0.12);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.pathCard h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-font-color-base);
+  border: none;
+  padding: 0;
+  margin-top: 0;
+}
+
+.pathCard p {
+  font-size: 0.9rem;
+  color: var(--zooza-gray-light);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+[data-theme='dark'] .pathCard p {
+  color: #a3a795;
+}
+
+.pathCardCta {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.homeFootnote {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--zooza-gray-light);
+  margin-top: 1.5rem;
+}
+
+[data-theme='dark'] .homeFootnote {
+  color: #a3a795;
+}
+
+.homeFootnote a {
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+}

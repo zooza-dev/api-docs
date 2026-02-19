@@ -1,6 +1,7 @@
 ---
 title: API overview
 description: Overview of the Zooza REST API — authentication, base URLs, and when to use it.
+sidebar_position: 1
 ---
 
 # API overview
@@ -31,8 +32,9 @@ flowchart TD
 - Build a fully custom customer-facing UI
 - Automate workflows or synchronise data with external systems
 
-!!! note "Different API keys"
-    Widget API keys and REST API keys are **not interchangeable**. A widget key cannot be used for REST API calls. See [concepts](../concepts.md#api-keys) for details.
+:::note Different API keys
+Widget API keys and REST API keys are **not interchangeable**. A widget key cannot be used for REST API calls. See [concepts](../concepts.md#api-keys) for details.
+:::
 
 ---
 
@@ -86,4 +88,4 @@ The current API version is **v1**. All endpoints are prefixed with `/v1/`.
 
 ## Endpoints reference
 
-See the full [endpoints reference](endpoints.md) for available API operations.
+See the full [API operations reference](reference) for all available endpoints.

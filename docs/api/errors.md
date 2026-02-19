@@ -1,6 +1,7 @@
 ---
 title: Error handling
 description: HTTP status codes, error response format, and troubleshooting tips for the Zooza API.
+sidebar_position: 3
 ---
 
 # Error handling

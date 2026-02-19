@@ -1,0 +1,1 @@
+{"title":"Body","body":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"order_type":{"type":"string","enum":["course","order"]},"order_id":{"name":"ID","in":"path","description":"Resource ID","required":true,"schema":{"type":"integer"}},"options":{"type":"array","items":{"type":"object"}}}}}}}}

@@ -1,13 +1,10 @@
 ---
-title: Zooza Video Widget
-description: This widget provides secure way to embed and serve videos on business' website.
-authors:
-  - Martin Rapavý
-date: 2025-10-05
-updated: 2025-12-05
+title: Video widget
+description: The Zooza video widget — secure video and live stream playback for authenticated users.
+sidebar_position: 6
 ---
 
-# Video Widget
+# Video widget
 
 **This widget provides a secure way to play all videos and live streams that you provided for your customers either for free or against the payment. Video can only be played by logged in users.**
 
@@ -33,11 +30,10 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 Place the following snippet directly into the `<body>` of your page, where you want the booking form to appear.
 
-| Placeholder        | Description                                                                                  | Example Value                |
-|--------------------|---------------------------------------------------------------------------------------------|------------------------------|
-| `YOUR_API_KEY`     | Replace with the API key found in the application under `Publish > Widget`. Appears twice.  | `abc123xyz`                  |
-| `ZOOZA_API_URL`    | Replace with the Zooza API URL for your region:<br>- Europe: `https://api.zooza.app`<br>- UK: `https://uk.api.zooza.app`<br>- UAE: `https://asia.api.zooza.app` | `https://api.zooza.app`      |
-
+| Placeholder | Description | Example Value |
+|---|---|---|
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice. | `abc123xyz` |
+| `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
 
 ```javascript
 <script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>

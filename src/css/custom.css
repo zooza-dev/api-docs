@@ -1,0 +1,196 @@
+/* ─────────────────────────────────────────────
+   Zooza brand tokens mapped to Docusaurus vars
+   Source: zooza_css/_shared/_presets.scss
+───────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+:root {
+  /* Primary orange */
+  --ifm-color-primary: #fa6900;
+  --ifm-color-primary-dark: #e15e00;
+  --ifm-color-primary-darker: #b36325;
+  --ifm-color-primary-darkest: #7a4418;
+  --ifm-color-primary-light: #fb8133;
+  --ifm-color-primary-lighter: #fc9a5d;
+  --ifm-color-primary-lightest: #fdb386;
+
+  /* Typography */
+  --ifm-font-family-base: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.65;
+
+  /* Spacing & shape */
+  --ifm-global-radius: 5px;
+  --ifm-button-border-radius: 5px;
+  --ifm-card-border-radius: 8px;
+  --ifm-code-border-radius: 5px;
+  --ifm-pre-border-radius: 8px;
+
+  /* Background */
+  --ifm-background-color: #f2f5e5;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-footer-background-color: #4d4f46;
+
+  /* Teal accent (secondary) */
+  --zooza-teal: #3aa39d;
+  --zooza-teal-light: #a7dbd8;
+  --zooza-teal-lightest: #f0f5f3;
+
+  /* Grays */
+  --zooza-gray-base: #e0e4cc;
+  --zooza-gray-dark: #4d4f46;
+  --zooza-gray-light: #878a7a;
+  --zooza-gray-lighter: #f2f5e5;
+
+  /* Code */
+  --ifm-code-background: #eef0f1;
+  --ifm-code-font-size: 90%;
+  --docusaurus-highlighted-code-line-bg: rgba(250, 105, 0, 0.08);
+
+  /* Links */
+  --ifm-link-color: #fa6900;
+  --ifm-link-hover-color: #b36325;
+
+  /* Borders */
+  --ifm-color-emphasis-200: #e0e4cc;
+  --ifm-color-emphasis-300: #c0c4b1;
+
+  /* Navbar */
+  --ifm-navbar-height: 60px;
+  --ifm-navbar-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Dark mode ── */
+[data-theme='dark'] {
+  --ifm-color-primary: #ff8c42;
+  --ifm-color-primary-dark: #fa6900;
+  --ifm-color-primary-darker: #c76521;
+  --ifm-color-primary-darkest: #7a4418;
+  --ifm-color-primary-light: #ffa06a;
+  --ifm-color-primary-lighter: #ffb48e;
+  --ifm-color-primary-lightest: #ffc8b2;
+
+  --ifm-background-color: #1e1f1c;
+  --ifm-background-surface-color: #2a2c28;
+  --ifm-navbar-background-color: #1e1f1c;
+  --ifm-footer-background-color: #1e1f1c;
+
+  --zooza-teal: #3aa39d;
+  --zooza-teal-light: #5c9794;
+
+  --ifm-code-background: #2a2c28;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 140, 66, 0.12);
+
+  --ifm-link-color: #ff8c42;
+  --ifm-link-hover-color: #ffa06a;
+
+  --ifm-color-emphasis-200: #545550;
+  --ifm-color-emphasis-300: #6e726b;
+}
+
+/* ─────────────────────────────────────────────
+   Global base styles
+───────────────────────────────────────────── */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Navbar ── */
+.navbar {
+  border-bottom: 1px solid var(--zooza-gray-base);
+}
+
+[data-theme='dark'] .navbar {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ── Sidebar ── */
+.menu__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* ── Article / doc content ── */
+.markdown h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.markdown h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.markdown h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.8rem;
+}
+
+/* ── Tables ── */
+.markdown table {
+  font-size: 0.9rem;
+}
+
+.markdown table th {
+  background: var(--zooza-gray-lighter);
+  font-weight: 600;
+}
+
+[data-theme='dark'] .markdown table th {
+  background: #2a2c28;
+}
+
+/* ── Code ── */
+.markdown code {
+  background: var(--ifm-code-background);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  padding: 0.1em 0.4em;
+  border-radius: var(--ifm-code-border-radius);
+}
+
+/* ── Admonitions — match Zooza palette ── */
+.alert--tip {
+  --ifm-alert-border-color: var(--zooza-teal);
+  --ifm-alert-background-color: var(--zooza-teal-lightest);
+}
+
+[data-theme='dark'] .alert--tip {
+  --ifm-alert-background-color: rgba(58, 163, 157, 0.12);
+}
+
+.alert--warning {
+  --ifm-alert-border-color: #fa6900;
+  --ifm-alert-background-color: #fce7d5;
+}
+
+[data-theme='dark'] .alert--warning {
+  --ifm-alert-background-color: rgba(250, 105, 0, 0.12);
+}
+
+/* ── Footer ── */
+.footer__link-item {
+  font-size: 0.875rem;
+}
+
+/* ── Breadcrumbs ── */
+.breadcrumbs__link {
+  font-size: 0.82rem;
+}
+

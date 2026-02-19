@@ -1,9 +1,10 @@
 ---
-title: Concepts and glossary
+title: Concepts & glossary
 description: Definitions for all Zooza-specific terminology used throughout the documentation.
+sidebar_position: 1
 ---
 
-# Concepts and glossary
+# Concepts & glossary
 
 This page defines the key terms and concepts used across Zooza. Many API field names differ from the labels shown in the Zooza app — this glossary maps both.
 
@@ -109,8 +110,9 @@ Zooza uses **two distinct types of API keys** that are not interchangeable:
 | **Widget API key** | **Team & Settings > Publish** — displayed for each widget | Embedding widgets on your website |
 | **REST API key** | Provided by Zooza support | Programmatic access via the REST API |
 
-!!! warning
-    A widget API key **cannot** be used for REST API calls, and vice versa. They serve completely different purposes.
+:::warning
+A widget API key **cannot** be used for REST API calls, and vice versa. They serve completely different purposes.
+:::
 
 ### Widgets vs REST API
 

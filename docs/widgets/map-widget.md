@@ -1,13 +1,10 @@
 ---
-title: Zooza Map Widget
-description: Widget showing available locations and classes at these locations
-authors:
-  - Martin Rapavý
-date: 2025-10-05
-updated: 2025-12-05
+title: Map widget
+description: The Zooza map widget — location-based class search with map view, radius filter, and navigation button.
+sidebar_position: 4
 ---
 
-# Map Widget
+# Map widget
 
 **This widget provides a map view of your locations. Upon selecting a location, its contact details are shown and available classes for this location are listed below the map. When a class is clicked, the customer is taken to the [Registration Form](./registration-widget.md).**
 
@@ -33,11 +30,10 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 Place the following snippet directly into the `<body>` of your page, where you want the booking form to appear.
 
-| Placeholder        | Description                                                                                  | Example Value                |
-|--------------------|---------------------------------------------------------------------------------------------|------------------------------|
-| `YOUR_API_KEY`     | Replace with the API key found in the application under `Publish > Widget`. Appears twice.  | `abc123xyz`                  |
-| `ZOOZA_API_URL`    | Replace with the Zooza API URL for your region:<br>- Europe: `https://api.zooza.app`<br>- UK: `https://uk.api.zooza.app`<br>- UAE: `https://asia.api.zooza.app` | `https://api.zooza.app`      |
-
+| Placeholder | Description | Example Value |
+|---|---|---|
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice. | `abc123xyz` |
+| `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
 
 ```javascript
 <script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
@@ -93,7 +89,7 @@ When enabled, this will show a button which would open the default map applicati
 
 ### Navigate button label
 
-If navigate button is shown, you can change its label
+If navigate button is shown, you can change its label.
 
 ### Use CSS
 

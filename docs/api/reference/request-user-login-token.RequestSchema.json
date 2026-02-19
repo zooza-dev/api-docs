@@ -1,0 +1,1 @@
+{"title":"Body","body":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["login"],"properties":{"login":{"type":"string","format":"email"},"verification_method":{"type":"string","enum":["email","pin","backoffice","client_secret","default"],"default":"default"}}}}}}}

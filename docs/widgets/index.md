@@ -1,17 +1,14 @@
 ---
-title: Zooza Integration Introduction
-description: Guidelines on how to approach the integration, best practices and tips.
-authors:
-  - Martin Rapavý
-date: 2025-10-05
-updated: 2025-12-05
+title: Introduction to widgets
+description: How to install and integrate Zooza widgets — WordPress, Wix, or manual embed. Installation best practices and customisation options.
+sidebar_position: 1
 ---
 
-# Introduction to Widgets
+# Introduction to widgets
 
 **Zooza widgets are the primary way your customers interact with your services online. Seamless integration ensures a smooth experience for both you and your clients. Widgets can be added easily using a WordPress plugin, a Wix plugin, or by pasting a snippet of JavaScript code into your website.**
 
-However, this is just the beginning—Zooza offers unparalleled customization for both the appearance and behavior of each widget, giving your business a unique edge.
+However, this is just the beginning — Zooza offers unparalleled customization for both the appearance and behavior of each widget, giving your business a unique edge.
 
 ## Installation
 
@@ -38,47 +35,37 @@ Zooza additionally stores logged-in customer's data in localStorage so that it i
 
 ### Customer journey scenarios
 
-How Your Customers Navigate to a Booking:
+How your customers navigate to a booking:
 
-Via map
-: Your main focal point is a map, where customers search for an address first. From there, they select their class and proceed directly to booking.
+**Via map** — Your main focal point is a map, where customers search for an address first. From there, they select their class and proceed directly to booking.
 
-Via calendar of activities
-: You have either one central calendar or more smaller calendars based on location or activity, and from there customers discover your programs and go to bookings.
+**Via calendar of activities** — You have either one central calendar or more smaller calendars based on location or activity, and from there customers discover your programs and go to bookings.
 
-Via landing pages
-: Your website is built around landing pages for each activity or location. You want to provide a booking form directly on these pages, pre-filtered so customers just fill in their information.
+**Via landing pages** — Your website is built around landing pages for each activity or location. You want to provide a booking form directly on these pages, pre-filtered so customers just fill in their information.
 
-Via single central booking form
-: You have a centralized booking form that has a listing of all available classes. Customers already know where they want to book, and you just provide them with a single point where they can quickly navigate to a class of their choosing.
+**Via single central booking form** — You have a centralized booking form that has a listing of all available classes. Customers already know where they want to book, and you just provide them with a single point where they can quickly navigate to a class of their choosing.
 
-All of the above
-: Many websites combine these approaches to create multiple pathways to a booking based on customer preferences.
+**All of the above** — Many websites combine these approaches to create multiple pathways to a booking based on customer preferences.
 
 ## Types of widgets
 
-[**Registration/Booking Widget**](registration-widget.md)  
-:   Allows users to register or book services directly from your website.
+**[Registration/Booking Widget](registration-widget.md)** — Allows users to register or book services directly from your website.
 
-[**Calendar Widget**](calendar-widget.md)  
-:   Displays available dates and times for your classes and sessions.
+**[Calendar Widget](calendar-widget.md)** — Displays available dates and times for your classes and sessions.
 
-[**Map Widget**](map-widget.md)  
-:   Shows locations where your services are available and allows customers to search for a class based on the location.
+**[Map Widget](map-widget.md)** — Shows locations where your services are available and allows customers to search for a class based on the location.
 
-[**Profile Widget**](profile-widget.md)  
-:   Lets users view and manage their personal information and bookings.
+**[Profile Widget](profile-widget.md)** — Lets users view and manage their personal information and bookings.
 
-[**Video Widget**](video-widget.md)  
-:   Embeds video content related to your services.
+**[Video Widget](video-widget.md)** — Embeds video content related to your services.
 
-[**Checkout Widget**](checkout-widget.md)  
-:   Handles purchases for digital products and service orders.
+**[Checkout Widget](checkout-widget.md)** — Handles purchases for digital products and service orders.
 
 ### Installation options
 
-!!! warning "Important"
-    Remember, you can install as many widgets as you want but there is one general rule: **Only one widget per page**.
+:::warning Important
+Remember, you can install as many widgets as you want but there is one general rule: **Only one widget per page**.
+:::
 
 #### WordPress
 
@@ -90,7 +77,7 @@ Read more about setup and configuration options.
 Wix doesn't allow for embedding custom JavaScript code and generally doesn't work well with embedded widgets. Therefore using this plugin is your only way of integrating Zooza if you're on this platform.
 Read more.
 
-#### Manual Embedding
+#### Manual embedding
 
 This option gives you most flexibility but is definitely targeted for more technically skilled persons although it does not necessarily require any coding.
 
@@ -102,7 +89,7 @@ Zooza widgets are embedded directly into your website, making them look and feel
 
 The best way to override Zooza's default styles is to prefix your CSS selectors with anything that precedes Zooza's main `<div>` tag, which is prefixed with the class `.zooza`.
 
-If you wish, you can even disable each widget's default CSS entirely.  
+If you wish, you can even disable each widget's default CSS entirely.
 
 **Note:** Disabling the default CSS will remove all built-in styles, so you must ensure that you also provide styles for essential utility classes such as `.hidden`. You can turn off the CSS in the Zooza app: `Publish > Widget > [Widget type] > Use CSS`.
 
@@ -121,15 +108,15 @@ Both ways are described in more depth in the individual widget's pages.
 
 Each widget's main configuration property is its URL. This is because you need to let Zooza know where on your website the widget is installed. Zooza will often point your customers between individual widgets — for example, from the Map widget to a Registration widget, or from the Profile widget to the Checkout form. Therefore it is crucial for Zooza to be informed where the **main instance** of your widget resides.
 
-Main instance is simply the most general location on your website where the registration widget resides. 
+Main instance is simply the most general location on your website where the registration widget resides.
 
-:material-check: These are good examples:
+**Good examples:**
 
 - A page titled Registration (or Booking)
 - A page without any title and without any other content on it apart from the form itself
 - A page where user generally doesn't need to scroll to see the booking form
 
-:material-alert-circle-outline: These are not good examples:
+**Not recommended:**
 
 - A page for a specific course or program
 - A page where there is other unrelated content and form does not appear in prominent page
@@ -141,7 +128,8 @@ Technically speaking, all widget types form a **group** which share **same API k
 
 However, if you have multiple websites or your website is huge and has distinct sections, perhaps even with distinct branding, then it is appropriate to create a new group of widgets in `Publish > Create` and install each set of widgets on a different domain. This way you will be able to keep track of which registration came through which channel (domain), as it will be listed next to every registration.
 
-!!! info "If you are a franchise"
-    If you are a Franchise and your website include a separate page for each individual Franchisee (and they don't have their own websites), then it is **NOT appropriate** to create a new widget group per franchisee. Each individual franchisee will have their own Zooza account thus will have their own separate widget group with a distinct API key.
+:::info If you are a franchise
+If you are a Franchise and your website includes a separate page for each individual Franchisee (and they don't have their own websites), then it is **NOT appropriate** to create a new widget group per franchisee. Each individual franchisee will have their own Zooza account thus will have their own separate widget group with a distinct API key.
 
-    [Learn more about how to install Zooza on a franchise managed website]()
+Learn more about how to install Zooza on a franchise managed website
+:::

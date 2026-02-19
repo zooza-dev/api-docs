@@ -22,7 +22,16 @@
       "WebFetch(domain:redocly.com)",
       "WebFetch(domain:deepwiki.com)",
       "WebFetch(domain:tessl.io)",
-      "Bash(mkdocs:*)"
+      "Bash(mkdocs:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run gen-api-docs:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm show:*)",
+      "Bash(xargs rm:*)",
+      "Bash(node -e:*)",
+      "Bash(npx:*)",
+      "Bash(node --version:*)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }

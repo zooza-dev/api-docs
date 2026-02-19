@@ -1,7 +1,11 @@
 ---
 title: Quickstart
-description: Get started with Zooza — embed a widget or make your first REST API call.
+description: Get started with Zooza — embed a widget or make your first REST API call in minutes.
+sidebar_position: 2
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Quickstart
 
@@ -27,7 +31,7 @@ Widgets are pre-built Zooza components that you embed directly on your website. 
 3. Click on your widget name to open the detail view.
 4. Copy your **API key**.
 
-![Publish screen in Zooza](assets/images/publish-widgets.png)
+![Publish screen in Zooza](/img/publish-widgets.png)
 
 #### Step 2: Add the embed code
 
@@ -59,10 +63,11 @@ Paste this script into your HTML page where you want the registration form to ap
 
 For the Europe region, `ZOOZA_API_URL` is `https://api.zooza.app`.
 
-!!! tip "Other widget types"
-    Change the `type=registration` parameter to embed different widgets: `calendar`, `profile`, `video`, `sales`, `map`.
+:::tip Other widget types
+Change the `type=registration` parameter to embed different widgets: `calendar`, `profile`, `video`, `sales`, `map`.
+:::
 
-![Embed code in Zooza](assets/images/widget-embed-code.png)
+![Embed code in Zooza](/img/widget-embed-code.png)
 
 #### Step 3: Verify
 
@@ -82,8 +87,9 @@ Open your page in a browser. You should see a Zooza registration form displaying
 
 The REST API gives you full programmatic access to Zooza data — for admin tools, custom customer journeys, data caching, and more.
 
-!!! warning "Different API keys"
-    The REST API uses a **different API key** from widgets. A widget API key cannot be used for REST API calls.
+:::warning Different API keys
+The REST API uses a **different API key** from widgets. A widget API key cannot be used for REST API calls.
+:::
 
 #### Prerequisites
 
@@ -95,37 +101,42 @@ The REST API gives you full programmatic access to Zooza data — for admin tool
 
 Use your client secret to obtain a token:
 
-=== "cURL"
+<Tabs>
+  <TabItem value="curl" label="cURL">
 
-    ```bash
-    curl -X POST https://api.zooza.app/v1/login \
-      -H "Content-Type: application/json" \
-      -H "X-ZOOZA-API-KEY: your_api_key" \
-      -d '{
-        "login": "your_email@example.com",
-        "verification_method": "client_secret",
-        "client_secret": "your_client_secret"
-      }'
-    ```
+```bash
+curl -X POST https://api.zooza.app/v1/login \
+  -H "Content-Type: application/json" \
+  -H "X-ZOOZA-API-KEY: your_api_key" \
+  -d '{
+    "login": "your_email@example.com",
+    "verification_method": "client_secret",
+    "client_secret": "your_client_secret"
+  }'
+```
 
-=== "JavaScript"
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
 
-    ```javascript
-    const response = await fetch("https://api.zooza.app/v1/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-ZOOZA-API-KEY": "your_api_key",
-      },
-      body: JSON.stringify({
-        login: "your_email@example.com",
-        verification_method: "client_secret",
-        client_secret: "your_client_secret",
-      }),
-    });
-    const data = await response.json();
-    console.log("Token:", data.token);
-    ```
+```javascript
+const response = await fetch("https://api.zooza.app/v1/login", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "X-ZOOZA-API-KEY": "your_api_key",
+  },
+  body: JSON.stringify({
+    login: "your_email@example.com",
+    verification_method: "client_secret",
+    client_secret: "your_client_secret",
+  }),
+});
+const data = await response.json();
+console.log("Token:", data.token);
+```
+
+  </TabItem>
+</Tabs>
 
 <!-- TODO: add example — confirm response shape -->
 
@@ -133,26 +144,31 @@ Save the `token` from the response — you'll need it for all subsequent request
 
 #### Step 2: Get your company ID
 
-=== "cURL"
+<Tabs>
+  <TabItem value="curl" label="cURL">
 
-    ```bash
-    curl -X GET https://api.zooza.app/v1/user \
-      -H "X-ZOOZA-API-KEY: your_api_key" \
-      -H "X-ZOOZA-TOKEN: your_token"
-    ```
+```bash
+curl -X GET https://api.zooza.app/v1/user \
+  -H "X-ZOOZA-API-KEY: your_api_key" \
+  -H "X-ZOOZA-TOKEN: your_token"
+```
 
-=== "JavaScript"
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
 
-    ```javascript
-    const response = await fetch("https://api.zooza.app/v1/user", {
-      headers: {
-        "X-ZOOZA-API-KEY": "your_api_key",
-        "X-ZOOZA-TOKEN": "your_token",
-      },
-    });
-    const data = await response.json();
-    console.log("Companies:", data.user.companies);
-    ```
+```javascript
+const response = await fetch("https://api.zooza.app/v1/user", {
+  headers: {
+    "X-ZOOZA-API-KEY": "your_api_key",
+    "X-ZOOZA-TOKEN": "your_token",
+  },
+});
+const data = await response.json();
+console.log("Companies:", data.user.companies);
+```
+
+  </TabItem>
+</Tabs>
 
 Find your company in the `user.companies` array and note the `id`.
 
@@ -162,34 +178,39 @@ Now use all three headers to fetch your programmes:
 
 <!-- TODO: add example — pick a simple GET endpoint like /v1/courses -->
 
-=== "cURL"
+<Tabs>
+  <TabItem value="curl" label="cURL">
 
-    ```bash
-    curl -X GET https://api.zooza.app/v1/courses \
-      -H "X-ZOOZA-API-KEY: your_api_key" \
-      -H "X-ZOOZA-TOKEN: your_token" \
-      -H "X-ZOOZA-COMPANY: your_company_id"
-    ```
+```bash
+curl -X GET https://api.zooza.app/v1/courses \
+  -H "X-ZOOZA-API-KEY: your_api_key" \
+  -H "X-ZOOZA-TOKEN: your_token" \
+  -H "X-ZOOZA-COMPANY: your_company_id"
+```
 
-=== "JavaScript"
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
 
-    ```javascript
-    const response = await fetch("https://api.zooza.app/v1/courses", {
-      headers: {
-        "X-ZOOZA-API-KEY": "your_api_key",
-        "X-ZOOZA-TOKEN": "your_token",
-        "X-ZOOZA-COMPANY": "your_company_id",
-      },
-    });
-    const courses = await response.json();
-    console.log("Courses:", courses);
-    ```
+```javascript
+const response = await fetch("https://api.zooza.app/v1/courses", {
+  headers: {
+    "X-ZOOZA-API-KEY": "your_api_key",
+    "X-ZOOZA-TOKEN": "your_token",
+    "X-ZOOZA-COMPANY": "your_company_id",
+  },
+});
+const courses = await response.json();
+console.log("Courses:", courses);
+```
+
+  </TabItem>
+</Tabs>
 
 You should see a list of your programmes (called "courses" in the API).
 
 #### Next steps
 
 - [Authentication guide](api/authentication.md) — all login methods explained
-- [API endpoints](api/endpoints.md) — full reference
+- [API endpoints](api/reference) — full reference
 - [Error handling](api/errors.md) — status codes and troubleshooting
 - [Concepts and glossary](concepts.md) — understand Zooza terminology

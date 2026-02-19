@@ -1,13 +1,10 @@
 ---
-title: Zooza Checkout Widget
-description: Widget for purchasing non-course/programme related services from Zooza.
-authors:
-  - Martin Rapavý
-date: 2025-10-05
-updated: 2025-12-05
+title: Checkout widget
+description: The Zooza checkout widget — purchase flow for digital products, discount coupons, prepaid vouchers, and entrance tickets.
+sidebar_position: 7
 ---
 
-# Checkout Widget
+# Checkout widget
 
 **This widget provides a way to purchase digital products and services such as Videos or eBooks, discount coupons, prepaid coupons or Entrance vouchers or other various services.**
 
@@ -33,11 +30,10 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 Place the following snippet directly into the `<body>` of your page, where you want the booking form to appear.
 
-| Placeholder        | Description                                                                                  | Example Value                |
-|--------------------|---------------------------------------------------------------------------------------------|------------------------------|
-| `YOUR_API_KEY`     | Replace with the API key found in the application under `Publish > Widget`. Appears twice.  | `abc123xyz`                  |
-| `ZOOZA_API_URL`    | Replace with the Zooza API URL for your region:<br>- Europe: `https://api.zooza.app`<br>- UK: `https://uk.api.zooza.app`<br>- UAE: `https://asia.api.zooza.app` | `https://api.zooza.app`      |
-
+| Placeholder | Description | Example Value |
+|---|---|---|
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice. | `abc123xyz` |
+| `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
 
 ```javascript
 <script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>

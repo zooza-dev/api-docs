@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Request processed","content":{"application/json":{"schema":{"type":"object","properties":{"login_email_sent":{"type":"boolean"},"message":{"type":"string","enum":["email_sent"]},"token":{"type":"string"}}}}}}}}

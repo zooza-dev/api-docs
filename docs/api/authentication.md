@@ -1,7 +1,11 @@
 ---
 title: Authentication
-description: How to authenticate with the Zooza REST API — headers, token acquisition, and examples.
+description: How to authenticate with the Zooza REST API — headers, token acquisition, and code examples.
+sidebar_position: 2
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Authentication
 
@@ -47,34 +51,39 @@ The most common approach for customer-facing applications.
 https://yoursite.com?key=abc123token
 ```
 
-=== "cURL"
+<Tabs>
+  <TabItem value="curl" label="cURL">
 
-    ```bash
-    curl -X POST https://api.zooza.app/v1/login \
-      -H "Content-Type: application/json" \
-      -H "X-ZOOZA-API-KEY: your_api_key" \
-      -d '{
-        "login": "customer@example.com",
-        "verification_method": "email"
-      }'
-    ```
+```bash
+curl -X POST https://api.zooza.app/v1/login \
+  -H "Content-Type: application/json" \
+  -H "X-ZOOZA-API-KEY: your_api_key" \
+  -d '{
+    "login": "customer@example.com",
+    "verification_method": "email"
+  }'
+```
 
-=== "JavaScript"
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
 
-    ```javascript
-    const response = await fetch("https://api.zooza.app/v1/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-ZOOZA-API-KEY": "your_api_key",
-      },
-      body: JSON.stringify({
-        login: "customer@example.com",
-        verification_method: "email",
-      }),
-    });
-    const data = await response.json();
-    ```
+```javascript
+const response = await fetch("https://api.zooza.app/v1/login", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "X-ZOOZA-API-KEY": "your_api_key",
+  },
+  body: JSON.stringify({
+    login: "customer@example.com",
+    verification_method: "email",
+  }),
+});
+const data = await response.json();
+```
+
+  </TabItem>
+</Tabs>
 
 <!-- TODO: add example — /login response body for email verification -->
 
@@ -84,8 +93,9 @@ Store the token in a **session, cookie, or localStorage**, and include it in sub
 X-ZOOZA-TOKEN: <token>
 ```
 
-!!! note
-    This is a long-term token, but it may be invalidated by Zooza at any time.
+:::note
+This is a long-term token, but it may be invalidated by Zooza at any time.
+:::
 
 ---
 
@@ -93,39 +103,44 @@ X-ZOOZA-TOKEN: <token>
 
 Instead of clicking a verification link, users can enter a **PIN code** (valid for 5 minutes) from the same email.
 
-=== "cURL"
+<Tabs>
+  <TabItem value="curl" label="cURL">
 
-    ```bash
-    curl -X POST https://api.zooza.app/v1/verify \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json" \
-      -H "X-ZOOZA-API-KEY: your_api_key" \
-      -d '{
-        "action": "validate_pin",
-        "email": "customer@example.com",
-        "pin": "123456"
-      }'
-    ```
+```bash
+curl -X POST https://api.zooza.app/v1/verify \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "X-ZOOZA-API-KEY: your_api_key" \
+  -d '{
+    "action": "validate_pin",
+    "email": "customer@example.com",
+    "pin": "123456"
+  }'
+```
 
-=== "JavaScript"
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
 
-    ```javascript
-    const response = await fetch("https://api.zooza.app/v1/verify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "X-ZOOZA-API-KEY": "your_api_key",
-      },
-      body: JSON.stringify({
-        action: "validate_pin",
-        email: "customer@example.com",
-        pin: "123456",
-      }),
-    });
-    const data = await response.json();
-    // data.token contains the user token
-    ```
+```javascript
+const response = await fetch("https://api.zooza.app/v1/verify", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "X-ZOOZA-API-KEY": "your_api_key",
+  },
+  body: JSON.stringify({
+    action: "validate_pin",
+    email: "customer@example.com",
+    pin: "123456",
+  }),
+});
+const data = await response.json();
+// data.token contains the user token
+```
+
+  </TabItem>
+</Tabs>
 
 **Response:**
 
@@ -142,46 +157,52 @@ Instead of clicking a verification link, users can enter a **PIN code** (valid f
 
 For server-side or automated applications where no human interaction is possible. Use a **client secret** to authenticate directly.
 
-=== "cURL"
+<Tabs>
+  <TabItem value="curl" label="cURL">
 
-    ```bash
-    curl -X POST https://api.zooza.app/v1/login \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json" \
-      -H "X-ZOOZA-API-KEY: your_api_key" \
-      -d '{
-        "login": "admin@example.com",
-        "verification_method": "client_secret",
-        "client_secret": "your_client_secret"
-      }'
-    ```
+```bash
+curl -X POST https://api.zooza.app/v1/login \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "X-ZOOZA-API-KEY: your_api_key" \
+  -d '{
+    "login": "admin@example.com",
+    "verification_method": "client_secret",
+    "client_secret": "your_client_secret"
+  }'
+```
 
-=== "JavaScript"
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
 
-    ```javascript
-    const response = await fetch("https://api.zooza.app/v1/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "X-ZOOZA-API-KEY": "your_api_key",
-      },
-      body: JSON.stringify({
-        login: "admin@example.com",
-        verification_method: "client_secret",
-        client_secret: "your_client_secret",
-      }),
-    });
-    const data = await response.json();
-    // data.token contains the user token
-    ```
+```javascript
+const response = await fetch("https://api.zooza.app/v1/login", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "X-ZOOZA-API-KEY": "your_api_key",
+  },
+  body: JSON.stringify({
+    login: "admin@example.com",
+    verification_method: "client_secret",
+    client_secret: "your_client_secret",
+  }),
+});
+const data = await response.json();
+// data.token contains the user token
+```
+
+  </TabItem>
+</Tabs>
 
 <!-- TODO: add example — /login response body for client_secret -->
 
-!!! warning "Important"
-    - The email must belong to a **valid Zooza user** with a role in the target company.
-    - Use a user with the **Owner role** for full access.
-    - Responses are always scoped to the user's role (e.g. a Lecturer only sees classes where they are assigned).
+:::warning Important
+- The email must belong to a **valid Zooza user** with a role in the target company.
+- Use a user with the **Owner role** for full access.
+- Responses are always scoped to the user's role (e.g. a Lecturer only sees classes where they are assigned).
+:::
 
 To obtain a client secret, contact [Zooza support](mailto:support@zooza.com).
 
@@ -191,26 +212,31 @@ To obtain a client secret, contact [Zooza support](mailto:support@zooza.com).
 
 Once you have a token, retrieve the company ID from the `/v1/user` endpoint.
 
-=== "cURL"
+<Tabs>
+  <TabItem value="curl" label="cURL">
 
-    ```bash
-    curl -X GET https://api.zooza.app/v1/user \
-      -H "X-ZOOZA-API-KEY: your_api_key" \
-      -H "X-ZOOZA-TOKEN: your_token"
-    ```
+```bash
+curl -X GET https://api.zooza.app/v1/user \
+  -H "X-ZOOZA-API-KEY: your_api_key" \
+  -H "X-ZOOZA-TOKEN: your_token"
+```
 
-=== "JavaScript"
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
 
-    ```javascript
-    const response = await fetch("https://api.zooza.app/v1/user", {
-      headers: {
-        "X-ZOOZA-API-KEY": "your_api_key",
-        "X-ZOOZA-TOKEN": "your_token",
-      },
-    });
-    const data = await response.json();
-    // Find your company in data.user.companies
-    ```
+```javascript
+const response = await fetch("https://api.zooza.app/v1/user", {
+  headers: {
+    "X-ZOOZA-API-KEY": "your_api_key",
+    "X-ZOOZA-TOKEN": "your_token",
+  },
+});
+const data = await response.json();
+// Find your company in data.user.companies
+```
+
+  </TabItem>
+</Tabs>
 
 **Response (abbreviated):**
 

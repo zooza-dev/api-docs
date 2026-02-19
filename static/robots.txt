@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# OpenAI ChatGPT crawler
+User-agent: GPTBot
+Allow: /
+
+# Anthropic Claude crawler
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity AI crawler
+User-agent: PerplexityBot
+Allow: /
+
+# Google Gemini / Google-Extended
+User-agent: Google-Extended
+Allow: /
+
+# Common documentation indexers
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://docs.zooza.online/sitemap.xml

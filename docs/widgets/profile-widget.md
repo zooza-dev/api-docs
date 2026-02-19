@@ -1,13 +1,10 @@
 ---
-title: Zooza Profile Widget
-description: This widget provides a customer zone or parent portal functionalities for business' website.
-authors:
-  - Martin Rapavý
-date: 2025-10-05
-updated: 2025-12-05
+title: Profile widget
+description: The Zooza profile widget — customer portal for booking history, payment management, and make-up session booking.
+sidebar_position: 5
 ---
 
-# Profile Widget
+# Profile widget
 
 **This is essentially a members only area, or a customer portal. It displays order/booking history as well as allows management of all bookings and payments.**
 
@@ -33,11 +30,10 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 Place the following snippet directly into the `<body>` of your page, where you want the booking form to appear.
 
-| Placeholder        | Description                                                                                  | Example Value                |
-|--------------------|---------------------------------------------------------------------------------------------|------------------------------|
-| `YOUR_API_KEY`     | Replace with the API key found in the application under `Publish > Widget`. Appears twice.  | `abc123xyz`                  |
-| `ZOOZA_API_URL`    | Replace with the Zooza API URL for your region:<br>- Europe: `https://api.zooza.app`<br>- UK: `https://uk.api.zooza.app`<br>- UAE: `https://asia.api.zooza.app` | `https://api.zooza.app`      |
-
+| Placeholder | Description | Example Value |
+|---|---|---|
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice. | `abc123xyz` |
+| `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
 
 ```javascript
 <script data-version='v1' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
@@ -77,7 +73,7 @@ Each session has automatic index assigned to it. If you want to display these in
 
 ### View payments
 
-By checking this option, clients will be able to see the Payments tab in their profiles
+By checking this option, clients will be able to see the Payments tab in their profiles.
 
 ### Classrooms into one location
 
@@ -87,11 +83,11 @@ When customers are selecting make-up sessions by default all rooms are listed se
 
 If you want to collect reasons why users are cancelling their sessions, you can turn this on to prompt them.
 
-|Value              | Description      |
-|-------------------|------------------|
-|Do not ask (default)        | Default option |
-|Before the cancellation     | Before users will be able to cancel the session, they will need to provide a reason |
-|After the cancellation     | Prompt for cancellation reason will appear only after the cancellation has been made, thus making this an optional choice |
+| Value | Description |
+|---|---|
+| Do not ask (default) | Default option |
+| Before the cancellation | Before users will be able to cancel the session, they will need to provide a reason |
+| After the cancellation | Prompt for cancellation reason will appear only after the cancellation has been made, thus making this an optional choice |
 
 When prompted to provide a cancellation reason, users will be shown a series of pre-defined options:
 
@@ -141,13 +137,13 @@ document.addEventListener('zooza_user_logged_in', function (event) {
 }
 ```
 
-|Property|Description|
-|--------|-----------|
-|`AVATAR_URL`| _String|Null_ Url to a user avatar picture|
-|`USER_EMAIL`| _String_ email of logged in user|
-|`USER_FIRST_NAME`| _String_ First name|
-|`USER_LAST_NAME`| _String_ Last name|
-|`USER_ID`| _String_ Zooza's User ID|
+| Property | Description |
+|---|---|
+| `AVATAR_URL` | _String\|Null_ Url to a user avatar picture |
+| `USER_EMAIL` | _String_ email of logged in user |
+| `USER_FIRST_NAME` | _String_ First name |
+| `USER_LAST_NAME` | _String_ Last name |
+| `USER_ID` | _String_ Zooza's User ID |
 
 This object will be also stored in `LocalStorage()` under the key `zooza_user`.
 
@@ -162,6 +158,7 @@ document.addEventListener('zooza_user_logged_out', function (event) {
 ```
 
 `event.detail` will contain the following object:
+
 ```javascript
 {
     logged_out: true,
@@ -181,17 +178,17 @@ const force_logout_event = new CustomEvent('zooza_user_force_logout', {
 document.dispatchEvent(force_logout_event);
 ```
 
-|Value|Description|Example|
-|-----|-----------|-------|
-|`YOUR_REDIRECT_URL`|Url where you want your customers to be redirected once they are logged out from Zooza| `https://zooza.online`|
+| Value | Description | Example |
+|---|---|---|
+| `YOUR_REDIRECT_URL` | Url where you want your customers to be redirected once they are logged out from Zooza | `https://zooza.online` |
 
-## Example - Show user status in header
+## Example — show user status in header
 
-This example shows how events can be leveraged to build a user profile in the header of your website. This is specifically for Wordpress but general principles apply to any platform.
+This example shows how events can be leveraged to build a user profile in the header of your website. This is specifically for WordPress but general principles apply to any platform.
 
 ### header.php
 
-In your header.php put some placeholder where user's name would be shown
+In your header.php put some placeholder where user's name would be shown:
 
 ```html
 <div class="user_profile">
@@ -201,7 +198,7 @@ In your header.php put some placeholder where user's name would be shown
 
 ### functions.php
 
-Drop this into your functions.php. This code sets up event listeners for widget's event and will listen to login and logout events. When this happens it will render user info in the header along with logout button.
+Drop this into your functions.php. This code sets up event listeners for the widget's events and will listen to login and logout events. When this happens it will render user info in the header along with a logout button.
 
 ```php
 function zooza_user_status_widget() {
@@ -211,7 +208,6 @@ function zooza_user_status_widget() {
         const profileContainer = document.querySelector('.user_profile');
         if (!profileContainer) return;
 
-        // Helper: render user info
         function render_user(user) {
             if (!user) {
                 profileContainer.innerHTML = '';
@@ -225,11 +221,10 @@ function zooza_user_status_widget() {
                 </div>
             `;
 
-            // Attach logout click
             const logoutLink = profileContainer.querySelector('.zooza-logout-link');
             logoutLink.addEventListener('click', function (e) {
                 e.preventDefault();
-                const redirect_url = window.location.origin; // redirect home after logout
+                const redirect_url = window.location.origin;
                 const logoutEvent = new CustomEvent('zooza_user_force_logout', {
                     detail: { redirect_url }
                 });
@@ -237,7 +232,6 @@ function zooza_user_status_widget() {
             });
         }
 
-        // Try to load from localStorage if available
         try {
             const stored = localStorage.getItem('zooza_user');
             if (stored) {
@@ -248,7 +242,6 @@ function zooza_user_status_widget() {
             console.warn('Zooza user load failed:', err);
         }
 
-        // Listen to Zooza events
         document.addEventListener('zooza_user_logged_in', function (event) {
             render_user(event.detail);
         });

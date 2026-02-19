@@ -1,50 +1,61 @@
 # Zooza API Documentation
 
-Documentation site for the Zooza platform, built with [MkDocs](https://www.mkdocs.org/) and [Material for MkDocs](https://squidfundamentals.github.io/mkdocs-material/).
+Documentation site for the [Zooza](https://zooza.online) platform — built with [Docusaurus v3](https://docusaurus.io/).
 
-## Local Development
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-### Dev server
+## Local development
 
 ```bash
-mkdocs serve
+npm install
+npm run gen-api-docs
+npm start
 ```
 
-Starts a local server at `http://127.0.0.1:8000` with live reload.
+`gen-api-docs` generates the OpenAPI reference pages into `docs/api/reference/` (required on first run and after editing the YAML). The dev server runs at http://localhost:3000.
 
-### Build only
+## Build
 
 ```bash
-mkdocs build
+npm run build
 ```
 
-Generates static files into `dist/`. This does not start a server — use `mkdocs serve` for local preview.
+Output goes to `dist/`. The build runs three steps automatically:
+1. Regenerates `docs/api/reference/` from `static/zooza_api_v1.yaml`
+2. Generates `static/llms-full.txt` (LLM-readable full-text index)
+3. Builds the static site
+
+## Updating the OpenAPI reference
+
+Edit `static/zooza_api_v1.yaml`, then:
+
+```bash
+npm run gen-api-docs
+```
+
+This regenerates the MDX files in `docs/api/reference/`. Commit the updated files.
+
+## Project structure
+
+```
+docs/                    Markdown documentation source
+docs/api/reference/      Auto-generated OpenAPI pages (committed)
+src/                     React components, CSS, theme overrides
+static/                  Static assets: images, zooza_api_v1.yaml, llms.txt
+scripts/                 build-llms-full.js — generates llms-full.txt at build time
+dist/                    Built output (gitignored)
+.github/                 CI/CD workflows
+```
 
 ## Deployment
 
-Deployment is handled via GitHub Actions using SFTP.
+GitHub Actions deploys via SFTP:
 
-- **Staging:** Automatically deploys on push to `test` branch → `/zooza.sk/sub/docs/staging/`
-- **Production:** Manual trigger via workflow_dispatch on `main` → `/zooza.sk/sub/docs/prod/`
+| Target | Trigger | Path |
+|--------|---------|------|
+| Staging | Push to `test` branch | `/zooza.sk/sub/docs/staging/` |
+| Production | Manual `workflow_dispatch` on `main` | `/zooza.sk/sub/docs/prod/` |
 
-## Branch Strategy
+Production deploy merges `test` into `main` before building.
 
-1. Create feature branches from `test`
-2. Merge into `test` — triggers automatic staging deploy
-3. Production deploy merges `test` into `main` and deploys (manual trigger)
+## Branch strategy
 
-## Project Structure
-
-```
-docs/           — Markdown source files
-overrides/      — MkDocs Material theme overrides
-dist/           — Built output (gitignored)
-mkdocs.yml      — MkDocs configuration
-requirements.txt — Python dependencies
-```
+Work on feature branches, merge to `test` for staging review, then trigger production deploy from `main`.

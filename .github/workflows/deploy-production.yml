@@ -20,23 +20,25 @@ jobs:
           git merge origin/test
           git push origin main
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.12'
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: npm ci
 
       - name: Build site
-        run: mkdocs build
+        run: npm run build
 
       - name: Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
-        with:
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          server: ${{ secrets.SFTP_HOST }}
-          local_path: './dist/*'
-          remote_path: '/zooza.sk/sub/docs/prod/'
-          sftp_only: true
+        env:
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+        run: |
+          lftp -u "$SFTP_USER,$SFTP_PASSWORD" sftp://$SFTP_HOST <<'EOF'
+          mirror --reverse --delete --verbose ./dist/ /zooza.sk/sub/docs/prod/
+          quit
+          EOF

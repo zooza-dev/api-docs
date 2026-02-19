@@ -1,13 +1,10 @@
 ---
-title: Zooza Enums
-description: Enums recognized by Zooza widgets
-authors:
-  - Martin Rapavý
-date: 2025-10-05
-updated: 2025-12-05
+title: Enums reference
+description: All enumeration values used across the Zooza API and widgets.
+sidebar_position: 5
 ---
 
-# Enums Reference
+# Enums reference
 
 ## class_capacity
 
@@ -31,17 +28,17 @@ This will only be applied for courses where `registration_type=full2`.
 - **segments_only**: Only registration to blocks will be enabled. Blocks need to be set in the class settings.
 - **trials_and_segments_only**: Customer can opt between trial or blocks.
 
-## Supported Languages
+## Supported languages
 
-|Code|Language|Widgets|App|
+| Code | Language | Widgets | App |
 |----|--------|-------|---|
-|`en-EN`|English|Yes|Yes|
-|`en-US`|English US|Yes|Yes|
-|`fr-FR`|French|Yes|No|
-|`sk-SK`|Slovak|Yes|Yes|
-|`cz-CZ`|Czech|Yes|Yes|
-|`de-DE`|German|Yes|Yes|
-|`pl-PL`|Polish|Yes|No|
-|`ro-RO`|Romanian|Yes|Partial|
-|`it-IT`|Italian|Yes|No|
-|`hu-HU`|Hungarian|Yes|No|
+| `en-EN` | English | Yes | Yes |
+| `en-US` | English US | Yes | Yes |
+| `fr-FR` | French | Yes | No |
+| `sk-SK` | Slovak | Yes | Yes |
+| `cz-CZ` | Czech | Yes | Yes |
+| `de-DE` | German | Yes | Yes |
+| `pl-PL` | Polish | Yes | No |
+| `ro-RO` | Romanian | Yes | Partial |
+| `it-IT` | Italian | Yes | No |
+| `hu-HU` | Hungarian | Yes | No |

@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"URL for download","content":{"application/json":{"schema":{"type":"object","properties":{"url":{"type":"string","format":"URL"}}}}}}}}

@@ -1,6 +1,14 @@
-.idea/
+# Build output
 dist/
-site/
-__pycache__/
-*.pyc
-.venv/
+build/
+.docusaurus/
+
+# Node
+node_modules/
+
+# Misc
+.idea/
+.DS_Store
+
+# Generated at build time
+static/llms-full.txt

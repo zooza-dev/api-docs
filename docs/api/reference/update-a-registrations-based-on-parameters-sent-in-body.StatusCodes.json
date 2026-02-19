@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Depending on action it may return various responses","content":{"application/json":{"schema":{"type":"array","items":{}}}}}}}

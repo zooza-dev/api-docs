@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Result of the operation","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"boolean"}}}}}}}}

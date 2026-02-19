@@ -1,0 +1,1 @@
+{"title":"Body","body":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"public":{"type":"boolean"},"online_registration":{"type":"boolean"},"registration_type":{"type":"string","enum":["full2","single","openapi"]},"course_type":{"type":"string","enum":["course","event","online_event","photography"]}}}}}}}

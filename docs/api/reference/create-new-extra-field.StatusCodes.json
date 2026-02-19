@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Null on false or stored extra field value","content":{"application/json":{"schema":{"oneOf":[{"type":"object","properties":{"value":{"type":"string"}}}]}}}}}}

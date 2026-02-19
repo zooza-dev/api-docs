@@ -1,0 +1,32 @@
+# Zooza API Documentation
+
+> Zooza is a class management platform. This documentation covers the REST API
+> and embeddable widgets for integrating Zooza into third-party websites and
+> custom backends.
+
+## Getting Started
+
+- [Quickstart](https://docs.zooza.online/quickstart): Five-minute guide to embedding your first widget or making your first API call.
+- [Concepts & Glossary](https://docs.zooza.online/concepts): Definitions for all Zooza-specific terminology — programmes, classes, sessions, places, blocks, and more.
+
+## API Reference
+
+- [API Overview](https://docs.zooza.online/api): When to use the REST API, base URLs by region, authentication summary.
+- [Authentication](https://docs.zooza.online/api/authentication): Passwordless auth via email verification, PIN code, or client_secret. Includes code examples.
+- [Error Handling](https://docs.zooza.online/api/errors): HTTP status codes, error response format, common error scenarios, and debugging tips.
+- [API Operations](https://docs.zooza.online/api/reference): Full REST API reference — all endpoints with request/response schemas.
+- [OpenAPI Spec](https://docs.zooza.online/zooza_api_v1.yaml): Machine-readable OpenAPI 3.0 specification (full API contract).
+
+## Widgets
+
+- [Widget Overview](https://docs.zooza.online/widgets): Installation options (WordPress, Wix, embed code), cookies, customer journey patterns.
+- [Registration Widget](https://docs.zooza.online/widgets/registration-widget): Booking and class registration form — settings, filters, analytics events, callbacks.
+- [Calendar Widget](https://docs.zooza.online/widgets/calendar-widget): Real-time class schedule and availability views — settings, custom sessions import.
+- [Map Widget](https://docs.zooza.online/widgets/map-widget): Location-based venue and class search with map view.
+- [Profile Widget](https://docs.zooza.online/widgets/profile-widget): Customer portal — booking history, payment management, make-up session booking.
+- [Video Widget](https://docs.zooza.online/widgets/video-widget): Secure video content embedding for logged-in users.
+- [Checkout Widget](https://docs.zooza.online/widgets/checkout-widget): Purchase flow for digital products, coupons, and vouchers.
+
+## Reference
+
+- [Enums Reference](https://docs.zooza.online/enums): All enumeration values used across the API and widgets, including supported languages.
