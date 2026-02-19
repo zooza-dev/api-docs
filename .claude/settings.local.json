@@ -9,7 +9,20 @@
       "Bash(git rm:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "WebSearch",
+      "WebFetch(domain:pypi.org)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.neoteroi.dev)",
+      "WebFetch(domain:docs.stoplight.io)",
+      "WebFetch(domain:rapidocweb.com)",
+      "WebFetch(domain:blueswen.github.io)",
+      "WebFetch(domain:guides.scalar.com)",
+      "WebFetch(domain:scalar.com)",
+      "WebFetch(domain:redocly.com)",
+      "WebFetch(domain:deepwiki.com)",
+      "WebFetch(domain:tessl.io)",
+      "Bash(mkdocs:*)"
     ]
   }
 }

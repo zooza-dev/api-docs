@@ -381,30 +381,34 @@ Changes: added Concepts, Quickstart, Error handling; sentence case throughout.
 
 ---
 
-## All placeholders summary
+## TODO: items requiring business input
 
-| File | Placeholder | Type |
-|------|-------------|------|
-| `concepts.md` | Other registration types? | Requires clarification |
-| `concepts.md` | Billing periods in API responses? | Requires clarification |
-| `api/index.md` | Rate limits? | Requires clarification |
-| `api/index.md` | Versioning policy? | Requires clarification |
-| `authentication.md` | /login response for email verification | Requires example |
-| `authentication.md` | /login response for client_secret | Requires example |
-| `authentication.md` | Token expiry/refresh behavior | Requires more content |
-| `errors.md` | Error JSON structure | Requires clarification |
-| `errors.md` | Actual HTTP status codes used | Requires clarification |
-| `errors.md` | Widget integration errors | Requires more content |
-| `errors.md` | Registration validation errors | Requires more content |
-| `quickstart.md` | client_secret response shape | Requires example |
-| `quickstart.md` | Simple GET endpoint example | Requires example |
+All items below are marked with `<!-- TODO -->` in the source files. 13 items total across 5 files.
 
----
+### Requires clarification (need answers from product/engineering)
 
-## Verification
+| # | File | Question |
+|---|------|----------|
+| 1 | `concepts.md` | Are there other registration types beyond single event, full term, and open registration? |
+| 2 | `concepts.md` | How do billing periods affect API responses? Are they exposed in any endpoint? |
+| 3 | `api/index.md` | What are the rate limits? (requests per minute/hour, per key, burst limits) |
+| 4 | `api/index.md` | What is the versioning policy? Is v1 the only version? Will there be a deprecation process? |
+| 5 | `api/errors.md` | What is the standard error JSON structure? (e.g. `{ "error": "...", "message": "..." }` or something else?) |
+| 6 | `api/errors.md` | Which HTTP status codes does the API actually return? (verify the 200/400/401/403/404/422/429/500 list) |
 
-1. Run `mkdocs serve` and verify all pages render
-2. Click every internal link across all pages
-3. Verify mermaid diagrams render in api/index.md
-4. Check that all `<!-- TODO -->` placeholders are visible in source but don't break rendering
-5. Verify nav structure matches expected hierarchy
+### Requires example data (need real API response samples)
+
+| # | File | What's needed |
+|---|------|---------------|
+| 7 | `authentication.md` | Actual `/v1/login` response body for email verification method |
+| 8 | `authentication.md` | Actual `/v1/login` response body for client_secret method |
+| 9 | `quickstart.md` | Confirm the client_secret login response shape (same as #8) |
+| 10 | `quickstart.md` | Confirm `/v1/courses` is the right simple GET endpoint for the quickstart example |
+
+### Requires more content (need additional writing based on domain knowledge)
+
+| # | File | What's needed |
+|---|------|---------------|
+| 11 | `authentication.md` | Token lifecycle details — expiry duration, refresh mechanism (if any), what triggers invalidation |
+| 12 | `api/errors.md` | Common widget integration errors — CORS issues, embed failures, blank widgets, etc. |
+| 13 | `api/errors.md` | Common registration/booking validation errors — capacity full, period closed, missing fields, payment failures |
