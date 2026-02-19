@@ -43,5 +43,5 @@ jobs:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
         run: |
           lftp -u "$SFTP_USER,$SFTP_PASSWORD" \
-            -e "set net:timeout 30; set net:max-retries 2; mirror --reverse --delete --verbose ./dist/ /zooza.online/sub/docs/; quit" \
+            -e "set ssl:verify-certificate no; set net:timeout 30; set net:max-retries 2; mirror --reverse --delete --verbose ./dist/ /zooza.online/sub/docs/; quit" \
             ftp://$SFTP_HOST
