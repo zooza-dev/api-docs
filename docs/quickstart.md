@@ -26,7 +26,7 @@ Widgets are pre-built Zooza components that you embed directly on your website. 
 
 #### Step 1: Get your widget API key
 
-1. Log into the [Zooza app](https://app.zooza.com).
+1. Log into the [Zooza app](https://zooza.app).
 2. Go to **Team & Settings > Publish**.
 3. Click on your widget name to open the detail view.
 4. Copy your **API key**.
@@ -94,7 +94,7 @@ The REST API uses a **different API key** from widgets. A widget API key cannot 
 #### Prerequisites
 
 - A Zooza account with at least one programme
-- Your **REST API key** and **client secret** — contact [Zooza support](mailto:support@zooza.com) to receive both
+- Your **REST API key** and **client secret** — contact [Zooza support](mailto:support@zooza.online) to receive both
 - cURL or Node.js installed
 
 #### Step 1: Authenticate

@@ -96,7 +96,7 @@ const config = {
           { to: '/widgets', label: 'Widgets', position: 'left' },
           { to: '/api', label: 'API', position: 'left' },
           {
-            href: 'https://app.zooza.com',
+            href: 'https://zooza.app',
             label: 'Go to app',
             position: 'right',
           },
@@ -119,9 +119,9 @@ const config = {
           {
             title: 'More',
             items: [
-              { label: 'Zooza App', href: 'https://app.zooza.com' },
+              { label: 'Zooza App', href: 'https://zooza.app' },
               { label: 'Zooza Website', href: 'https://zooza.online' },
-              { label: 'Support', href: 'mailto:support@zooza.com' },
+              { label: 'Support', href: 'mailto:support@zooza.online' },
             ],
           },
         ],
