@@ -134,11 +134,10 @@ const config = {
         additionalLanguages: ['bash', 'php', 'json'],
       },
 
-      // Algolia search — update appId and apiKey after reconfiguring the crawler
       algolia: {
-        appId: 'YOUR_APP_ID',
-        apiKey: 'YOUR_SEARCH_API_KEY',
-        indexName: 'zooza_docs',
+        appId: 'G4L1X5YJDL',
+        apiKey: '664f30b167ab43a3fe92115ab39c90b6',
+        indexName: 'Zooza API Docs',
         contextualSearch: true,
         searchPagePath: 'search',
       },
