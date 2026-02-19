@@ -45,6 +45,6 @@ jobs:
         run: |
           lftp -u "$SFTP_USER,$SFTP_PASSWORD" sftp://$SFTP_HOST <<'EOF'
           set sftp:auto-confirm yes
-          mirror --reverse --delete --verbose ./dist/ /zooza.sk/sub/docs/staging/
+          mirror --reverse --delete --verbose ./dist/ /zooza.online/sub/staging-docs/
           quit
           EOF
