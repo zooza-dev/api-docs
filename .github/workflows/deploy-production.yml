@@ -32,6 +32,9 @@ jobs:
       - name: Build site
         run: npm run build
 
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
       - name: Deploy via SFTP
         env:
           SFTP_USER: ${{ secrets.SFTP_USER }}
@@ -39,6 +42,7 @@ jobs:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
         run: |
           lftp -u "$SFTP_USER,$SFTP_PASSWORD" sftp://$SFTP_HOST <<'EOF'
+          set sftp:auto-confirm yes
           mirror --reverse --delete --verbose ./dist/ /zooza.sk/sub/docs/prod/
           quit
           EOF
