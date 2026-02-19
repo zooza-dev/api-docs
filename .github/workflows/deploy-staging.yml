@@ -38,7 +38,7 @@ jobs:
         run: sudo apt-get install -y lftp
 
       - name: Deploy via SFTP
-        timeout-minutes: 5
+        timeout-minutes: 15
         env:
           SFTP_USER: ${{ secrets.SFTP_USER }}
           SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
