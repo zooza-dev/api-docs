@@ -1,0 +1,12 @@
+type: object
+required:
+  - error
+properties:
+  error:
+    $ref: "./Error.yaml"
+  request_id:
+    type: string
+    description: >
+      Unique identifier for this request. Include this in support requests
+      or bug reports to help trace the issue.
+    example: req_01HXYZ1234ABCDEF

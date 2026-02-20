@@ -1,0 +1,167 @@
+# Path items for /schedules, /schedules/{schedule_id}, /schedules/{schedule_id}/registrations
+
+schedules:
+  get:
+    operationId: listSchedules
+    summary: List schedules
+    description: >
+      Returns a paginated list of schedules. Supports filtering by course,
+      trainer, place, and date range.
+    tags:
+      - Schedules
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPage"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPageSize"
+      - name: course_id
+        in: query
+        required: false
+        description: Filter by course ID.
+        schema:
+          type: integer
+          example: 101
+      - name: trainer_id
+        in: query
+        required: false
+        description: Filter by trainer ID.
+        schema:
+          type: integer
+          example: 7
+      - name: place_id
+        in: query
+        required: false
+        description: Filter by place/venue ID.
+        schema:
+          type: integer
+          example: 3
+      - name: from
+        in: query
+        required: false
+        description: Return schedules starting on or after this date (ISO 8601).
+        schema:
+          type: string
+          format: date
+          example: "2026-03-01"
+      - name: to
+        in: query
+        required: false
+        description: Return schedules starting on or before this date (ISO 8601).
+        schema:
+          type: string
+          format: date
+          example: "2026-06-30"
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort field for results.
+        schema:
+          type: string
+          enum: [start_date, created_at]
+          default: start_date
+    responses:
+      "200":
+        description: Paginated list of schedules.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/Schedule.yaml"
+                meta:
+                  $ref: "../../shared/schemas/PaginationMeta.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+scheduleById:
+  get:
+    operationId: getSchedule
+    summary: Get a schedule
+    description: Returns a single schedule by its ID.
+    tags:
+      - Schedules
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathScheduleId"
+    responses:
+      "200":
+        description: The requested schedule.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/Schedule.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+scheduleRegistrations:
+  get:
+    operationId: listScheduleRegistrations
+    summary: List registrations for a schedule
+    description: >
+      Alias for `GET /registrations?schedule_id={schedule_id}`. Returns all
+      registrations for the specified schedule.
+    tags:
+      - Schedules
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathScheduleId"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPage"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPageSize"
+      - name: status
+        in: query
+        required: false
+        description: Filter by registration status.
+        schema:
+          type: string
+          enum: [pending, confirmed, waitlisted, cancelled, rejected]
+    responses:
+      "200":
+        description: Paginated list of registrations for this schedule.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/Registration.yaml"
+                meta:
+                  $ref: "../../shared/schemas/PaginationMeta.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

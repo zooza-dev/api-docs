@@ -1,0 +1,113 @@
+# Path items for /attendance and /events/{event_id}/attendance
+
+attendance:
+  get:
+    operationId: listAttendance
+    summary: List attendance records
+    description: >
+      Canonical attendance collection. Returns attendance records filtered by
+      event, registration, or date range. For a single event's attendance,
+      prefer the `/events/{event_id}/attendance` alias.
+    tags:
+      - Attendance
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPage"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPageSize"
+      - name: event_id
+        in: query
+        required: false
+        description: Filter by event ID.
+        schema:
+          type: integer
+          example: 9917
+      - name: registration_id
+        in: query
+        required: false
+        description: Filter by registration ID.
+        schema:
+          type: integer
+          example: 4821
+      - name: from
+        in: query
+        required: false
+        description: Return records for events starting on or after this date (ISO 8601).
+        schema:
+          type: string
+          format: date
+          example: "2026-03-01"
+      - name: to
+        in: query
+        required: false
+        description: Return records for events starting on or before this date (ISO 8601).
+        schema:
+          type: string
+          format: date
+          example: "2026-03-31"
+    responses:
+      "200":
+        description: Paginated list of attendance records.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/AttendanceRecord.yaml"
+                meta:
+                  $ref: "../../shared/schemas/PaginationMeta.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+eventAttendance:
+  get:
+    operationId: getEventAttendance
+    summary: List attendance for an event
+    description: >
+      Alias for `GET /attendance?event_id={event_id}`. Returns all attendance
+      records for the specified event.
+    tags:
+      - Attendance
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathEventId"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPage"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPageSize"
+    responses:
+      "200":
+        description: Paginated list of attendance records for this event.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/AttendanceRecord.yaml"
+                meta:
+                  $ref: "../../shared/schemas/PaginationMeta.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

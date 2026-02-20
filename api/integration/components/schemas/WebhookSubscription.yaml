@@ -1,0 +1,58 @@
+type: object
+description: A webhook subscription that delivers event notifications to a target URL.
+required:
+  - id
+  - url
+  - events
+  - active
+  - created_at
+properties:
+  id:
+    type: integer
+    readOnly: true
+    description: Unique identifier.
+    example: 5
+  url:
+    type: string
+    format: uri
+    description: HTTPS URL where event payloads will be delivered via POST.
+    example: "https://partner.example.com/webhooks/zooza"
+  events:
+    type: array
+    description: List of event types this subscription listens to.
+    items:
+      type: string
+      enum:
+        - course.created
+        - course.updated
+        - schedule.created
+        - schedule.updated
+        - registration.created
+        - registration.updated
+        - attendance.updated
+    example:
+      - registration.created
+      - attendance.updated
+  active:
+    type: boolean
+    description: Whether this subscription is currently delivering events.
+    example: true
+  secret:
+    type: string
+    writeOnly: true
+    description: >
+      Signing secret used to verify payload authenticity via HMAC-SHA256.
+      Returned only at creation time. Store it securely — it cannot be retrieved again.
+    example: "whsec_abc123..."
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp when the subscription was created.
+    example: "2026-01-05T14:00:00Z"
+  updated_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp of the last update.
+    example: "2026-01-05T14:00:00Z"

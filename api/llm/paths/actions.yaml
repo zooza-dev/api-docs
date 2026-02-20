@@ -1,0 +1,99 @@
+# Path items for /actions and /actions/execute
+
+actions:
+  get:
+    operationId: listActions
+    summary: List available actions
+    description: >
+      Returns the full catalogue of available actions, including their input
+      and output schemas. Use these schemas to register Zooza as a tool in
+      LLM function-calling integrations.
+
+      Deprecated actions are included with `deprecated: true` and a `sunset_at` date.
+    tags:
+      - Actions
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+    responses:
+      "200":
+        description: List of available actions with their schemas.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - actions
+              properties:
+                actions:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/Action.yaml"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+executeAction:
+  post:
+    operationId: executeAction
+    summary: Execute an action
+    description: >
+      Executes a named action with the provided input. The input is validated
+      against the action's `input_schema` before execution.
+
+      **Write actions** are idempotent when an `idempotency_key` is provided.
+      Pass the same key on retries to avoid duplicate side effects.
+
+      **Error codes specific to action execution:**
+      - `ACTION_NOT_FOUND` — the action name is not recognised
+      - `ACTION_FORBIDDEN` — the caller does not have permission to execute this action
+      - `ACTION_INPUT_INVALID` — input failed schema validation (details array populated)
+      - `ACTION_PRECONDITION_FAILED` — business rule prevented execution (422)
+    tags:
+      - Actions
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/ExecuteRequest.yaml"
+          examples:
+            set_attendance:
+              summary: Set registration attendance
+              value:
+                name: set_registration_attendance
+                input:
+                  registration_id: 4821
+                  event_id: 9917
+                  status: present
+                  notes: "Arrived on time."
+                idempotency_key: 550e8400-e29b-41d4-a716-446655440000
+            get_registration:
+              summary: Get a registration
+              value:
+                name: get_registration
+                input:
+                  registration_id: 4821
+    responses:
+      "200":
+        description: Action executed successfully.
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/ExecuteResponse.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "422":
+        $ref: "../../shared/responses/errors.yaml#/UnprocessableEntity"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

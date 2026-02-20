@@ -1,0 +1,44 @@
+PathCourseId:
+  name: course_id
+  in: path
+  required: true
+  description: Unique integer identifier of the course.
+  schema:
+    type: integer
+    example: 101
+
+PathScheduleId:
+  name: schedule_id
+  in: path
+  required: true
+  description: Unique integer identifier of the schedule.
+  schema:
+    type: integer
+    example: 2042
+
+PathRegistrationId:
+  name: registration_id
+  in: path
+  required: true
+  description: Unique integer identifier of the registration.
+  schema:
+    type: integer
+    example: 4821
+
+PathEventId:
+  name: event_id
+  in: path
+  required: true
+  description: Unique integer identifier of the event.
+  schema:
+    type: integer
+    example: 9917
+
+PathWebhookId:
+  name: webhook_id
+  in: path
+  required: true
+  description: Unique integer identifier of the webhook subscription.
+  schema:
+    type: integer
+    example: 5

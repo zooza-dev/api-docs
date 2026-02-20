@@ -1,0 +1,79 @@
+BadRequest:
+  description: The request is malformed or contains invalid parameters.
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/ErrorResponse.yaml"
+      example:
+        error:
+          code: INVALID_REGION
+          message: "X-ZOOZA-REGION value 'xx' is not valid. Accepted: eu, uk, asia."
+          details: []
+        request_id: req_01HXYZ1234ABCDEF
+
+Unauthorized:
+  description: Authentication credentials are missing or invalid.
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/ErrorResponse.yaml"
+      example:
+        error:
+          code: UNAUTHORIZED
+          message: API key is missing or invalid.
+          details: []
+        request_id: req_01HXYZ1234ABCDEF
+
+Forbidden:
+  description: The authenticated caller lacks permission to perform this action.
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/ErrorResponse.yaml"
+      example:
+        error:
+          code: FORBIDDEN
+          message: Your API key does not have permission to access this resource.
+          details: []
+        request_id: req_01HXYZ1234ABCDEF
+
+NotFound:
+  description: The requested resource does not exist.
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/ErrorResponse.yaml"
+      example:
+        error:
+          code: NOT_FOUND
+          message: Resource not found.
+          details: []
+        request_id: req_01HXYZ1234ABCDEF
+
+UnprocessableEntity:
+  description: >
+    The request is well-formed but cannot be processed due to a semantic
+    error or business rule violation.
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/ErrorResponse.yaml"
+      example:
+        error:
+          code: INVALID_TRANSITION
+          message: Registration cannot be confirmed from its current status.
+          details: []
+        request_id: req_01HXYZ1234ABCDEF
+
+InternalServerError:
+  description: An unexpected error occurred on the server.
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/ErrorResponse.yaml"
+      example:
+        error:
+          code: INTERNAL_SERVER_ERROR
+          message: An unexpected error occurred. Please try again or contact support.
+          details: []
+        request_id: req_01HXYZ1234ABCDEF

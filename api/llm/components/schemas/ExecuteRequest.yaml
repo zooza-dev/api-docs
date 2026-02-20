@@ -1,0 +1,28 @@
+type: object
+description: Request body for executing an action.
+required:
+  - name
+  - input
+properties:
+  name:
+    type: string
+    description: Name of the action to execute. Must match an action returned by `GET /actions`.
+    example: set_registration_attendance
+  input:
+    type: object
+    description: >
+      Input parameters for the action. Must conform to the action's `input_schema`.
+      Validated server-side before execution.
+    example:
+      registration_id: 4821
+      event_id: 9917
+      status: present
+      notes: "Arrived on time."
+  idempotency_key:
+    type: string
+    format: uuid
+    description: >
+      Client-generated UUID for idempotency. Recommended for all write actions.
+      If a request with the same key was previously processed, the original
+      output is returned without re-executing.
+    example: 550e8400-e29b-41d4-a716-446655440000

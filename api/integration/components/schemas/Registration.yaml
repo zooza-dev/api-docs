@@ -1,0 +1,60 @@
+type: object
+description: A registration linking a user to a course or schedule.
+required:
+  - id
+  - course_id
+  - user_id
+  - status
+  - created_at
+properties:
+  id:
+    type: integer
+    readOnly: true
+    description: Unique identifier.
+    example: 4821
+  course_id:
+    type: integer
+    description: ID of the registered course.
+    example: 101
+  schedule_id:
+    type: integer
+    nullable: true
+    description: ID of the specific schedule. Null for course-level registrations.
+    example: 2042
+  user_id:
+    type: integer
+    description: ID of the registered user.
+    example: 305
+  status:
+    type: string
+    description: |
+      Lifecycle status of the registration.
+      - `pending` — submitted, awaiting confirmation
+      - `confirmed` — active registration
+      - `waitlisted` — on the waiting list
+      - `cancelled` — cancelled by user or admin
+      - `rejected` — rejected by admin
+    enum:
+      - pending
+      - confirmed
+      - waitlisted
+      - cancelled
+      - rejected
+    example: confirmed
+  notes:
+    type: string
+    nullable: true
+    description: Internal notes visible to admins only.
+    example: "Requested aisle seat."
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp when the record was created.
+    example: "2026-02-01T10:00:00Z"
+  updated_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp of the last update.
+    example: "2026-02-05T09:15:00Z"

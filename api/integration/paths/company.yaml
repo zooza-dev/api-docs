@@ -1,0 +1,80 @@
+# Path items for /company
+
+company:
+  get:
+    operationId: getCompany
+    summary: Get current company
+    description: Returns the company derived from the API key and token context.
+    tags:
+      - Context
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+    responses:
+      "200":
+        description: The current company.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/Company.yaml"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+  patch:
+    operationId: updateCompany
+    summary: Update current company
+    description: >
+      Partial update of the current company's profile. Only fields included
+      in the request body are modified. Requires admin-level scope.
+    tags:
+      - Context
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/HeaderIdempotencyKey"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Yoga Studio Praha"
+              email:
+                type: string
+                format: email
+                example: "info@yogastudio.cz"
+              phone:
+                type: string
+                example: "+420212345678"
+    responses:
+      "200":
+        description: Updated company.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/Company.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "422":
+        $ref: "../../shared/responses/errors.yaml#/UnprocessableEntity"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

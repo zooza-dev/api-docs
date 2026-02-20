@@ -1,0 +1,68 @@
+type: object
+description: A schedule instance of a course, with specific dates, trainer, and place.
+required:
+  - id
+  - course_id
+  - status
+  - created_at
+properties:
+  id:
+    type: integer
+    readOnly: true
+    description: Unique identifier.
+    example: 2042
+  course_id:
+    type: integer
+    description: ID of the parent course.
+    example: 101
+  trainer_id:
+    type: integer
+    nullable: true
+    description: ID of the assigned trainer. Null if unassigned.
+    example: 7
+  place_id:
+    type: integer
+    nullable: true
+    description: ID of the venue or location. Null if online or unassigned.
+    example: 3
+  status:
+    type: string
+    description: |
+      Lifecycle status of the schedule.
+      - `active` — running and accepting registrations
+      - `cancelled` — cancelled, registrations frozen
+      - `completed` — all events have passed
+    enum:
+      - active
+      - cancelled
+      - completed
+    example: active
+  start_date:
+    type: string
+    format: date
+    nullable: true
+    description: Date of the first event in this schedule (ISO 8601).
+    example: "2026-03-01"
+  end_date:
+    type: string
+    format: date
+    nullable: true
+    description: Date of the last event in this schedule (ISO 8601).
+    example: "2026-05-31"
+  capacity:
+    type: integer
+    nullable: true
+    description: Maximum registrations for this schedule. Overrides course capacity when set.
+    example: 15
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp when the record was created.
+    example: "2026-01-20T11:00:00Z"
+  updated_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp of the last update.
+    example: "2026-02-01T08:45:00Z"

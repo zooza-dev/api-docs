@@ -1,0 +1,130 @@
+openapi: "3.0.3"
+
+info:
+  title: Zooza LLM API
+  version: "1.0.0"
+  description: |
+    The Zooza LLM API provides a minimal, task-based façade designed for
+    LLM tool-calling integrations. Instead of raw resource endpoints, it exposes
+    named actions with strict schemas — safe to register directly as LLM tools.
+
+    ## Design principles
+
+    - **No resource sprawl** — a small, curated action set instead of full CRUD
+    - **Strict schemas** — every action has a versioned `input_schema` and `output_schema`
+    - **Deterministic** — same input always produces the same effect
+    - **Idempotent writes** — all write actions support `Idempotency-Key`
+
+    ## Authentication
+
+    | Header | Required | Description |
+    |--------|----------|-------------|
+    | `X-ZOOZA-API-KEY` | Always | Application API key. |
+    | `Authorization: Bearer <token>` | Context-dependent | User session token for user-scoped actions. |
+
+    ## Region Routing
+
+    | Header | Required | Default |
+    |--------|----------|---------|
+    | `X-ZOOZA-REGION` | Non-EU only | `eu` |
+
+    ## Errors
+
+    All errors follow this structure:
+
+    ```json
+    {
+      "error": {
+        "code": "ACTION_NOT_FOUND",
+        "message": "No action named 'search_widgets' exists.",
+        "details": []
+      },
+      "request_id": "req_01HXYZ1234ABCDEF"
+    }
+    ```
+
+    ## Integration pattern
+
+    1. Call `GET /actions` to retrieve all action schemas.
+    2. Register each action as a tool in your LLM integration using `input_schema`.
+    3. When the LLM calls a tool, forward the call to `POST /actions/execute`.
+    4. Parse the response using `output_schema`.
+
+    ## Action versioning
+
+    Action schemas are versioned via `schema_version`. Breaking changes are never
+    made to existing actions — they are released as new actions. Deprecated actions
+    have `deprecated: true` and a `sunset_at` date.
+
+  contact:
+    name: Zooza Developer Support
+    url: https://zooza.sk
+    email: support@zooza.sk
+
+servers:
+  - url: https://api.zooza.app/llm/v1
+    description: Production
+  - url: https://api.zooza.app/llm/v1-staging
+    description: Staging
+
+security:
+  - ApiKey: []
+
+tags:
+  - name: Capabilities
+    description: Discover what actions the caller is permitted to execute.
+  - name: Actions
+    description: Browse available actions and execute them.
+
+paths:
+  /capabilities:
+    $ref: "./paths/capabilities.yaml#/capabilities"
+  /actions:
+    $ref: "./paths/actions.yaml#/actions"
+  /actions/execute:
+    $ref: "./paths/actions.yaml#/executeAction"
+
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-ZOOZA-API-KEY
+      description: Application API key. Required on all requests.
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: |
+        User session token. Required for actions that operate in user context.
+
+  schemas:
+    Error:
+      $ref: "../shared/schemas/Error.yaml"
+    ErrorResponse:
+      $ref: "../shared/schemas/ErrorResponse.yaml"
+    Action:
+      $ref: "./components/schemas/Action.yaml"
+    ExecuteRequest:
+      $ref: "./components/schemas/ExecuteRequest.yaml"
+    ExecuteResponse:
+      $ref: "./components/schemas/ExecuteResponse.yaml"
+
+  parameters:
+    HeaderRegion:
+      $ref: "../shared/parameters/common.yaml#/HeaderRegion"
+    HeaderIdempotencyKey:
+      $ref: "../shared/parameters/common.yaml#/HeaderIdempotencyKey"
+
+  responses:
+    BadRequest:
+      $ref: "../shared/responses/errors.yaml#/BadRequest"
+    Unauthorized:
+      $ref: "../shared/responses/errors.yaml#/Unauthorized"
+    Forbidden:
+      $ref: "../shared/responses/errors.yaml#/Forbidden"
+    NotFound:
+      $ref: "../shared/responses/errors.yaml#/NotFound"
+    UnprocessableEntity:
+      $ref: "../shared/responses/errors.yaml#/UnprocessableEntity"
+    InternalServerError:
+      $ref: "../shared/responses/errors.yaml#/InternalServerError"

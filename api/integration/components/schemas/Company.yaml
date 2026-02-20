@@ -1,0 +1,47 @@
+type: object
+description: A company (tenant) on the Zooza platform.
+required:
+  - id
+  - name
+  - created_at
+properties:
+  id:
+    type: integer
+    readOnly: true
+    description: Unique identifier.
+    example: 12
+  name:
+    type: string
+    description: Display name of the company.
+    example: "Yoga Studio Praha"
+  email:
+    type: string
+    format: email
+    nullable: true
+    description: Primary contact email for the company.
+    example: "info@yogastudio.cz"
+  phone:
+    type: string
+    nullable: true
+    description: Contact phone number.
+    example: "+420212345678"
+  region:
+    type: string
+    description: Region where this company's data is hosted.
+    enum:
+      - eu
+      - uk
+      - asia
+    example: eu
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp when the company was created.
+    example: "2024-06-01T00:00:00Z"
+  updated_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp of the last update.
+    example: "2026-01-10T09:00:00Z"

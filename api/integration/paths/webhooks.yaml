@@ -1,0 +1,125 @@
+# Path items for /webhooks, /webhooks/{webhook_id}
+
+webhooks:
+  get:
+    operationId: listWebhooks
+    summary: List webhook subscriptions
+    description: Returns all active webhook subscriptions for the current API key.
+    tags:
+      - Webhooks
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPage"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPageSize"
+    responses:
+      "200":
+        description: Paginated list of webhook subscriptions.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/WebhookSubscription.yaml"
+                meta:
+                  $ref: "../../shared/schemas/PaginationMeta.yaml"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+  post:
+    operationId: createWebhook
+    summary: Create a webhook subscription
+    description: >
+      Creates a new webhook subscription. On success, the response includes the
+      signing `secret` — this is the only time it is returned. Store it securely.
+    tags:
+      - Webhooks
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/HeaderIdempotencyKey"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - url
+              - events
+            properties:
+              url:
+                type: string
+                format: uri
+                description: HTTPS URL to receive event payloads.
+                example: "https://partner.example.com/webhooks/zooza"
+              events:
+                type: array
+                description: Event types to subscribe to.
+                items:
+                  type: string
+                  enum:
+                    - course.created
+                    - course.updated
+                    - schedule.created
+                    - schedule.updated
+                    - registration.created
+                    - registration.updated
+                    - attendance.updated
+                example:
+                  - registration.created
+                  - attendance.updated
+    responses:
+      "201":
+        description: Webhook subscription created. Includes the signing secret.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/WebhookSubscription.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "422":
+        $ref: "../../shared/responses/errors.yaml#/UnprocessableEntity"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+webhookById:
+  delete:
+    operationId: deleteWebhook
+    summary: Delete a webhook subscription
+    description: >
+      Permanently removes a webhook subscription. No further events will be
+      delivered to the associated URL.
+    tags:
+      - Webhooks
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathWebhookId"
+    responses:
+      "204":
+        description: Webhook subscription deleted. No content returned.
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

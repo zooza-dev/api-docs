@@ -1,0 +1,103 @@
+# Path items for /events, /events/{event_id}
+
+events:
+  get:
+    operationId: listEvents
+    summary: List events
+    description: >
+      Returns a paginated list of events (individual sessions) across all schedules.
+      Filter by course, schedule, or datetime range to narrow results.
+    tags:
+      - Events
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPage"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPageSize"
+      - name: course_id
+        in: query
+        required: false
+        description: Filter by course ID.
+        schema:
+          type: integer
+          example: 101
+      - name: schedule_id
+        in: query
+        required: false
+        description: Filter by schedule ID.
+        schema:
+          type: integer
+          example: 2042
+      - name: from
+        in: query
+        required: false
+        description: Return events starting on or after this datetime (ISO 8601 UTC).
+        schema:
+          type: string
+          format: date-time
+          example: "2026-03-01T00:00:00Z"
+      - name: to
+        in: query
+        required: false
+        description: Return events starting on or before this datetime (ISO 8601 UTC).
+        schema:
+          type: string
+          format: date-time
+          example: "2026-03-31T23:59:59Z"
+    responses:
+      "200":
+        description: Paginated list of events.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/Event.yaml"
+                meta:
+                  $ref: "../../shared/schemas/PaginationMeta.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+eventById:
+  get:
+    operationId: getEvent
+    summary: Get an event
+    description: Returns a single event by its ID.
+    tags:
+      - Events
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathEventId"
+    responses:
+      "200":
+        description: The requested event.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/Event.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

@@ -5,13 +5,21 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus gen-api-docs all && node scripts/build-llms-full.js && docusaurus build --out-dir dist",
+    "build": "npm run api:bundle && docusaurus gen-api-docs all && node scripts/build-llms-full.js && docusaurus build --out-dir dist",
     "swizzle": "docusaurus swizzle",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "gen-api-docs": "docusaurus gen-api-docs all",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "api:lint": "redocly lint",
+    "api:lint:integration": "redocly lint api/integration/openapi.yaml",
+    "api:lint:llm": "redocly lint api/llm/openapi.yaml",
+    "api:bundle:integration": "redocly bundle api/integration/openapi.yaml -o static/zooza_integration_v1.yaml",
+    "api:bundle:llm": "redocly bundle api/llm/openapi.yaml -o static/zooza_llm_v1.yaml",
+    "api:bundle": "npm run api:bundle:integration && npm run api:bundle:llm",
+    "api:preview:integration": "redocly preview-docs api/integration/openapi.yaml --port 3001",
+    "api:preview:llm": "redocly preview-docs api/llm/openapi.yaml --port 3002"
   },
   "dependencies": {
     "@docusaurus/core": "^3.6.0",
@@ -26,7 +34,8 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.6.0",
-    "@docusaurus/types": "^3.6.0"
+    "@docusaurus/types": "^3.6.0",
+    "@redocly/cli": "^1.34.7"
   },
   "engines": {
     "node": ">=18.0"

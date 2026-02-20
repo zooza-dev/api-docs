@@ -1,0 +1,267 @@
+# Path items for /registrations, /registrations/{id}, /registrations/{id}/attendance,
+# /registrations/{id}/actions/set_attendance
+
+registrations:
+  get:
+    operationId: listRegistrations
+    summary: List registrations
+    description: >
+      Returns a paginated list of registrations. Filter by course, schedule,
+      user, or status. Filtering by `user_id` requires admin scope.
+    tags:
+      - Registrations
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPage"
+      - $ref: "../../shared/parameters/common.yaml#/QueryPageSize"
+      - name: course_id
+        in: query
+        required: false
+        description: Filter by course ID.
+        schema:
+          type: integer
+          example: 101
+      - name: schedule_id
+        in: query
+        required: false
+        description: Filter by schedule ID.
+        schema:
+          type: integer
+          example: 2042
+      - name: user_id
+        in: query
+        required: false
+        description: Filter by user ID. Requires admin scope.
+        schema:
+          type: integer
+          example: 305
+      - name: status
+        in: query
+        required: false
+        description: Filter by registration status.
+        schema:
+          type: string
+          enum: [pending, confirmed, waitlisted, cancelled, rejected]
+    responses:
+      "200":
+        description: Paginated list of registrations.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - meta
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/Registration.yaml"
+                meta:
+                  $ref: "../../shared/schemas/PaginationMeta.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+registrationById:
+  get:
+    operationId: getRegistration
+    summary: Get a registration
+    description: Returns a single registration by its ID.
+    tags:
+      - Registrations
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathRegistrationId"
+    responses:
+      "200":
+        description: The requested registration.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/Registration.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+  put:
+    operationId: updateRegistration
+    summary: Update a registration
+    description: >
+      Updates standard fields on a registration. Only fields included in the
+      request body are modified. Use action endpoints for status transitions.
+    tags:
+      - Registrations
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathRegistrationId"
+      - $ref: "../../shared/parameters/common.yaml#/HeaderIdempotencyKey"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              notes:
+                type: string
+                nullable: true
+                description: Internal admin notes for this registration.
+                example: "Requested early entry."
+    responses:
+      "200":
+        description: Updated registration.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/Registration.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "422":
+        $ref: "../../shared/responses/errors.yaml#/UnprocessableEntity"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+registrationAttendance:
+  get:
+    operationId: getRegistrationAttendance
+    summary: Get attendance for a registration
+    description: >
+      Returns all attendance records for a registration across its events.
+      Useful for displaying a registrant's attendance history.
+    tags:
+      - Attendance
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathRegistrationId"
+    responses:
+      "200":
+        description: List of attendance records for this registration.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/AttendanceRecord.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+setAttendance:
+  post:
+    operationId: setRegistrationAttendance
+    summary: Set attendance for a registration
+    description: >
+      Records or updates the attendance status for a registration at a specific event.
+      This is an upsert — if a record already exists for the given `registration_id`
+      and `event_id`, it is updated; otherwise a new record is created.
+
+      Supports idempotency via the `Idempotency-Key` header — safe to retry.
+    tags:
+      - Attendance
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../components/parameters/paths.yaml#/PathRegistrationId"
+      - $ref: "../../shared/parameters/common.yaml#/HeaderIdempotencyKey"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - event_id
+              - status
+            properties:
+              event_id:
+                type: integer
+                description: ID of the event to record attendance for.
+                example: 9917
+              status:
+                type: string
+                description: Attendance outcome.
+                enum:
+                  - present
+                  - absent
+                  - excused
+                  - late
+                  - unknown
+                example: present
+              notes:
+                type: string
+                nullable: true
+                description: Optional notes to attach to this attendance record.
+                example: "Arrived 10 minutes late."
+              source:
+                type: string
+                description: Who or what is recording this attendance.
+                enum:
+                  - staff
+                  - system
+                  - llm
+                default: staff
+                example: staff
+    responses:
+      "200":
+        description: The created or updated attendance record.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/AttendanceRecord.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "404":
+        $ref: "../../shared/responses/errors.yaml#/NotFound"
+      "422":
+        $ref: "../../shared/responses/errors.yaml#/UnprocessableEntity"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

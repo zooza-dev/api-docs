@@ -1,0 +1,50 @@
+# Path items for /capabilities
+
+capabilities:
+  get:
+    operationId: getCapabilities
+    summary: Get capabilities
+    description: >
+      Returns the allowed actions and high-level constraints for the current
+      API key and token. Use this to check what the caller is permitted to do
+      before attempting to execute actions.
+    tags:
+      - Capabilities
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+    responses:
+      "200":
+        description: Capabilities for the current caller.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - allowed_actions
+                - read_only
+              properties:
+                allowed_actions:
+                  type: array
+                  description: List of action names the caller is permitted to execute.
+                  items:
+                    type: string
+                  example:
+                    - get_registration
+                    - list_registrations
+                    - set_registration_attendance
+                read_only:
+                  type: boolean
+                  description: >
+                    If true, the caller can only execute read actions.
+                    Write actions will return 403.
+                  example: false
+                request_id:
+                  type: string
+                  description: Unique identifier for this request.
+                  example: req_01HXYZ1234ABCDEF
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

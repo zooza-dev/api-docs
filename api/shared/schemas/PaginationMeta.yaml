@@ -1,0 +1,29 @@
+type: object
+required:
+  - total
+  - page
+  - page_size
+properties:
+  total:
+    type: integer
+    description: Total number of records matching the query, across all pages.
+    example: 248
+  page:
+    type: integer
+    description: Current page number (1-indexed).
+    minimum: 1
+    example: 1
+  page_size:
+    type: integer
+    description: Number of records returned on this page.
+    minimum: 1
+    maximum: 200
+    example: 50
+  next_cursor:
+    type: string
+    nullable: true
+    description: >
+      Opaque cursor for the next page. Present when more results exist.
+      Pass as the `cursor` query parameter on the next request.
+      Null when on the last page.
+    example: eyJpZCI6NDJ9

@@ -1,0 +1,58 @@
+type: object
+description: >
+  Describes an available action that can be executed via `POST /actions/execute`.
+  The `input_schema` and `output_schema` are JSON Schema objects that tools and
+  LLM function-calling integrations can use to validate inputs and parse outputs.
+required:
+  - name
+  - description
+  - input_schema
+  - output_schema
+  - schema_version
+properties:
+  name:
+    type: string
+    description: Unique action identifier used as the `name` field in execute requests.
+    example: get_registration
+  description:
+    type: string
+    description: Human-readable description of what this action does and when to use it.
+    example: "Returns a single registration by its ID, including current status."
+  input_schema:
+    type: object
+    description: JSON Schema object describing the required and optional input fields.
+    example:
+      type: object
+      required: [registration_id]
+      properties:
+        registration_id:
+          type: integer
+          description: ID of the registration to retrieve.
+  output_schema:
+    type: object
+    description: JSON Schema object describing the structure of the `output` field in the response.
+    example:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+  schema_version:
+    type: string
+    description: >
+      Semantic version of this action's schema. Actions with breaking changes
+      are released as new actions with updated names or versions.
+    example: "1.0.0"
+  deprecated:
+    type: boolean
+    description: Whether this action is deprecated. Deprecated actions have a `sunset_at` date set.
+    example: false
+  sunset_at:
+    type: string
+    format: date
+    nullable: true
+    description: >
+      ISO 8601 date after which this action will be removed. Only present when
+      `deprecated` is true. Migrate before this date.
+    example: null

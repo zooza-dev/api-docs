@@ -1,0 +1,67 @@
+type: object
+description: An attendance record for a registration at a specific event.
+required:
+  - id
+  - registration_id
+  - event_id
+  - status
+  - created_at
+properties:
+  id:
+    type: integer
+    readOnly: true
+    description: Unique identifier.
+    example: 88201
+  registration_id:
+    type: integer
+    description: ID of the registration this record belongs to.
+    example: 4821
+  event_id:
+    type: integer
+    description: ID of the event this attendance was recorded for.
+    example: 9917
+  status:
+    type: string
+    description: |
+      Attendance outcome for this event.
+      - `present` — attended
+      - `absent` — did not attend
+      - `excused` — excused absence
+      - `late` — arrived late
+      - `unknown` — not yet recorded
+    enum:
+      - present
+      - absent
+      - excused
+      - late
+      - unknown
+    example: present
+  notes:
+    type: string
+    nullable: true
+    description: Optional notes recorded by staff at the time of attendance.
+    example: "Arrived 10 minutes late."
+  source:
+    type: string
+    description: |
+      Who or what recorded this attendance entry.
+      - `staff` — recorded manually by staff
+      - `system` — set automatically by a system rule
+      - `llm` — set via the LLM API
+    enum:
+      - staff
+      - system
+      - llm
+    example: staff
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp when the record was created.
+    example: "2026-03-05T11:35:00Z"
+  updated_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: ISO 8601 UTC timestamp of the last update.
+    example: "2026-03-05T11:35:00Z"

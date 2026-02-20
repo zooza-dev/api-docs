@@ -1,0 +1,85 @@
+# Path items for /me
+
+me:
+  get:
+    operationId: getMe
+    summary: Get current user
+    description: Returns the authenticated user derived from the Bearer token.
+    tags:
+      - Context
+    security:
+      - ApiKey: []
+        BearerToken: []
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+    responses:
+      "200":
+        description: The authenticated user.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/User.yaml"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"
+
+  patch:
+    operationId: updateMe
+    summary: Update current user
+    description: >
+      Partial update of the authenticated user's profile. Only fields
+      included in the request body are modified.
+    tags:
+      - Context
+    security:
+      - ApiKey: []
+        BearerToken: []
+    parameters:
+      - $ref: "../../shared/parameters/common.yaml#/HeaderRegion"
+      - $ref: "../../shared/parameters/common.yaml#/HeaderIdempotencyKey"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                example: "Jane"
+              last_name:
+                type: string
+                example: "Doe"
+              phone:
+                type: string
+                example: "+421901234567"
+    responses:
+      "200":
+        description: Updated user.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "../components/schemas/User.yaml"
+      "400":
+        $ref: "../../shared/responses/errors.yaml#/BadRequest"
+      "401":
+        $ref: "../../shared/responses/errors.yaml#/Unauthorized"
+      "403":
+        $ref: "../../shared/responses/errors.yaml#/Forbidden"
+      "422":
+        $ref: "../../shared/responses/errors.yaml#/UnprocessableEntity"
+      "500":
+        $ref: "../../shared/responses/errors.yaml#/InternalServerError"

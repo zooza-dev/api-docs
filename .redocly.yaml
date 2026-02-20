@@ -1,0 +1,20 @@
+apis:
+  integration:
+    root: ./api/integration/openapi.yaml
+  llm:
+    root: ./api/llm/openapi.yaml
+
+rules:
+  # Every operation must have an operationId — required for SDK generation
+  operation-operationId: error
+  # Every operation must have a summary
+  operation-summary: error
+  # Every tag used in an operation must be declared in the top-level tags list
+  no-undefined-server-variable: error
+  # Warn on components that are defined but never $ref'd
+  no-unused-components: warn
+  # Every operation should have at least one 4xx response
+  operation-4xx-response: error
+
+extends:
+  - recommended

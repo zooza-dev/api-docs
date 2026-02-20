@@ -1,0 +1,206 @@
+openapi: "3.0.3"
+
+info:
+  title: Zooza Integration API
+  version: "1.0.0"
+  description: |
+    The Zooza Integration API provides stable, partner-facing access to the Zooza platform,
+    enabling management of registrations, events, courses, schedules, and more.
+
+    ## Authentication
+
+    | Header | Required | Description |
+    |--------|----------|-------------|
+    | `X-ZOOZA-API-KEY` | Always | Application API key. Found in **Settings > Integration**. |
+    | `Authorization: Bearer <token>` | User-context endpoints | User session token. Endpoints that require it are marked in this documentation. |
+
+    ## Region Routing
+
+    | Header | Required | Default |
+    |--------|----------|---------|
+    | `X-ZOOZA-REGION` | Non-EU companies only | `eu` |
+
+    Accepted values: `eu`, `uk`, `asia`. An invalid value returns `400 INVALID_REGION`.
+
+    ## Idempotency
+
+    All write operations accept an optional `Idempotency-Key: <uuid>` header.
+    Recommended for all POST and PUT requests. Submitting the same key twice
+    returns the original response without re-executing the operation.
+
+    ## Errors
+
+    All error responses follow this structure:
+
+    ```json
+    {
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Registration with id 4821 was not found.",
+        "details": []
+      },
+      "request_id": "req_01HXYZ1234ABCDEF"
+    }
+    ```
+
+    Include `request_id` when contacting support.
+
+    ## Pagination
+
+    List endpoints accept `page` and `page_size` query parameters and return:
+
+    ```json
+    {
+      "data": [...],
+      "meta": {
+        "total": 248,
+        "page": 1,
+        "page_size": 50,
+        "next_cursor": null
+      }
+    }
+    ```
+
+  contact:
+    name: Zooza Developer Support
+    url: https://zooza.sk
+    email: support@zooza.sk
+
+servers:
+  - url: https://api.zooza.app/integration/v1
+    description: Production
+  - url: https://api.zooza.app/integration/v1-staging
+    description: Staging
+
+security:
+  - ApiKey: []
+
+tags:
+  - name: Context
+    description: Current user and company context endpoints. No IDs required.
+  - name: Courses
+    description: Course catalogue and management.
+  - name: Schedules
+    description: Schedule management and filtering.
+  - name: Registrations
+    description: Registration lifecycle management.
+  - name: Attendance
+    description: Event attendance records.
+  - name: Events
+    description: Individual events (sessions) within schedules.
+  - name: Webhooks
+    description: Webhook subscription management.
+
+paths:
+  /me:
+    $ref: "./paths/me.yaml#/me"
+  /company:
+    $ref: "./paths/company.yaml#/company"
+  /courses:
+    $ref: "./paths/courses.yaml#/courses"
+  /courses/{course_id}:
+    $ref: "./paths/courses.yaml#/courseById"
+  /courses/{course_id}/schedules:
+    $ref: "./paths/courses.yaml#/courseSchedules"
+  /schedules:
+    $ref: "./paths/schedules.yaml#/schedules"
+  /schedules/{schedule_id}:
+    $ref: "./paths/schedules.yaml#/scheduleById"
+  /schedules/{schedule_id}/registrations:
+    $ref: "./paths/schedules.yaml#/scheduleRegistrations"
+  /registrations:
+    $ref: "./paths/registrations.yaml#/registrations"
+  /registrations/{registration_id}:
+    $ref: "./paths/registrations.yaml#/registrationById"
+  /registrations/{registration_id}/attendance:
+    $ref: "./paths/registrations.yaml#/registrationAttendance"
+  /registrations/{registration_id}/actions/set_attendance:
+    $ref: "./paths/registrations.yaml#/setAttendance"
+  /attendance:
+    $ref: "./paths/attendance.yaml#/attendance"
+  /events:
+    $ref: "./paths/events.yaml#/events"
+  /events/{event_id}:
+    $ref: "./paths/events.yaml#/eventById"
+  /events/{event_id}/attendance:
+    $ref: "./paths/attendance.yaml#/eventAttendance"
+  /webhooks:
+    $ref: "./paths/webhooks.yaml#/webhooks"
+  /webhooks/{webhook_id}:
+    $ref: "./paths/webhooks.yaml#/webhookById"
+
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-ZOOZA-API-KEY
+      description: |
+        Application API key. Found in **Settings > Integration**.
+        Required on all requests.
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: |
+        User session token. Required on endpoints that operate in user context
+        (e.g. `GET /me`, `PATCH /me`). Pass as `Authorization: Bearer <token>`.
+
+  schemas:
+    Error:
+      $ref: "../shared/schemas/Error.yaml"
+    ErrorResponse:
+      $ref: "../shared/schemas/ErrorResponse.yaml"
+    PaginationMeta:
+      $ref: "../shared/schemas/PaginationMeta.yaml"
+    Course:
+      $ref: "./components/schemas/Course.yaml"
+    Schedule:
+      $ref: "./components/schemas/Schedule.yaml"
+    Registration:
+      $ref: "./components/schemas/Registration.yaml"
+    Event:
+      $ref: "./components/schemas/Event.yaml"
+    AttendanceRecord:
+      $ref: "./components/schemas/AttendanceRecord.yaml"
+    User:
+      $ref: "./components/schemas/User.yaml"
+    Company:
+      $ref: "./components/schemas/Company.yaml"
+    WebhookSubscription:
+      $ref: "./components/schemas/WebhookSubscription.yaml"
+
+  parameters:
+    QueryPage:
+      $ref: "../shared/parameters/common.yaml#/QueryPage"
+    QueryPageSize:
+      $ref: "../shared/parameters/common.yaml#/QueryPageSize"
+    QuerySearch:
+      $ref: "../shared/parameters/common.yaml#/QuerySearch"
+    HeaderRegion:
+      $ref: "../shared/parameters/common.yaml#/HeaderRegion"
+    HeaderIdempotencyKey:
+      $ref: "../shared/parameters/common.yaml#/HeaderIdempotencyKey"
+    PathCourseId:
+      $ref: "./components/parameters/paths.yaml#/PathCourseId"
+    PathScheduleId:
+      $ref: "./components/parameters/paths.yaml#/PathScheduleId"
+    PathRegistrationId:
+      $ref: "./components/parameters/paths.yaml#/PathRegistrationId"
+    PathEventId:
+      $ref: "./components/parameters/paths.yaml#/PathEventId"
+    PathWebhookId:
+      $ref: "./components/parameters/paths.yaml#/PathWebhookId"
+
+  responses:
+    BadRequest:
+      $ref: "../shared/responses/errors.yaml#/BadRequest"
+    Unauthorized:
+      $ref: "../shared/responses/errors.yaml#/Unauthorized"
+    Forbidden:
+      $ref: "../shared/responses/errors.yaml#/Forbidden"
+    NotFound:
+      $ref: "../shared/responses/errors.yaml#/NotFound"
+    UnprocessableEntity:
+      $ref: "../shared/responses/errors.yaml#/UnprocessableEntity"
+    InternalServerError:
+      $ref: "../shared/responses/errors.yaml#/InternalServerError"
