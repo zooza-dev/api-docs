@@ -1,5 +1,8 @@
 # Zooza API Documentation
 
+spec_prefix: DOC
+project_type: static-api-docs
+
 ## Project Type
 Docusaurus v3 documentation site for the Zooza platform.
 

@@ -40,11 +40,13 @@ The gateway is the only component the consumer ever talks to. The working API's 
 
 ### 2. Region routing
 - Read the `X-ZOOZA-REGION` header (default EU if absent)
+- ---nebude to header ale kazdy api kluc bude mat prefix
 - Route the upstream call to the correct working API base URL for that region
 - No region resolution via database lookup — purely header-driven
 
 ### 3. Credential and scope resolution
 - Identify the credential class (`widget_company`, `widget_network`, `app`) from the API key
+- --- widgety nebudu v tomto api
 - For `app` credentials on integration endpoints, extract and validate `X-ZOOZA-COMPANY-ID`
 - Pass the resolved scope to the working API in whatever form it expects (may differ per working API version)
 
