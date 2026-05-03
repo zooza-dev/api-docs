@@ -803,8 +803,15 @@ window.ZOOZA = {
 };
 ```
 
-:::info Class-based interactivity, no event listeners required
-The widget delegates click on `.zooza_courses_course_select`. You add the class to any element you want — `<button>`, `<a>`, even a wrapping `<div>` — and the widget reads `data-course_id` from the closest tile wrapper, never from the click target. No event listeners on your side, no jQuery, no manual selection wiring.
+:::info The class hooks
+The widget delegates click on these classes — your tile content can include any element carrying them, and the widget reads `data-course_id` from the closest tile wrapper, never from the click target. No event listeners on your side, no jQuery, no manual selection wiring.
+
+| Class | Action |
+|---|---|
+| `zooza_courses_course_select` | Pick this course |
+| `zooza_courses_course_change` | Back to all courses (collapse mode only) |
+
+If your tile content does not include `zooza_courses_course_select`, the widget auto-appends a default Select CTA so the customer can always advance.
 :::
 
 ### `render_schedule_tile`
@@ -864,16 +871,14 @@ window.ZOOZA = {
 ```
 
 :::info The class hooks
-The widget delegates click on these classes — your tile content can include any element carrying them, and the widget reads the relevant `data-` attribute from the closest tile wrapper.
+The widget delegates click on these classes — your tile content can include any element carrying them, and the widget reads `data-schedule_id` from the closest tile wrapper, never from the click target. No event listeners on your side, no jQuery, no manual selection wiring.
 
 | Class | Action |
 |---|---|
-| `zooza_courses_course_select` | Pick this course |
-| `zooza_courses_course_change` | Back to all courses (collapse mode only) |
 | `zooza_schedules_schedule_select` | Pick this class |
 | `zooza_schedules_schedule_change` | Change selected class (collapse mode only) |
 
-If your tile content does not include the corresponding `*_select` class, the widget auto-appends a default CTA with that class so the customer can always advance.
+If your tile content does not include `zooza_schedules_schedule_select`, the widget auto-appends a default Choose CTA so the customer can always advance.
 :::
 
 ## Data model
