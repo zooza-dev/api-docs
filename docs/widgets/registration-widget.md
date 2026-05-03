@@ -338,6 +338,79 @@ Composes with [`labels_in`](#labels_in) (AND), and with [`course_ids`](#course_i
   </TabItem>
 </Tabs>
 
+### `metadata_in`
+
+_Type: Object — per-key value is an array of strings or pipe-delimited string_
+
+Show only courses whose metadata matches at least one of the listed values for each listed key. Keys and values are matched **verbatim** against the company's metadata catalogue — case-sensitive, including whitespace and punctuation. Multiple keys compose as **AND across keys** (a course must satisfy every listed key); within a single key the listed values match as **OR** (the course's value for that key must equal one of them).
+
+Composes with [`metadata_not_in`](#metadata_not_in) (AND), with [`labels_in`](#labels_in) / [`labels_not_in`](#labels_not_in), and with the existing id-based filters [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id) (also AND). An empty per-key value drops that key from the wire; an empty top-level config means no metadata filter is applied.
+
+This option works alongside the [tile-grid course list](#course-list-display) and the [`render_course_tile`](#render_course_tile) callback — metadata filtering is applied first, then the surviving courses are rendered. The same data is exposed on `course.metadata` inside the per-tile callback, so you can both filter and display from the same source.
+
+:::info JavaScript form is safe for special characters; URL form is raw
+The widget URL-encodes metadata keys and values when constructing the api request from the JavaScript form, so `&`, `=`, `+`, `#`, spaces, and punctuation are all safe to use in `window.ZOOZA.metadata_in`. The URL Query form is **not** auto-encoded — if you write the URL by hand (or template it server-side), encode `&`, `=`, `#`, and `+` yourself, the same way you would for any query parameter.
+:::
+
+:::info Private metadata keys are silently invisible
+Private (admin-only) metadata keys never match for embedders. There is no client-visible difference between "key doesn't exist" and "key exists but is private" — both produce zero matches for that key. If a key is unpublished after the widget is embedded, the courses tagged with it will silently fall out of the list.
+:::
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        metadata_in: {
+            color: [ "red", "blue" ],
+            age_band: "6-8"
+        }
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?metadata_in[color]=red|blue&metadata_in[age_band]=6-8
+```
+
+  </TabItem>
+</Tabs>
+
+### `metadata_not_in`
+
+_Type: Object — per-key value is an array of strings or pipe-delimited string_
+
+Hide courses whose metadata matches any of the listed values for the listed keys. Match rules are identical to [`metadata_in`](#metadata_in) — keys and values verbatim, case-sensitive, multiple keys compose as **AND** (a course must avoid every match), values within a single key match as **OR**.
+
+Composes with [`metadata_in`](#metadata_in) (AND), with [`labels_in`](#labels_in) / [`labels_not_in`](#labels_not_in), and with the existing id-based filters [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id). An empty per-key value drops that key from the wire; an empty top-level config means no metadata filter is applied.
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        metadata_not_in: {
+            archived: [ "true" ]
+        }
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?metadata_not_in[archived]=true
+```
+
+  </TabItem>
+</Tabs>
+
 ### `course_list_collapse_on_select`
 
 _Type: Boolean_
@@ -765,6 +838,17 @@ The `course` parameter exposes the following stable fields. Anything else is int
 | `description` | String | May be empty |
 | `course_type` | String | Matches the API enum (`course`, `event`, `online_event`, `photography`, …) |
 | `registration_type` | String | `single`, `full2`, or `open` |
+| `metadata` | Array | Public metadata entries on the course (see entry shape below). Empty array if the course has no public metadata. The same keys you can filter on with [`metadata_in`](#metadata_in) / [`metadata_not_in`](#metadata_not_in). |
+
+Each entry in `course.metadata` exposes:
+
+| Field | Type | Note |
+|---|---|---|
+| `key` | String | Metadata key as authored in admin (case-sensitive). |
+| `value` | String \| Number \| Boolean \| Object | Typed per `value_type`; the api casts before serialising. |
+| `value_type` | String | One of `string`, `int`, `bool`, or `json`. Branch on this if you need exhaustive type handling. |
+
+Each course has at most one entry per key, so `course.metadata.find( m => m.key === 'color' )` is safe.
 
 #### Return
 
