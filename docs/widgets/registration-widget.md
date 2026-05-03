@@ -96,6 +96,30 @@ When the widget displays a list of available classes in this overview, it also l
 | Total course price (default) | Default option | _300 €_ |
 | Hide price | If class has payment schedule enabled the price won't be listed | _n/a_ |
 
+### Course list display
+
+By default, the widget renders the list of available courses as a `<select>` dropdown. If you have a small number of courses and want to make them more visually prominent, you can switch to a built-in tile grid. The grid is unstyled beyond a minimal layout — your site's CSS controls the look.
+
+| Value | Description | Example Value |
+|---|---|---|
+| Dropdown (Default) | Courses appear as a single `<select>`. Best when you have many courses or want the most compact form. | _Course A / Course B / …_ |
+| Grid | Courses appear as tiles in a configurable column grid. Each tile shows the course name, the first 5 lines of its description, and a Select button. | _2 × 2 grid of tiles_ |
+
+:::info Need a fully custom layout?
+If the built-in grid doesn't match your design, register the [`render_course_tile`](#render_course_tile) callback to take over rendering of each tile. The widget falls back to the value of this setting whenever the callback isn't registered.
+:::
+
+### Course grid columns
+
+Only applies when **Course list display** is set to **Grid**. Picks the number of columns the grid renders. Use 1 for a single-column list, 2–4 for a wider layout. The setting persists even when you switch the display back to Dropdown, so toggling between modes doesn't lose your column preference.
+
+| Value | Description | Example Value |
+|---|---|---|
+| 1 (Default) | Single column — equivalent to a vertical list. | _Stacked tiles_ |
+| 2 | Two columns. | _2 × N grid_ |
+| 3 | Three columns. | _3 × N grid_ |
+| 4 | Four columns. | _4 × N grid_ |
+
 ### Transfer the website visitor to the form
 
 This is useful if the registration form is not on the top of the page and users will need to scroll to see it. By default this is turned off.
@@ -117,6 +141,16 @@ See [valid options](#embed-code) for `API_URL` and `YOUR_API_KEY` above.
 ## Initialisation options
 
 In general, you can customise how the widget is initialized either via JavaScript or via URL query parameters. Due to legacy reasons, some of the parameters are defined into `document.zooza` and some into `window.ZOOZA`. It is always shown along each property which way to use. However the concept stays the same: insert the script tag before the embed code.
+
+:::info Customising the course and schedule lists
+The widget gives you three ways to control how courses and classes appear:
+
+1. **Admin Settings** — [Course list display](#course-list-display) and [Course grid columns](#course-grid-columns). No code, no embed change.
+2. **[`course_list_collapse_on_select`](#course_list_collapse_on_select) / [`schedule_list_collapse_on_select`](#schedule_list_collapse_on_select)** — JS or URL-query flags for keeping all tiles visible after a selection.
+3. **[`render_course_tile`](#render_course_tile) / [`render_schedule_tile`](#render_schedule_tile) callbacks** — return the inside of a single tile; the widget keeps owning the shell, click delegation, and collapse behaviour.
+
+Callbacks always win over admin settings — registering `render_course_tile` forces grid mode even if **Course list display** is set to **Dropdown**.
+:::
 
 ### `filter_courses`
 
@@ -239,6 +273,209 @@ Use this in URL query to filter classes by their ID. Only single class ID is all
 ```plaintext
 https://sample-site.com/registration?schedule_id=YOUR_SCHEDULE_ID
 ```
+
+### `labels_in`
+
+_Type: Array of strings, or pipe-delimited string_
+
+Show only courses tagged with at least one of the listed labels. Values are **label names** as shown in the admin UI — case-sensitive, including spaces and punctuation (e.g. `"Summer 2026"`, `"Kids — beginners"`). Label ids are not accepted here; the legacy id-based label filter is a separate, untouched mechanism.
+
+Composes with [`labels_not_in`](#labels_not_in) (AND), and with [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id) (also AND). An empty array, empty string, or omitted value means no filter.
+
+This option works alongside the [tile-grid course list](#course-list-display) and the [`render_course_tile`](#render_course_tile) callback — label filtering is applied first, then the surviving courses are rendered in whatever display mode you've chosen.
+
+:::info Private labels are silently invisible
+Private (admin-only) labels never match for embedders. There is no client-visible difference between "label doesn't exist" and "label exists but is private" — both produce zero matches. If a label is unpublished after the widget is embedded, the courses tagged with it will silently disappear from the list.
+:::
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        labels_in: [ "Summer 2026", "Kids — beginners" ]
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?labels_in=Summer 2026|Kids — beginners
+```
+
+  </TabItem>
+</Tabs>
+
+### `labels_not_in`
+
+_Type: Array of strings, or pipe-delimited string_
+
+Hide courses tagged with any of the listed labels. Values are **label names** as shown in the admin UI — case-sensitive, including spaces and punctuation. Label ids are not accepted.
+
+Composes with [`labels_in`](#labels_in) (AND), and with [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id). An empty array, empty string, or omitted value means no filter.
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        labels_not_in: [ "Archived", "Internal" ]
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?labels_not_in=Archived|Internal
+```
+
+  </TabItem>
+</Tabs>
+
+### `metadata_in`
+
+_Type: Object — per-key value is an array of strings or pipe-delimited string_
+
+Show only courses whose metadata matches at least one of the listed values for each listed key. Keys and values are matched **verbatim** against the company's metadata catalogue — case-sensitive, including whitespace and punctuation. Multiple keys compose as **AND across keys** (a course must satisfy every listed key); within a single key the listed values match as **OR** (the course's value for that key must equal one of them).
+
+Composes with [`metadata_not_in`](#metadata_not_in) (AND), with [`labels_in`](#labels_in) / [`labels_not_in`](#labels_not_in), and with the existing id-based filters [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id) (also AND). An empty per-key value drops that key from the wire; an empty top-level config means no metadata filter is applied.
+
+This option works alongside the [tile-grid course list](#course-list-display) and the [`render_course_tile`](#render_course_tile) callback — metadata filtering is applied first, then the surviving courses are rendered. The same data is exposed on `course.metadata` inside the per-tile callback, so you can both filter and display from the same source.
+
+:::info JavaScript form is safe for special characters; URL form is raw
+The widget URL-encodes metadata keys and values when constructing the api request from the JavaScript form, so `&`, `=`, `+`, `#`, spaces, and punctuation are all safe to use in `window.ZOOZA.metadata_in`. The URL Query form is **not** auto-encoded — if you write the URL by hand (or template it server-side), encode `&`, `=`, `#`, and `+` yourself, the same way you would for any query parameter.
+:::
+
+:::info Private metadata keys are silently invisible
+Private (admin-only) metadata keys never match for embedders. There is no client-visible difference between "key doesn't exist" and "key exists but is private" — both produce zero matches for that key. If a key is unpublished after the widget is embedded, the courses tagged with it will silently fall out of the list.
+:::
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        metadata_in: {
+            color: [ "red", "blue" ],
+            age_band: "6-8"
+        }
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?metadata_in[color]=red|blue&metadata_in[age_band]=6-8
+```
+
+  </TabItem>
+</Tabs>
+
+### `metadata_not_in`
+
+_Type: Object — per-key value is an array of strings or pipe-delimited string_
+
+Hide courses whose metadata matches any of the listed values for the listed keys. Match rules are identical to [`metadata_in`](#metadata_in) — keys and values verbatim, case-sensitive, multiple keys compose as **AND** (a course must avoid every match), values within a single key match as **OR**.
+
+Composes with [`metadata_in`](#metadata_in) (AND), with [`labels_in`](#labels_in) / [`labels_not_in`](#labels_not_in), and with the existing id-based filters [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id). An empty per-key value drops that key from the wire; an empty top-level config means no metadata filter is applied.
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        metadata_not_in: {
+            archived: [ "true" ]
+        }
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?metadata_not_in[archived]=true
+```
+
+  </TabItem>
+</Tabs>
+
+### `course_list_collapse_on_select`
+
+_Type: Boolean_
+
+By default, when a customer picks a course from the grid, the other tiles are hidden so the form can focus on the next step. The selected tile gets a "back to all courses" affordance the customer can use to change their mind. Set this to `false` to keep every tile visible at all times — useful when you want customers to compare courses side by side as they progress.
+
+Only meaningful when [Course list display](#course-list-display) is set to **Grid**. In Dropdown mode the setting has no effect.
+
+| Value | Description | Example Value |
+|---|---|---|
+| `true` (Default) | After a customer picks a course, other tiles are hidden until they pick "back to all courses". | _Focused single-tile view_ |
+| `false` | All tiles stay visible after a selection; the chosen tile is highlighted with a `selected` class. | _Side-by-side comparison_ |
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        course_list_collapse_on_select: false
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?course_list_collapse_on_select=false
+```
+
+  </TabItem>
+</Tabs>
+
+### `schedule_list_collapse_on_select`
+
+_Type: Boolean_
+
+By default, after the customer picks a class from the schedule list, the other classes are hidden and the chosen one stays on screen with a "change" link. Set this to `false` to keep all classes visible — useful when customers should be able to scan the full list as they fill in the form, or when the form sits beside a fixed schedule overview.
+
+| Value | Description | Example Value |
+|---|---|---|
+| `true` (Default) | After a class is picked, the other tiles collapse. The chosen tile shows a "change" link. | _Focused single-tile view_ |
+| `false` | All tiles remain visible after a selection. | _Full schedule stays on screen_ |
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        schedule_list_collapse_on_select: false
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?schedule_list_collapse_on_select=false
+```
+
+  </TabItem>
+</Tabs>
 
 ### `ps` (Payment schedule type)
 
@@ -583,6 +820,185 @@ window.ZOOZA = {
     },
 };
 ```
+
+### `render_course_tile`
+
+Returns the HTML that goes **inside** a single course tile. The widget owns everything else: the `<div class="zooza_courses_course" data-course_id="<id>">` wrapper, the grid layout, the "Select" CTA, the collapse-on-select, and the "back to all courses" affordance. Register this callback when you want a different look for the courses than the built-in default — your own headings, images, marketing copy, prices, badges, anything.
+
+Registering this callback forces the widget into grid mode even if [Course list display](#course-list-display) is set to **Dropdown** — the hidden `<select name="zooza_courses">` stays in the DOM as the source of truth, but the visible UI is your tiles.
+
+#### Params
+
+The `course` parameter exposes the following stable fields. Anything else is internal and may change between minor versions without a deprecation cycle.
+
+| Field | Type | Note |
+|---|---|---|
+| `id` | Number | Course id |
+| `name` | String | Display name |
+| `description` | String | May be empty |
+| `course_type` | String | Matches the API enum (`course`, `event`, `online_event`, `photography`, …) |
+| `registration_type` | String | `single`, `full2`, or `open` |
+| `metadata` | Array | Public metadata entries on the course (see entry shape below). Empty array if the course has no public metadata. The same keys you can filter on with [`metadata_in`](#metadata_in) / [`metadata_not_in`](#metadata_not_in). |
+
+Each entry in `course.metadata` exposes:
+
+| Field | Type | Note |
+|---|---|---|
+| `key` | String | Metadata key as authored in admin (case-sensitive). |
+| `value` | String \| Number \| Boolean \| Object | Typed per `value_type`; the api casts before serialising. |
+| `value_type` | String | One of `string`, `int`, `bool`, or `json`. Branch on this if you need exhaustive type handling. |
+
+Each course has at most one entry per key, so `course.metadata.find( m => m.key === 'color' )` is safe.
+
+#### Return
+
+A `string`, DOM `Node`, or jQuery object representing the inside of the tile. Whatever you return is inserted into the widget-built tile wrapper. Anything else (e.g. `undefined`) is treated as "no content" and the tile gets only the auto-appended Select CTA.
+
+##### Minimal example — name and description
+
+The smallest thing that works. The widget auto-appends a default Select CTA at the bottom of the tile because the returned content does not include a `.zooza_courses_course_select` element — so the customer can advance with no extra wiring.
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        render_course_tile: ( course ) => `
+            <h3>${ course.name }</h3>
+            <p>${ ( course.description || '' ).slice( 0, 160 ) }</p>
+        `,
+    },
+};
+```
+
+##### Reading metadata — typed values rendered as badges
+
+Metadata entries on `course.metadata` are an array of `{ key, value, value_type }`. A small helper that returns the value for a given key (or `null` if absent) keeps tile templates readable. The widget always returns a `value` typed per `value_type` — `string`, `int`, `bool`, or `json` — so no parsing on your side. See the [Params table](#params) for the stable contract.
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        render_course_tile: ( course ) => {
+            const get_meta = ( key ) => {
+                const entry = ( course.metadata || [] ).find( ( m ) => m.key === key );
+                return entry ? entry.value : null;
+            };
+
+            const price = get_meta( 'price' );    // value_type: 'string', e.g. "from 34 EUR/month"
+            const size  = get_meta( 'size' );     // value_type: 'int', e.g. 10
+
+            const price_badge = price !== null
+                ? `<span class="my-badge my-badge-price">${ price }</span>`
+                : '';
+            const size_badge  = size !== null
+                ? `<span class="my-badge my-badge-size">Group size: ${ size }</span>`
+                : '';
+
+            return `
+                <h3>${ course.name }</h3>
+                <div class="my-meta-row">${ price_badge }${ size_badge }</div>
+                <p>${ ( course.description || '' ).slice( 0, 160 ) }</p>
+            `;
+        },
+    },
+};
+```
+
+The same keys you read here are the ones you can filter on with [`metadata_in`](#metadata_in) / [`metadata_not_in`](#metadata_not_in) — filter to a subset of courses, then render the surviving courses' metadata in your own design language.
+
+##### Custom CTA — embedder provides the Select element
+
+If you want the Select CTA inline (different copy, different position, different styling), include any element with `class="zooza_courses_course_select"` in the returned HTML. The widget detects it and skips its auto-append. You don't write a click handler — the widget's delegated click on `.zooza_courses_course_select` reads the course id from the tile wrapper and runs the standard flow.
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        render_course_tile: ( course ) => `
+            <header>
+                <h3>${ course.name }</h3>
+                <button type="button" class="zooza_courses_course_select">Reserve this course</button>
+            </header>
+            <p class="my-course-summary">${ ( course.description || '' ).slice( 0, 200 ) }</p>
+        `,
+    },
+};
+```
+
+:::info The class hooks
+The widget delegates click on these classes — your tile content can include any element carrying them, and the widget reads `data-course_id` from the closest tile wrapper, never from the click target. No event listeners on your side, no jQuery, no manual selection wiring.
+
+| Class | Action |
+|---|---|
+| `zooza_courses_course_select` | Pick this course |
+| `zooza_courses_course_change` | Back to all courses (collapse mode only) |
+
+If your tile content does not include `zooza_courses_course_select`, the widget auto-appends a default Select CTA so the customer can always advance.
+:::
+
+### `render_schedule_tile`
+
+Mirror of [`render_course_tile`](#render_course_tile) for the schedule list. Returns the HTML that goes inside a single `<div class="zooza_schedules_schedule" data-schedule_id="<id>">` tile. The widget owns the wrapper, the grid layout, the Choose CTA, collapse-on-select, and the change affordance.
+
+#### Params
+
+The callback receives `( schedule, course )`. Anything not listed below is internal and may change between minor versions without a deprecation cycle.
+
+`schedule` exposes:
+
+| Member | Returns | Note |
+|---|---|---|
+| `id` | Number | Schedule id |
+| `get_date_formatted()` | String | Locale-formatted date / date range |
+| `get_start_formatted()` | String | Start datetime, locale-formatted |
+| `get_end_formatted()` | String | End datetime, locale-formatted |
+| `get_price()` | String | Currency-formatted price (e.g. `"10,00 €"`) |
+| `get_capacity_formatted()` | String | Localised capacity copy (e.g. `"Spots available"`, `"Full"`) |
+
+`course` is the currently selected course model — same shape as the `course` parameter passed to [`render_course_tile`](#render_course_tile).
+
+#### Return
+
+A `string`, DOM `Node`, or jQuery object — same as [`render_course_tile`](#render_course_tile). Whatever you return is inserted into the widget-built tile wrapper.
+
+##### Minimal example — date and price
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        render_schedule_tile: ( schedule, course ) => `
+            <strong>${ schedule.get_date_formatted() }</strong>
+            <span>${ schedule.get_price() }</span>
+        `,
+    },
+};
+```
+
+##### Custom CTA — embedder provides the Choose element
+
+Same pattern as courses: include `class="zooza_schedules_schedule_select"` on any element to take over CTA copy, position, or styling. Optionally include `class="zooza_schedules_schedule_change"` if you want the "change selected class" affordance inline (the widget normally injects it on the selected tile in collapse mode).
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        render_schedule_tile: ( schedule, course ) => `
+            <div class="my-schedule-info">
+                <strong>${ schedule.get_date_formatted() }</strong>
+                <span>${ schedule.get_capacity_formatted() }</span>
+            </div>
+            <button type="button" class="zooza_schedules_schedule_select">Reserve this date</button>
+        `,
+    },
+};
+```
+
+:::info The class hooks
+The widget delegates click on these classes — your tile content can include any element carrying them, and the widget reads `data-schedule_id` from the closest tile wrapper, never from the click target. No event listeners on your side, no jQuery, no manual selection wiring.
+
+| Class | Action |
+|---|---|
+| `zooza_schedules_schedule_select` | Pick this class |
+| `zooza_schedules_schedule_change` | Change selected class (collapse mode only) |
+
+If your tile content does not include `zooza_schedules_schedule_select`, the widget auto-appends a default Choose CTA so the customer can always advance.
+:::
 
 ## Data model
 

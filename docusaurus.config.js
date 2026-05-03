@@ -20,6 +20,22 @@ const config = {
     },
   },
 
+  // Defensive gtag stub — prevents `window.gtag is not a function` when
+  // googletagmanager.com is blocked (ad-blockers, tracking-protection) or
+  // when the plugin's own bootstrap hasn't run (dev server, stale bundles).
+  // Idempotent with @docusaurus/plugin-google-gtag's own snippet.
+  headTags: [
+    {
+      tagName: 'script',
+      attributes: {},
+      innerHTML:
+        "window.dataLayer = window.dataLayer || [];" +
+        "if (typeof window.gtag !== 'function') {" +
+        "  window.gtag = function () { window.dataLayer.push(arguments); };" +
+        "}",
+    },
+  ],
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],

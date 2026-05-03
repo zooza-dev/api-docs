@@ -31,7 +31,13 @@
       "Bash(node -e:*)",
       "Bash(npx:*)",
       "Bash(node --version:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(dig:*)",
+      "Bash(npm view *)",
+      "Bash(tar -xzO package/lib/gtag.js)",
+      "Bash(tar -xzO package/lib/index.js)"
     ]
   }
 }
