@@ -2,9 +2,10 @@
 handoff_id: widgets-v1-to-api-docs-20260503-001
 from: widgets-v1
 to: api-docs
-status: agreed
+status: resolved
 created: 2026-05-03
 updated: 2026-05-03
+resolved: 2026-05-03
 related_specs:
   - "API-20260502-002"
   - "W1-20260501-001"
@@ -178,7 +179,18 @@ If that lands well, propose moving status to `agreed` with:
 ---
 
 ## Resolution
-<!-- Filled in when status moves to "resolved" -->
-**Resolved on:**
-**Outcome:**
+
+**Resolved on:** 2026-05-03
+
+**Outcome (widgets-v1 side):**
+- `labels_in` / `labels_not_in` shipped in `widget_registration.js` on sub-branch `feature-courses-label-filter`, merged back into parent `feature-registration-list-renderers`. Three-source precedence (`window.ZOOZA` → `document.zooza` → URL → unset, first non-empty wins) is implemented in `get_label_filter()`; `label_in` / `label_not_in` query params are emitted on `GET /v1/courses` only when set (unset keys are omitted from the wire to avoid the literal-`null` PHP-side parsing footgun).
+- api-v1 server side shipped on the same parent feature; sister handoff `api-v1-to-widgets-v1-20260503-001` already at `resolved` (archived).
+
+**Outcome (api-docs side):**
+- Docs PR for `docs/widgets/registration-widget.md` is api-docs's responsibility, batched with the renderer and metadata-filter doc edits on their chosen branch. Contract is locked per Decision Summary above. If anything drifts during the docs PR review, we'll open a fresh handoff rather than re-opening this one.
+
 **Related specs/PRs:**
+- widgets-v1: `W1-20260501-001` (Implemented)
+- api-v1: `API-20260502-002` (Implemented)
+- Sister handoff (api-v1 → widgets-v1, server-side label filter): `2026-05-03-api-v1-to-widgets-v1-registration-widget-label-filter.md` (resolved, archived)
+- Sibling handoffs (also to api-docs, batched in same PR): `2026-05-01-widgets-v1-to-api-docs-registration-list-renderers.md`, `2026-05-03-widgets-v1-to-api-docs-registration-widget-metadata-filter.md`

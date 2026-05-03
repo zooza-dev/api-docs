@@ -2,9 +2,10 @@
 handoff_id: widgets-v1-to-api-docs-20260501-001
 from: widgets-v1
 to: api-docs
-status: agreed
+status: resolved
 created: 2026-05-01
 updated: 2026-05-03
+resolved: 2026-05-03
 related_specs:
   - W1-20260501-001
 ---
@@ -426,4 +427,20 @@ Q4 contract is acceptable. Three small notes, then we're done.
 
 ## Resolution
 
-<!-- filled when status moves to "resolved" -->
+**Resolved on:** 2026-05-03
+
+**Outcome (widgets-v1 side):**
+- Built-in display modes (`course_list_display`, `course_list_columns`) and the two collapse flags (`course_list_collapse_on_select`, `schedule_list_collapse_on_select`) shipped in `widget_registration.js` on `feature-registration-list-renderers`. Per-tile callbacks `render_course_tile` / `render_schedule_tile` shipped on the same branch.
+- Stable callback param contract for `course` exposes `id`, `name`, `description`, `course_type`, `registration_type`, **and `metadata`** (promoted on 2026-05-03 — see metadata-filter handoff `widgets-v1-to-api-docs-20260503-002` and spec `W1-20260501-001` Notes for the supersession of the earlier "What will NOT be built" entry).
+- Stable callback param contract for `schedule` exposes `id`, `get_date_formatted()`, `get_start_formatted()`, `get_end_formatted()`, `get_price()`, `get_capacity_formatted()`.
+- Public class-hooks (`zooza_courses_course_select`, `zooza_courses_course_change`, `zooza_schedules_schedule_select`, `zooza_schedules_schedule_change`) wired with widget-side click delegation; embedders register them by class name only.
+- End-to-end verified against a local widget instance: tile grid renders at all four column widths; collapse/expand flag combinations work; custom renderer callbacks receive the documented stable params and the rendered output is wrapped in the widget's shell with default-Select-CTA fallback when the embedder's content lacks `.zooza_*_select`.
+
+**Outcome (api-docs side):**
+- Docs PR for `docs/widgets/registration-widget.md` is api-docs's responsibility, batched with label-filter and metadata-filter doc edits on their chosen branch. Contract is locked per Decision Summary above. If anything drifts during the docs PR review, we'll open a fresh handoff rather than re-opening this one.
+
+**Related specs/PRs:**
+- widgets-v1: `W1-20260501-001` (Implemented)
+- Sibling handoffs (also to api-docs, batched in same PR): `2026-05-03-widgets-v1-to-api-docs-registration-widget-label-filter.md`, `2026-05-03-widgets-v1-to-api-docs-registration-widget-metadata-filter.md`
+- Sister handoff (api-v1 → widgets-v1, list-display option whitelisting): `2026-05-01-widgets-v1-to-api-v1-registration-list-display-options.md`
+- Sister handoff (zooza-app → admin UI for the list-display settings): `2026-05-01-widgets-v1-to-zooza-app-registration-list-display-settings-ui.md`

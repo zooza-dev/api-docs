@@ -2,9 +2,10 @@
 handoff_id: widgets-v1-to-api-docs-20260503-002
 from: widgets-v1
 to: api-docs
-status: agreed
+status: resolved
 created: 2026-05-03
 updated: 2026-05-03
+resolved: 2026-05-03
 related_specs:
   - "API-20260502-001"
   - "W1-20260501-001"
@@ -203,7 +204,21 @@ This encoding is **scoped to the metadata params only** — the rest of the filt
 ---
 
 ## Resolution
-<!-- Filled in when status moves to "resolved" -->
-**Resolved on:**
-**Outcome:**
+
+**Resolved on:** 2026-05-03
+
+**Outcome (widgets-v1 side):**
+- `metadata_in` / `metadata_not_in` shipped in `widget_registration.js` on sub-branch `feature-course-metadata`, merged back into parent `feature-registration-list-renderers`. Wire emission verified end-to-end against a local widget instance with `window.ZOOZA = { metadata_in: { size: '10' } }` — `?meta_in[size]=10` lands on `GET /v1/courses` and the api side filters correctly.
+- `course.metadata` exposed to `render_course_tile` callbacks; the test integration's custom renderer reads `key` / `value` / `value_type` and surfaces a price pill (string) and group-size pill (int) on each tile. Confirms typed-value behaviour: `value_type: 'int'` arrives as a JS number.
+- `encodeURIComponent` applied to JS-form metadata keys and values before wire emission; round-trips cleanly through the api client (raw concat at `zooza.js:136`) and PHP's `$_GET` decode.
+- Spec `W1-20260501-001` updated: stable `render_course_tile` `course` param contract now includes `metadata` (subset: `key`, `value`, `value_type`); Notes section logs the 2026-05-03 promotion and the supersession of the renderer-handoff Decision Summary's "What will NOT be built" entry.
+- api-v1 server side (spec `API-20260502-001`) shipped on the same `feature-course-metadata` sub-branch; sister handoff `api-v1-to-widgets-v1-20260503-002` already at `resolved`.
+
+**Outcome (api-docs side):**
+- Docs PR for `docs/widgets/registration-widget.md` is api-docs's responsibility, batched with the renderer and label-filter doc edits on their chosen branch. Contract is locked per Decision Summary above. If anything drifts on our end during the docs PR review, we'll open a fresh handoff rather than re-opening this one.
+
 **Related specs/PRs:**
+- widgets-v1: `W1-20260501-001` (Implemented)
+- api-v1: `API-20260502-001` (Implemented)
+- Sister handoff (api-v1 → widgets-v1, server-side metadata filter): `2026-05-03-api-v1-to-widgets-v1-registration-widget-metadata-filter.md` (resolved, archived)
+- Sibling handoffs (also to api-docs, batched in same PR): `2026-05-01-widgets-v1-to-api-docs-registration-list-renderers.md`, `2026-05-03-widgets-v1-to-api-docs-registration-widget-label-filter.md`
