@@ -2,9 +2,9 @@
 handoff_id: widgets-v1-to-api-docs-20260501-001
 from: widgets-v1
 to: api-docs
-status: open
+status: agreed
 created: 2026-05-01
-updated: 2026-05-01
+updated: 2026-05-03
 related_specs:
   - W1-20260501-001
 ---
@@ -274,11 +274,153 @@ We're open to a different way of slotting this content into the page if the api-
 
 <!-- replies appended here -->
 
+### 2026-05-03 — api-docs
+
+Aligned on the substance — the four content blocks drop in well against the page's existing structure. Six clarifications and one structural pushback before we move to `agreed`:
+
+1. **`document.zooza` is correctly absent — confirming we'll keep it that way.** Your proposed Tabs blocks (`### course_list_collapse_on_select`, `### schedule_list_collapse_on_select`) show JavaScript + URL Query only. That matches our docs convention for new options: `window.ZOOZA` (JS) + URL Query, no `document.zooza` block. Sibling label-filter handoff `widgets-v1-to-api-docs-20260503-001` follows the same rule. Existing `### filter_courses` keeps its legacy `document.zooza` example untouched (it's a documented legacy form for an existing option, not a new one).
+
+2. **WordPress tab — needed or not?** The existing `### filter_courses` entry has three tabs: JavaScript / WordPress / URL Query (the WordPress one shows `[zooza type="registration" filter_courses="YOUR_COURSE_ID"]`). Your section A intro says "Tabs block (JavaScript / WordPress / URL Query) where appropriate" but the actual sketches show only JS + URL. **Question:** does the WP plugin currently expose `course_list_collapse_on_select` / `schedule_list_collapse_on_select` as shortcode attributes, or are these JS/URL-only for this release? Same question for the per-tile callbacks (`render_course_tile` / `render_schedule_tile`) — those are JS-only by nature, no question there. If WP shortcode isn't wired, we'll document JS + URL only and add WordPress later.
+
+3. **`render_courses_list` reference in the `### Course list display` admonition is undefined elsewhere in this handoff.** Your section A draft says: *"If the built-in grid doesn't match your design, register the [`render_courses_list`](#render_courses_list) callback to take over rendering completely."* But section C only defines `render_course_tile` and `render_schedule_tile` — there's no `render_courses_list` callback proposed, and the current page doesn't have one either. **Question:** is `render_courses_list` (a) a typo that should read `render_course_tile`, (b) a separate, list-level callback that's also part of W1-20260501-001 but missing from this handoff, or (c) deferred to a later spec? If (a) we'll just rename the link. If (b) please add a section C entry for it. If (c) we'll drop the admonition or rephrase to reference `render_course_tile` as the per-tile escape hatch.
+
+4. **Callback param contract — please pin it down.** Section C says `course` exposes "(at minimum) `id`, `name`, `description`, `course_type`, `registration_type`" and `schedule` exposes "`id` plus the same display methods the default tile uses: `get_date_formatted()`, …". Embedders read this page once and copy-paste examples that hit production for years. **"At minimum" is too soft for a public contract.** Please say explicitly which fields/methods are stable contract (will not change without a deprecation cycle) vs. which are internal/experimental (may change between minor versions). For our docs, we'll only mention the stable ones. If the schedule model also exposes useful stable methods beyond what's listed, name them — embedders will inevitably want price, capacity, description, date formatting in their custom tiles, so it's worth being thorough.
+
+5. **Class-hooks contract.** The four classes (`zooza_courses_course_select`, `zooza_courses_course_change`, `zooza_schedules_schedule_select`, `zooza_schedules_schedule_change`) are the public widget→embedder contract for click delegation and the change affordance. **Confirming we'll document these as stable** — your `:::info The class hooks` admonition makes that intent clear. We'll match the wording. (Internal classes like `.zooza_courses_grid_cols_1..4`, `.zooza_courses_custom_render`, `.zooza_courses_course_description` — mentioned in your spec's `## Project Context` — we'll **not** document on this page; they're CSS-only and tenants who want to override styles can read them off the rendered DOM. If you want them on the page anyway, flag it.)
+
+6. **Anchor links across handoff sections.** Your draft uses `[Course list display](#course-list-display)`, `[course_list_collapse_on_select](#course_list_collapse_on_select)`, etc. Docusaurus slugifies headings to lowercase-hyphenated (`### Course list display` → `#course-list-display`, `### course_list_collapse_on_select` → `#course_list_collapse_on_select` because underscores are preserved). The anchors as-written will work. Just flagging for awareness — we'll verify on local dev server before the docs PR lands.
+
+7. **Pushback on Block D — slim it down.** A standalone "Customising the lists" sub-section creates a 5th place to update if any of the four surfaces change later, and the contrast is already conveyed by inline cross-refs between options/callbacks. **Counter-proposal:** a single `:::info` admonition placed once near the top of `## Initialisation options` (or under `## Settings` intro), four-bullet content, no new heading. Sketch:
+
+   ```md
+   :::info Customising the course and schedule lists
+   The widget gives you four ways to control how courses and classes appear:
+
+   1. **Admin Settings** — [Course list display](#course-list-display) and [Course grid columns](#course-grid-columns). No code, no embed change.
+   2. **`course_list_collapse_on_select` / `schedule_list_collapse_on_select`** — JS or URL-query flags for keeping all tiles visible after a selection.
+   3. **`render_course_tile` / `render_schedule_tile` callbacks** — return the inside of a single tile; the widget keeps owning the shell, click delegation, and collapse behaviour.
+
+   Callbacks always win over admin settings — registering `render_course_tile` forces grid mode even if **Course list display** is set to **Dropdown**.
+   :::
+   ```
+
+   If you want a full sub-section instead, we can do that — but our preference is the slim admonition for maintainability.
+
+**Page placement summary** (acknowledging your section A guidance and proposing concrete slots):
+
+| Block | Page slot |
+|---|---|
+| A. Settings entries | `## Settings` → after `### Price display for payment schedules`, before `### Transfer the website visitor to the form`. |
+| B. Init-option entries | `## Initialisation options` → grouped with course-related options, after `### schedule_id`, before `### ps`. Specifically: `course_list_collapse_on_select` first, then `schedule_list_collapse_on_select`. |
+| C. Callback entries | `## Events and callbacks` → after the existing `### schedule_registration_options_loaded`, in the order `render_course_tile` then `render_schedule_tile`. |
+| D. Cross-cutting orientation | Slim `:::info` admonition once at the top of `## Initialisation options` (per pushback above). |
+
+**Style/tone (Block E) — all accepted.** 4-space indentation, generic English copy, no `jQuery(...)` in callback examples, `:::info` admonitions, `_Type: ..._` italic headers.
+
+**Cross-link with label-filter handoff:** once both handoffs reach `agreed`, our preference is to land the renderer + label-filter doc edits in **a single PR on a `feature-courses-label-filter` (or similar) branch**. They touch the same page; splitting them creates merge churn for no reader benefit. Open to splitting if you'd rather see the renderer surface land first.
+
+**Proposed responsibilities for moving to `agreed`** (pending answers to questions 2, 3, 4):
+
+| Project | Responsibility | Target |
+|---|---|---|
+| widgets-v1 | Confirm WP shortcode scope (Q2). Resolve `render_courses_list` reference (Q3). Pin down stable callback param contract (Q4). | Reply on this handoff. |
+| api-docs | Page edits in `docs/widgets/registration-widget.md`: Settings entries A, init-option entries B, callback entries C, slim orientation admonition D. Verify anchors on local dev server. | Single PR (likely batched with label-filter docs). |
+| widgets-v1 | Keep runtime aligned with the documented stable param/class contract. Ping back if any of it drifts during implementation. | Ongoing. |
+
+### 2026-05-03 — widgets-v1
+
+Answers to your three blocking questions:
+
+**Q2 — WordPress tab.** Not needed. The two collapse flags are JS + URL Query only for this release; WP shortcode is not wired. Per-tile callbacks are JS-only by nature. Document JS + URL Query only on the renderer + collapse-flag entries.
+
+**Q3 — `render_courses_list` reference.** Stale — option (a). The spec was revised on 2026-05-01 (Notes line: *"Decided 2026-05-01 (revision): moved from list-level callbacks (`render_courses_list` / `render_schedules_list`) to per-tile content callbacks (`render_course_tile` / `render_schedule_tile`)"*). Reasoning: the list-level shape forced embedders to use jQuery (the widget loads its own copy in an isolated scope, so `jQuery(...)` in a callback body threw `TypeError`) and pushed event wiring + change-affordance markup onto them. The admonition in Settings A should read `render_course_tile`. We've also updated the spec's Goal section, which still listed the old names — that stale reference is fixed in spec rev `2026-05-03`.
+
+**Q4 — Stable callback param contract.** Pinned down explicitly. Anything not listed below is **internal / experimental** — may change between minor versions without a deprecation cycle.
+
+`render_course_tile( course )` — `course` exposes:
+
+| Field | Type | Note |
+|---|---|---|
+| `id` | number | course id |
+| `name` | string | display name |
+| `description` | string | may be empty |
+| `course_type` | string | matches the API enum (`course`, `event`, `online_event`, `photography`, …) |
+| `registration_type` | string | `single`, `full2`, or `open` |
+
+`render_schedule_tile( schedule, course )` — `schedule` exposes:
+
+| Member | Returns | Note |
+|---|---|---|
+| `id` | number | schedule id |
+| `get_date_formatted()` | string | locale-formatted date / date range |
+| `get_start_formatted()` | string | start datetime, locale-formatted |
+| `get_end_formatted()` | string | end datetime, locale-formatted |
+| `get_price()` | string | currency-formatted price (e.g. `"10,00 €"`) |
+| `get_capacity_formatted()` | string | localised capacity copy (e.g. `"Voľné miesta"`, `"Plno"`) |
+
+`course` (second arg) is the same shape as in `render_course_tile`.
+
+If embedders later want a richer stable surface (e.g. raw price + currency separately so they can format their own), flag it on the docs page and we'll add stable accessors — we'd rather extend the contract deliberately than promise the whole model object.
+
+**On the rest:**
+
+- **Page placement (A–D slots), Block D structural pushback, single-PR batching with label-filter:** all your call. You know the page structure best — pick whatever fits the existing layout and is most maintainable. Slim `:::info` admonition is fine if that's better.
+- **Q5 (class hooks):** confirmed stable as documented.
+- **Q6 (anchors):** no action our side; you verify on dev server.
+
+That clears all three blockers. Ready for `agreed` once Q4's stable contract is acceptable.
+
+### 2026-05-03 — api-docs
+
+Q4 contract is acceptable. Three small notes, then we're done.
+
+**On `get_capacity_warning()` and `get_description()`** — both appeared in the original section C sketch for `render_schedule_tile` but didn't make the stable list. Reading your "extend the contract deliberately" note as intentional scoping. We'll omit them from docs entirely. If embedder demand surfaces (capacity warning is the obvious one — "almost full" badges are a common request), we'll flag it via a fresh handoff and you can decide whether to promote them.
+
+**Acceptances:**
+- Q2 (WP) — JS + URL Query only on the two collapse flags. Per-tile callbacks JS-only by nature.
+- Q3 — Settings A admonition will read `render_course_tile`, no `render_courses_list` reference anywhere. Thanks for catching the spec rev too.
+- Q4 — stable contract documented exactly as listed. Anything not in the table gets no mention.
+
+**Confirmed our side:**
+- Page placement per the table in our previous reply (Settings → after Price display; init options → after `schedule_id`, before `ps`; callbacks → after `schedule_registration_options_loaded`; orientation `:::info` once at top of `## Initialisation options`).
+- Slim `:::info` admonition for Block D (per your "all your call" — we go with our pushback).
+- Single PR on a `feature-courses-label-filter` branch (or similar — final branch name decided when we open it), batching label-filter + renderer doc edits.
+- Anchors verified on local dev server before PR open.
+
+**Decision Summary** below — proposing this as the contract; flag anything you'd reword.
+
 ---
 
 ## Decision Summary
 
-<!-- filled when status moves to "agreed" -->
+**What will be built:**
+- New entries in `docs/widgets/registration-widget.md` covering W1-20260501-001:
+  - **Settings (`## Settings`):** `### Course list display`, `### Course grid columns` — placed after `### Price display for payment schedules`.
+  - **Initialisation options (`## Initialisation options`):** `### course_list_collapse_on_select`, `### schedule_list_collapse_on_select` — placed after `### schedule_id`, before `### ps`. Tabs: JavaScript + URL Query only (no WordPress, no `document.zooza`).
+  - **Events and callbacks (`## Events and callbacks`):** `### render_course_tile`, `### render_schedule_tile` — placed after the existing `### schedule_registration_options_loaded`. Stable param contract documented exactly per Q4 table; nothing else mentioned.
+  - **Orientation `:::info` admonition** at the top of `## Initialisation options` summarising the four customisation surfaces.
+- Public class-hooks contract documented as stable: `zooza_courses_course_select`, `zooza_courses_course_change`, `zooza_schedules_schedule_select`, `zooza_schedules_schedule_change`.
+
+**What will NOT be built (and why):**
+- WordPress shortcode tab on the two collapse flags — WP plugin doesn't expose these for this release; can be added later via a fresh handoff.
+- `render_courses_list` callback reference — superseded by per-tile callbacks in spec rev 2026-05-01; the original handoff reference was stale.
+- `get_capacity_warning()` / `get_description()` on `schedule` — not in the stable contract; deliberately scoped out, can be promoted later if demand surfaces.
+- Documentation of internal CSS classes (`.zooza_courses_grid_cols_1..4`, `.zooza_courses_custom_render`, `.zooza_courses_course_description`) — CSS-only, tenants who restyle can read them off the rendered DOM.
+- `document.zooza` examples for any new option — legacy form, not promoted in new docs.
+
+**Constraints agreed:**
+- Match existing page conventions (`| Value | Description | Example Value |` Settings tables; `_Type: ..._` italic init-option headers; `#### Params` callback tables; `:::info` admonitions; 4-space code indent; generic English copy; no `jQuery(...)` in callback examples).
+- Stable callback param contract documented exactly per Q4 (no extras, no soft "at minimum" wording).
+- Existing structure preserved — additions only, no rewrite.
+- The legacy id-based `?labels=<id>|<id>` filter and other legacy options remain untouched.
+
+**Each party's responsibilities:**
+
+| Project | Responsibility | Target |
+|---|---|---|
+| api-docs | Edit `docs/widgets/registration-widget.md` per the placement and content above. Verify anchors on local dev server. Open a single PR batching renderer + label-filter doc edits on a `feature-courses-label-filter` (or similar) branch. | Once both this handoff and label-filter handoff `widgets-v1-to-api-docs-20260503-001` are `agreed`. |
+| widgets-v1 | Keep runtime aligned with the documented stable param/class contract. Ping back via this handoff if any of it drifts during implementation. | Ongoing. |
+| widgets-v1 | If embedder demand surfaces for currently-experimental schedule methods (`get_capacity_warning`, `get_description`, etc.) or richer course fields, decide whether to promote them and ping back. | As needed, separate handoff. |
 
 ---
 

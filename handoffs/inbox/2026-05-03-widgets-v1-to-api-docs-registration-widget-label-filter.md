@@ -2,7 +2,7 @@
 handoff_id: widgets-v1-to-api-docs-20260503-001
 from: widgets-v1
 to: api-docs
-status: in_discussion
+status: agreed
 created: 2026-05-03
 updated: 2026-05-03
 related_specs:
@@ -143,17 +143,37 @@ If that lands well, propose moving status to `agreed` with:
 ---
 
 ## Decision Summary
-<!-- Filled in when status moves to "agreed" — distilled from the discussion above -->
 
 **What will be built:**
+- Two new init-option entries in `docs/widgets/registration-widget.md` under `## Initialisation options`:
+  - `### labels_in` — show only courses tagged with at least one listed label name.
+  - `### labels_not_in` — hide courses tagged with any listed label name.
+- Slotted near the existing course/place/schedule filters (after `### schedule_id`, before the renderer-handoff collapse flags). They are a filtering concern, not a display option.
+- Tabs block: JavaScript (`window.ZOOZA`) + URL Query only. No WordPress tab.
+- Documented behaviour:
+  - Values are **label names** as shown in admin (case-sensitive, including spaces and punctuation).
+  - Accepted shapes: array of strings, or pipe-delimited string. URL form is always pipe-delimited.
+  - `labels_in` matches at least one; `labels_not_in` excludes any match. Both compose (AND), and compose with `course_ids` / `filter_places` / `schedule_id`.
+  - Empty array / empty string / omitted = no filter.
+  - Private labels silently never match (admin-only); zero matches for unknown vs. private labels are indistinguishable client-side.
+- One-line cross-link noting that label filtering composes with the new tile-grid display modes shipped via handoff `widgets-v1-to-api-docs-20260501-001`.
+
 **What will NOT be built (and why):**
+- No `document.zooza` block / `filter_labels_in` / `filter_labels_not_in` legacy property names — `document.zooza` is legacy and not promoted for new options.
+- No documentation changes to the legacy id-based `?labels=<id>|<id>` filter — separate mechanism, untouched.
+- No WordPress shortcode tab — WP plugin doesn't expose these for this release.
+
 **Constraints agreed:**
+- Match existing page conventions (`_Type: ..._` italic header, generic English copy, `:::info` admonitions where useful).
+- Existing structure preserved — additions only, no rewrite.
+- Precedence simplifies to: `window.ZOOZA` → URL → unset.
+
 **Each party's responsibilities:**
 
 | Project | Responsibility | Target |
-|---------|---------------|--------|
-| widgets-v1 | …              | …      |
-| api-docs   | …              | …      |
+|---|---|---|
+| api-docs | Page edits in `docs/widgets/registration-widget.md` per the placement and content above. Verify anchors on local dev server. Land in a single PR batched with renderer handoff `widgets-v1-to-api-docs-20260501-001`. | Branch `feature-courses-label-filter`. |
+| widgets-v1 | Keep runtime aligned with documented precedence (`window.ZOOZA` → URL → unset) and label-name match semantics. Ping back on this handoff if anything drifts during implementation. | Ongoing. |
 
 ---
 
