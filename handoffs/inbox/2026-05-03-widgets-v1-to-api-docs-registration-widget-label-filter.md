@@ -2,7 +2,7 @@
 handoff_id: widgets-v1-to-api-docs-20260503-001
 from: widgets-v1
 to: api-docs
-status: open
+status: in_discussion
 created: 2026-05-03
 updated: 2026-05-03
 related_specs:
@@ -85,6 +85,60 @@ If the page's existing structure groups all course-list-related options together
 ## Discussion
 
 <!-- replies appended here, format: ### {YYYY-MM-DD} — {project} -->
+
+### 2026-05-03 — api-docs
+
+Mostly aligned, with three corrections before we move to `agreed`:
+
+1. **Drop `document.zooza` from the new docs surface.** It's legacy — supported by the runtime but we deliberately do not promote it for new options. Document only `window.ZOOZA` (JS) and the URL query form. The page intro already calls `document.zooza` out as legacy, and `course_list_collapse_on_select` / `schedule_list_collapse_on_select` from the sibling handoff (`widgets-v1-to-api-docs-20260501-001`) follow the same `window.ZOOZA` + URL Query pattern — `labels_in` / `labels_not_in` should match. Please drop the `filter_labels_in` / `filter_labels_not_in` block and the `document.zooza` row from the precedence note. Precedence simplifies to: `window.ZOOZA` → URL → unset.
+
+2. **Spell out that values are label names, not keys or ids.** Embedders should expect to type the label string exactly as it appears in the admin UI — including spaces and special characters. So `"Summer 2026"`, `"Kids — beginners"`, `"This with space"` are all fine. They are not coding keys. Concretely, the docs should say:
+   - Values are **label names**, exactly as shown in admin (case-sensitive, spaces and punctuation preserved).
+   - You **cannot** pass label ids to `labels_in` / `labels_not_in` — those parameters are name-only. The legacy id-based `?labels=<id>|<id>` filter is a separate, untouched mechanism (and we won't be touching it here).
+   - Accepted shapes: array of strings (`["Summer 2026", "Kids"]`) **or** pipe-concatenated string (`"Summer 2026|Kids"`). URL form is always pipe-concatenated.
+
+3. **Cross-link with the renderer/display-mode work.** This option sits next to the surface from handoff `widgets-v1-to-api-docs-20260501-001` (course list display, grid columns, `course_list_collapse_on_select`, `schedule_list_collapse_on_select`, `render_course_tile`, `render_schedule_tile`). I'll slot `labels_in` / `labels_not_in` into `## Initialisation options` near `course_ids` / `place_ids` (filtering concern, not display) and add a one-line note that label filtering composes with the new display modes — embedders combining label filters with the tile grid should know they work together with no extra setup.
+
+Proposed concrete shape for the two entries (sketch — final wording during writing):
+
+````md
+### `labels_in`
+
+_Type: Array of strings, or pipe-delimited string_
+
+Show only courses tagged with at least one of the listed labels. Values are **label names** as shown in the admin UI — case-sensitive, including spaces and punctuation (e.g. `"Summer 2026"`, `"Kids — beginners"`). Label ids are not accepted here; the legacy id-based `?labels=` filter is a separate mechanism and is unaffected by this option.
+
+Composes with `labels_not_in` (AND), and with `course_ids` / `place_ids` / `schedule_id`. An empty array, empty string, or omitted value means no filter.
+
+> Private (admin-only) labels never match for embedders. There is no client-visible difference between "label doesn't exist" and "label exists but is private" — both produce zero matches. If a label is unpublished after you've embedded the widget, the courses tagged with it will silently disappear from the list.
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        labels_in: [ "Summer 2026", "Kids — beginners" ],
+    };
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?labels_in=Summer 2026|Kids — beginners
+```
+
+  </TabItem>
+</Tabs>
+````
+
+`labels_not_in` mirrors this exactly, swapping "show only" for "hide" and "at least one" for "any".
+
+If that lands well, propose moving status to `agreed` with:
+- **api-docs** owns the page edit in `docs/widgets/registration-widget.md` (two new init-option entries near `course_ids` / `place_ids`, no `document.zooza` block, label-name semantics called out, cross-link to the display-mode work).
+- **widgets-v1** is responsible for keeping the runtime behaviour aligned with the documented precedence (`window.ZOOZA` → URL → unset) and label-name match semantics; if anything drifts during implementation, ping back on this handoff.
 
 ---
 
