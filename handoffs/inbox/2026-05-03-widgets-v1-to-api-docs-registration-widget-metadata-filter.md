@@ -2,7 +2,7 @@
 handoff_id: widgets-v1-to-api-docs-20260503-002
 from: widgets-v1
 to: api-docs
-status: open
+status: in_discussion
 created: 2026-05-03
 updated: 2026-05-03
 related_specs:
@@ -87,6 +87,41 @@ If the page's existing structure groups all course-list-related options together
 ## Discussion
 
 <!-- replies appended here, format: ### {YYYY-MM-DD} — {project} -->
+
+### 2026-05-03 — api-docs
+
+Three conventions land cleanly (no `document.zooza`, no WP tab, slot near `labels_in` / `labels_not_in`) — accepted as-proposed. One firm push-back, two clarifications, and a note about renderer-contract spillover before we can move to `agreed`.
+
+**1. Push-back: `metadata` MUST be in the stable `render_course_tile` `course` param contract.** This is a product-owner call from our side, not a docs preference. The same product motivation that drives `metadata_in` / `metadata_not_in` (carving the visible course list by metadata dimension) also drives surfacing those values *visually* in tiles — badges for `featured`, age-band labels, color swatches, anything. If embedders cannot rely on `course.metadata` from the per-tile callback, the metadata feature is half-shipped from a tenant POV: filterable but not displayable without unstable tricks. Concretely: please promote `metadata` to the Q4 stable list from handoff `widgets-v1-to-api-docs-20260501-001` (currently: `id`, `name`, `description`, `course_type`, `registration_type`).
+
+This has spillover into that handoff's already-agreed Decision Summary, which currently lists `metadata` in **What will NOT be built**. When you confirm the promotion here, we'll handle the delta inside *this* handoff (single source of truth for the metadata feature) and amend the renderer docs to add the `metadata` row in the same PR. No need to retroactively edit the renderer handoff's Decision Summary — flag the supersession in this handoff's Decision Summary instead.
+
+**2. Clarification — shape of `metadata` on the course object.** For us to document the stable accessor, please specify the exact shape:
+   - Array of objects? (`[{ key, value }, …]`)
+   - Plain map? (`{ color: "red", age_band: "6-8" }`)
+   - Multi-value handled how? (per-key array, or one entry per `(key, value)` pair?)
+   - Is `value` always a string, or typed (string / number / bool)?
+
+We'll mirror your choice exactly in the docs — but the stable contract needs to name this, otherwise embedders will guess and we'll all regret it later.
+
+**3. Clarification — URL encoding when the widget builds the api request.** The "verbatim pass-through" is clear for **URL-as-user-input** (someone typing `?metadata_in[color]=red|blue` into the address bar). The ambiguity is **URL-as-widget-output**: if a user sets `window.ZOOZA = { metadata_in: { color: "red&blue" } }` in JS, what does the widget send to `GET /v1/courses`? Confirming "the widget URL-encodes when constructing the api request from JS-form values" would let us add a one-liner so embedders know JS form is safe for special characters even if URL-as-input is fragile.
+
+**4. Acceptances:**
+   - No `document.zooza` in new docs ✓
+   - No WP tab ✓
+   - Slot under `## Initialisation options` between `labels_not_in` and `course_list_collapse_on_select` — filtering concern, mirrors `labels_in` / `labels_not_in` exactly ✓
+   - Match rules / composition / private-keys-silent-zero-match behaviour — all align with how we just documented `labels_in` ✓
+   - Cross-link to label filter and to the tile-grid display modes ✓
+
+**5. Note — api-v1 backend status (`API-20260502-001`) is not a blocker for us.** Product owner is testing the api-side implementation in parallel. We can land the docs on the same branch as label-filter / renderer docs once the four points above resolve; we won't gate on the api spec flipping to `implemented`.
+
+**Proposed responsibilities for moving to `agreed`** (pending answers to Q1, Q2, Q3):
+
+| Project | Responsibility | Target |
+|---|---|---|
+| widgets-v1 | Confirm `metadata` promoted to stable `render_course_tile` `course` contract (Q1). Specify shape (Q2). Confirm widget URL-encodes when building the api request from JS-form values (Q3). | Reply on this handoff. |
+| api-docs | Page edits in `docs/widgets/registration-widget.md`: two new init-option entries (`metadata_in` / `metadata_not_in`) near `labels_in` / `labels_not_in`, plus add a `metadata` row to the `render_course_tile` Params table once promoted. | Branch `feature-courses-label-filter` — same PR as label-filter / renderer docs. |
+| widgets-v1 | Keep runtime aligned with the documented stable shape and URL-encoding semantics. Ping back on this handoff if anything drifts during implementation. | Ongoing. |
 
 ---
 
