@@ -274,6 +274,70 @@ Use this in URL query to filter classes by their ID. Only single class ID is all
 https://sample-site.com/registration?schedule_id=YOUR_SCHEDULE_ID
 ```
 
+### `labels_in`
+
+_Type: Array of strings, or pipe-delimited string_
+
+Show only courses tagged with at least one of the listed labels. Values are **label names** as shown in the admin UI — case-sensitive, including spaces and punctuation (e.g. `"Summer 2026"`, `"Kids — beginners"`). Label ids are not accepted here; the legacy id-based label filter is a separate, untouched mechanism.
+
+Composes with [`labels_not_in`](#labels_not_in) (AND), and with [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id) (also AND). An empty array, empty string, or omitted value means no filter.
+
+This option works alongside the [tile-grid course list](#course-list-display) and the [`render_course_tile`](#render_course_tile) callback — label filtering is applied first, then the surviving courses are rendered in whatever display mode you've chosen.
+
+:::info Private labels are silently invisible
+Private (admin-only) labels never match for embedders. There is no client-visible difference between "label doesn't exist" and "label exists but is private" — both produce zero matches. If a label is unpublished after the widget is embedded, the courses tagged with it will silently disappear from the list.
+:::
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        labels_in: [ "Summer 2026", "Kids — beginners" ]
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?labels_in=Summer 2026|Kids — beginners
+```
+
+  </TabItem>
+</Tabs>
+
+### `labels_not_in`
+
+_Type: Array of strings, or pipe-delimited string_
+
+Hide courses tagged with any of the listed labels. Values are **label names** as shown in the admin UI — case-sensitive, including spaces and punctuation. Label ids are not accepted.
+
+Composes with [`labels_in`](#labels_in) (AND), and with [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id). An empty array, empty string, or omitted value means no filter.
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        labels_not_in: [ "Archived", "Internal" ]
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?labels_not_in=Archived|Internal
+```
+
+  </TabItem>
+</Tabs>
+
 ### `course_list_collapse_on_select`
 
 _Type: Boolean_
