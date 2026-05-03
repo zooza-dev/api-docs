@@ -2,7 +2,7 @@
 handoff_id: widgets-v1-to-api-docs-20260503-002
 from: widgets-v1
 to: api-docs
-status: in_discussion
+status: agreed
 created: 2026-05-03
 updated: 2026-05-03
 related_specs:
@@ -125,18 +125,80 @@ We'll mirror your choice exactly in the docs — but the stable contract needs t
 
 ---
 
+### 2026-05-03 — widgets-v1
+
+All three points resolved. Moving to `agreed` with the Decision Summary below.
+
+**Q1 — Yes, `metadata` is promoted to the stable `render_course_tile` `course` param contract.** Product owner agrees with your "filterable-but-not-displayable is half-shipped" framing. Spec `W1-20260501-001` is updated to add a `metadata` row to the stable course param table and to log the supersession in the Notes section (date-stamped 2026-05-03). Per your direction, we are **not** retroactively editing the renderer handoff's `agreed` Decision Summary — the supersession is recorded here (in this handoff and in the spec) as the single source of truth, and api-docs adds the `metadata` row to the `render_course_tile` Params table in the same docs PR.
+
+**Q2 — `course.metadata` shape.** Confirmed against an actual `GET /v1/courses` response. Differs from the spec sketch in two ways worth flagging:
+
+- **`value` is typed, not always a string.** The api casts before serialising. `value_type: 'int'` → JS `number` (e.g. `10`, not `"10"`). `value_type: 'string'` → JS `string`. Presumably `'bool'` → boolean and `'json'` → parsed object (we'll confirm if/when those surface). Embedders should branch on `value_type` if they need exhaustive handling.
+- **Wire payload includes storage internals** (`id`, `company_id`, `metadata_key_id`, `object_type`, `object_id`, `created`, `updated`) that are not relevant to embedders.
+
+**Stable subset for the contract** (anything outside this is internal/may change without notice):
+
+| Field | Type | Notes |
+|---|---|---|
+| `key` | string | Metadata key name as authored in admin (case-sensitive). |
+| `value` | string \| number \| boolean \| object | Typed per `value_type`. |
+| `value_type` | `'string'` \| `'int'` \| `'bool'` \| `'json'` | So embedders can branch on type if needed. |
+
+**Omit `public` from the stable contract** — it's always `true` for widget callers (private keys are server-filtered before serialising), so documenting it gives embedders a field they can't usefully read. If a tenant somehow flips a key from public → private after page load, the widget just stops receiving that entry; there is no `public: false` case to handle on the embedder side.
+
+Multi-value: schema enforces a unique `(object_type, object_id, metadata_key_id)`, so each course has **at most one entry per key**. Embedders looking up `metadata.find(m => m.key === 'color')` will get a single result or `undefined`.
+
+Empty array if the course has no public metadata.
+
+**Q3 — Yes, the widget URL-encodes JS-form values when building the api request.** As of this handoff's implementation, `meta_in[<key>]` and `meta_not_in[<key>]` parameters now run both the bracketed key and the value through `encodeURIComponent` before joining the wire. So `window.ZOOZA = { metadata_in: { color: "red&blue" } }` lands on the wire as `?meta_in[color]=red%26blue`, which PHP decodes to `$_GET['meta_in']['color'] = 'red&blue'` correctly. Pipes round-trip cleanly (`|` → `%7C` → `|` after PHP decode → api splits). **JS form is safe for all special characters** — `&`, `=`, `+`, `#`, spaces, punctuation. **URL form is unchanged** — embedders writing the URL by hand still need to encode themselves (same constraint as today's `?ids=`, `?label_in=`).
+
+This encoding is **scoped to the metadata params only** — the rest of the filter wire (`ids`, `place_id`, `schedule_id`, `ref`, `label_in`, `label_not_in`) is unchanged. Existing filters take ints or short tokens and don't need it; metadata is where free-text tenant-authored values live, so that's where the fix is.
+
+**Branch + PR coordination acknowledged** — api-v1 backend status `API-20260502-001` is not gating you, and a single docs PR batched on `feature-courses-label-filter` (or the chosen final branch name) for label-filter + renderer + metadata-filter doc edits is fine. We'll mirror updates in here if anything drifts on our end.
+
+---
+
 ## Decision Summary
-<!-- Filled in when status moves to "agreed" — distilled from the discussion above -->
 
 **What will be built:**
+- Two new init-option entries in `docs/widgets/registration-widget.md` under `## Initialisation options`, slotted between `labels_not_in` and `course_list_collapse_on_select`:
+  - `### metadata_in` — show only courses whose metadata matches at least one listed value per key.
+  - `### metadata_not_in` — hide courses whose metadata matches any listed value per key.
+- Tabs block: JavaScript (`window.ZOOZA`) + URL Query only. No WordPress tab. No `document.zooza` block.
+- Documented behaviour:
+  - JS shape: object keyed by metadata key; per-key value is array of strings or pipe-delimited string.
+  - URL shape: PHP-style bracket-array (`?metadata_in[color]=red|blue&metadata_in[size]=l`).
+  - Wire shape (informational): emitted as `meta_in[<key>]=…` / `meta_not_in[<key>]=…` on `GET /v1/courses`.
+  - Match rules: keys + values match exactly against admin catalogue (case-sensitive, including whitespace and punctuation). `metadata_in` returns courses where `<key>`'s value is one of the listed values; `metadata_not_in` excludes them.
+  - Empty per-key value → that key omitted from the wire. Empty top-level config → no metadata params sent.
+  - Private (admin-only) keys silently never match (zero matches for unknown vs. private keys are indistinguishable client-side).
+  - Composes (AND) with each other and with every existing filter (`course_ids`, `place_ids`, `schedule_id`, `labels_in`, `labels_not_in`, `ref`).
+  - Precedence: `window.ZOOZA` → URL → unset; first non-empty source wins (sources are not merged).
+  - JS form is safe for special characters (widget URL-encodes); URL form is raw (embedders writing the URL by hand encode themselves, same as `?ids=` / `?label_in=`).
+- Add a `metadata` row to the existing `render_course_tile` Params table for the `course` object — stable subset is `key`, `value`, `value_type`. Note that `value` is typed per `value_type`. Empty array if none. Adds the row in the same docs PR; **supersedes** the renderer handoff's "What will NOT be built" entry — this metadata-filter handoff is the single source of truth for the supersession (renderer handoff Decision Summary stays as-is per api-docs's request).
+- One-line cross-link noting that metadata filtering composes with label filtering and the tile-grid display modes.
+
 **What will NOT be built (and why):**
+- No `document.zooza` block / `filter_metadata_in` / `filter_metadata_not_in` legacy property names — `document.zooza` is legacy and not promoted for new options. Runtime continues to read them; docs do not mention them.
+- No WordPress shortcode tab — WP plugin doesn't expose metadata filters this release.
+- No documentation of storage internals on `course.metadata` (`id`, `company_id`, `metadata_key_id`, `object_type`, `object_id`, `created`, `updated`, `public`). Present on the wire today, not part of the stable callback param contract; embedders read them at their own risk.
+- No retroactive edit to the renderer handoff Decision Summary (`widgets-v1-to-api-docs-20260501-001`). Supersession is flagged in this handoff and in `W1-20260501-001` Notes — single source of truth here.
+
 **Constraints agreed:**
+- Match existing page conventions (`_Type: ..._` italic init-option headers; Tabs block; `:::info` admonitions where useful; generic English copy; no `jQuery(...)` in callback examples).
+- Stable callback param contract for `course.metadata` is `key`, `value`, `value_type` — no `public`, no storage internals.
+- Existing structure preserved — additions only, no rewrite.
+- Precedence simplifies to: `window.ZOOZA` → URL → unset.
+- Pipe (`|`) is the per-key value delimiter on the URL form.
+- Widget URL-encodes JS-form metadata keys and values; URL form is raw.
+
 **Each party's responsibilities:**
 
 | Project | Responsibility | Target |
 |---|---|---|
-| api-docs | … | … |
-| widgets-v1 | … | … |
+| api-docs | Page edits in `docs/widgets/registration-widget.md`: (a) two new init-option entries `metadata_in` / `metadata_not_in` between `labels_not_in` and `course_list_collapse_on_select`, (b) add a `metadata` row to the `render_course_tile` Params table for the `course` object (`key`, `value`, `value_type`), (c) one-line cross-link to the label filter and tile-grid display modes. Verify anchors on local dev server. Land in the same PR batched with renderer + label-filter doc edits. | Branch `feature-courses-label-filter` (or chosen final name). |
+| widgets-v1 | Keep runtime aligned with: (a) the `course.metadata` stable subset (`key`, `value`, `value_type`); (b) the JS-form URL-encoding semantics; (c) the documented precedence (`window.ZOOZA` → URL → unset). Ping back on this handoff if anything drifts during implementation. | Ongoing. |
+| widgets-v1 | If `value_type` `'bool'` or `'json'` exhibit unexpected serialisation shape when tenants start authoring them, ping back so docs reflect the actual behaviour. | As needed. |
 
 ---
 
