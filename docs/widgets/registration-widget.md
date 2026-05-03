@@ -869,6 +869,41 @@ window.ZOOZA = {
 };
 ```
 
+##### Reading metadata — typed values rendered as badges
+
+Metadata entries on `course.metadata` are an array of `{ key, value, value_type }`. A small helper that returns the value for a given key (or `null` if absent) keeps tile templates readable. The widget always returns a `value` typed per `value_type` — `string`, `int`, `bool`, or `json` — so no parsing on your side. See the [Params table](#params) for the stable contract.
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        render_course_tile: ( course ) => {
+            const get_meta = ( key ) => {
+                const entry = ( course.metadata || [] ).find( ( m ) => m.key === key );
+                return entry ? entry.value : null;
+            };
+
+            const price = get_meta( 'price' );    // value_type: 'string', e.g. "from 34 EUR/month"
+            const size  = get_meta( 'size' );     // value_type: 'int', e.g. 10
+
+            const price_badge = price !== null
+                ? `<span class="my-badge my-badge-price">${ price }</span>`
+                : '';
+            const size_badge  = size !== null
+                ? `<span class="my-badge my-badge-size">Group size: ${ size }</span>`
+                : '';
+
+            return `
+                <h3>${ course.name }</h3>
+                <div class="my-meta-row">${ price_badge }${ size_badge }</div>
+                <p>${ ( course.description || '' ).slice( 0, 160 ) }</p>
+            `;
+        },
+    },
+};
+```
+
+The same keys you read here are the ones you can filter on with [`metadata_in`](#metadata_in) / [`metadata_not_in`](#metadata_not_in) — filter to a subset of courses, then render the surviving courses' metadata in your own design language.
+
 ##### Custom CTA — embedder provides the Select element
 
 If you want the Select CTA inline (different copy, different position, different styling), include any element with `class="zooza_courses_course_select"` in the returned HTML. The widget detects it and skips its auto-append. You don't write a click handler — the widget's delegated click on `.zooza_courses_course_select` reads the course id from the tile wrapper and runs the standard flow.
