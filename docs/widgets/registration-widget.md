@@ -105,8 +105,35 @@ By default, the widget renders the list of available courses as a `<select>` dro
 | Dropdown (Default) | Courses appear as a single `<select>`. Best when you have many courses or want the most compact form. | _Course A / Course B / …_ |
 | Grid | Courses appear as tiles in a configurable column grid. Each tile shows the course name, the first 5 lines of its description, and a Select button. | _2 × 2 grid of tiles_ |
 
+:::info Per-page override
+The setting above is the tenant-wide default. Individual pages can override it via `window.ZOOZA` or URL query — useful when one landing page wants a grid and another wants the dropdown without flipping the tenant setting.
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        course_list_display: 'grid'
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?course_list_display=grid
+```
+
+  </TabItem>
+</Tabs>
+
+Accepted values: `'select'`, `'grid'`. Anything else is ignored and the tenant setting is used.
+:::
+
 :::info Need a fully custom layout?
-If the built-in grid doesn't match your design, register the [`render_course_tile`](#render_course_tile) callback to take over rendering of each tile. The widget falls back to the value of this setting whenever the callback isn't registered.
+If the built-in grid doesn't match your design, register the [`render_course_tile`](#render_course_tile) callback to take over rendering of each tile. The widget falls back to the value of this setting whenever the callback isn't registered. Registering `render_course_tile` forces grid mode regardless of the tenant setting or any per-page override.
 :::
 
 ### Course grid columns
@@ -119,6 +146,33 @@ Only applies when **Course list display** is set to **Grid**. Picks the number o
 | 2 | Two columns. | _2 × N grid_ |
 | 3 | Three columns. | _3 × N grid_ |
 | 4 | Four columns. | _4 × N grid_ |
+
+:::info Per-page override
+The setting above is the tenant-wide default. Individual pages can override it via `window.ZOOZA` or URL query.
+
+<Tabs>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        course_list_columns: 3
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?course_list_columns=3
+```
+
+  </TabItem>
+</Tabs>
+
+Accepted values: `1`, `2`, `3`, `4`. Values outside this range fall back to `1`.
+:::
 
 ### Transfer the website visitor to the form
 
@@ -145,7 +199,7 @@ In general, you can customise how the widget is initialized either via JavaScrip
 :::info Customising the course and schedule lists
 The widget gives you three ways to control how courses and classes appear:
 
-1. **Admin Settings** — [Course list display](#course-list-display) and [Course grid columns](#course-grid-columns). No code, no embed change.
+1. **Admin Settings (with per-page override)** — [Course list display](#course-list-display) and [Course grid columns](#course-grid-columns). Tenant-wide defaults, also overridable per page via `window.ZOOZA` / URL.
 2. **[`course_list_collapse_on_select`](#course_list_collapse_on_select) / [`schedule_list_collapse_on_select`](#schedule_list_collapse_on_select)** — JS or URL-query flags for keeping all tiles visible after a selection.
 3. **[`render_course_tile`](#render_course_tile) / [`render_schedule_tile`](#render_schedule_tile) callbacks** — return the inside of a single tile; the widget keeps owning the shell, click delegation, and collapse behaviour.
 
