@@ -875,6 +875,81 @@ window.ZOOZA = {
 };
 ```
 
+### `schedule_list_rendered`
+
+Fires immediately after the widget renders the schedule list and appends it to the DOM. Use this hook when you need to run your own DOM work over the rendered tile collection — adding badges or section separators, attaching analytics, observing visibility, anything that needs the tiles to already be on the page.
+
+The callback fires on **every** render of the schedule list, including re-renders that follow a place change. Make sure your handler is idempotent — guard against double-attaching listeners or duplicating injected nodes (the practical example below shows the pattern).
+
+#### Params
+
+The callback receives a single object argument with the following attributes:
+
+| Attribute | Description |
+|---|---|
+| `el` | The `.zooza_schedules` container as a **plain DOM `Element`** (not a jQuery object). Holds the prepended filter and all rendered `.zooza_schedules_schedule[data-schedule_id]` tiles. |
+| `schedules` | Array of schedule objects in render order. The array order lines up 1:1 with the rendered tiles, so `schedules[ i ]` matches the i-th tile inside `el`. Each entry exposes the same stable members documented for [`render_schedule_tile`](#render_schedule_tile)'s `schedule` arg (`id`, `get_date_formatted()`, `get_start_formatted()`, `get_end_formatted()`, `get_price()`, `get_capacity_formatted()`). |
+| `course` | The currently selected course. Same stable shape as the `course` arg in [`render_course_tile`](#render_course_tile) (`id`, `name`, `description`, `course_type`, `registration_type`, `metadata`). |
+
+:::info `el` is a plain DOM Element
+Unlike [`schedule_registration_options_loaded`](#schedule_registration_options_loaded) (which passes `el` as a jQuery object for legacy reasons), `schedule_list_rendered` passes `el` as a plain DOM `Element`. Embedders without jQuery on their page can use it directly — `querySelectorAll`, `insertBefore`, `classList`, etc. If you do have jQuery available, wrap with `$( el )` if you prefer.
+:::
+
+##### Minimal example — log every render
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        schedule_list_rendered: ( { el, schedules, course } ) => {
+            const tiles = el.querySelectorAll( '.zooza_schedules_schedule' );
+            console.info( `Rendered ${ tiles.length } schedules for course "${ course.name }"` );
+        },
+    },
+};
+```
+
+##### Practical example — week separators between schedule groups
+
+A common pattern: the schedule list contains several weekly groups whose names start with a numeric prefix (`"1. 22 JUNE - 3 JULY 2026 // 09.00-10.10"`, `"1. 22 JUNE - 3 JULY 2026 // 10.30-11.40"`, …, `"2. 06 JULY - 17 JULY 2026 // 09.00-10.10"`, …). The example below walks the rendered tiles, detects when the leading group number changes, and inserts a separator before the first tile of each new group.
+
+The handler is idempotent: it removes any separators it injected on a previous render before walking the tiles, so a re-render after a place change does not stack duplicates.
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        schedule_list_rendered: ( { el, schedules } ) => {
+            // The callback fires on every render (including re-renders after a
+            // place change), so clear any separators we injected previously.
+            el.querySelectorAll( '.my-week-separator' ).forEach( ( node ) => node.remove() );
+
+            const tiles = el.querySelectorAll( '.zooza_schedules_schedule' );
+            let last_group = null;
+
+            tiles.forEach( ( tile, index ) => {
+                const schedule = schedules[ index ];
+                const match = schedule.name && schedule.name.match( /^(\d+)\./ );
+                if ( ! match ) {
+                    return;
+                }
+
+                const group_number = match[ 1 ];
+                if ( group_number === last_group ) {
+                    return;
+                }
+                last_group = group_number;
+
+                const separator = document.createElement( 'div' );
+                separator.className = 'my-week-separator';
+                separator.textContent = schedule.name;
+                tile.parentNode.insertBefore( separator, tile );
+            } );
+        },
+    },
+};
+```
+
+The widget exposes `schedule.name` on each entry alongside the stable getters listed in [`render_schedule_tile`](#render_schedule_tile) — it is the human-readable label the widget itself uses on the tile.
+
 ### `render_course_tile`
 
 Returns the HTML that goes **inside** a single course tile. The widget owns everything else: the `<div class="zooza_courses_course" data-course_id="<id>">` wrapper, the grid layout, the "Select" CTA, the collapse-on-select, and the "back to all courses" affordance. Register this callback when you want a different look for the courses than the built-in default — your own headings, images, marketing copy, prices, badges, anything.
