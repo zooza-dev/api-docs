@@ -2,9 +2,10 @@
 handoff_id: widgets-v1-to-api-docs-20260508-001
 from: widgets-v1
 to: api-docs
-status: open
+status: resolved
 created: 2026-05-08
 updated: 2026-05-08
+resolved: 2026-05-08
 related_specs:
   - W1-20260508-001
 ---
@@ -76,25 +77,31 @@ If a different placement, table layout, or example style fits the page better, t
 
 <!-- Each reply follows this format — append, never edit previous entries -->
 
+### 2026-05-08 — api-docs
+
+Implemented directly against the request — no negotiation round needed. The sketch in "How we imagine it" matched the page's existing conventions and there was nothing to push back on. Decision Summary and Resolution filled in inline at close time so the archived record reflects what shipped.
+
 ---
 
 ## Decision Summary
-<!-- Filled in when status moves to "agreed" -->
 
-**What will be built:**
-**What will NOT be built (and why):**
-**Constraints agreed:**
+**What will be built:** A new `### schedule_list_rendered` entry under `## Events and callbacks` in `docs/widgets/registration-widget.md`, slotted between `### schedule_registration_options_loaded` and `### render_course_tile`. Prose intro covers the re-render-on-place-change idempotency requirement; `#### Params` table documents `el` (plain DOM `Element`), `schedules` (array in render order, 1:1 with rendered tiles, member contract by reference to `render_schedule_tile`), and `course` (shape by reference to `render_course_tile`). Two examples: a minimal log-on-render block and a practical week-separator block that shows the cleanup-then-walk idempotency pattern.
+
+**What will NOT be built (and why):** No changes to the sibling `### schedule_registration_options_loaded` entry (its jQuery `el` is grandfathered in for legacy reasons; the new entry calls out the contrast in an `:::info` admonition). No update to `### render_schedule_tile`'s stable members table — the practical example references `schedule.name` with a one-liner noting it is exposed alongside the documented getters; widening the formal stable contract is a widgets-v1 call.
+
+**Constraints agreed:** Match existing page conventions (4-space indent, generic English copy, no `jQuery(...)` in embedder examples). `el` documented as a plain DOM `Element`, contrasted with the jQuery `el` on `schedule_registration_options_loaded`. Idempotency requirement called out explicitly in the prose intro and demonstrated in the practical example.
+
 **Each party's responsibilities:**
 
 | Project | Responsibility | Target |
 |---------|---------------|--------|
-| widgets-v1 | ... | ... |
-| api-docs   | ... | ... |
+| widgets-v1 | Ship the `schedule_list_rendered` callback with the documented `{ el, schedules, course }` shape; keep `el` as a plain DOM `Element`; fire on every render including post-place-change re-renders. | Spec `W1-20260508-001` |
+| api-docs   | Add `### schedule_list_rendered` entry to `docs/widgets/registration-widget.md` per the agreed structure, with both minimal and practical examples. | Commit on `test` branch |
 
 ---
 
 ## Resolution
-<!-- Filled in when status moves to "resolved" -->
-**Resolved on:**
-**Outcome:**
-**Related specs/PRs:**
+
+**Resolved on:** 2026-05-08
+**Outcome:** Built as proposed. `### schedule_list_rendered` added to `docs/widgets/registration-widget.md` between `### schedule_registration_options_loaded` and `### render_course_tile`. Includes the prose intro with the idempotency call-out, the `#### Params` table for `el` / `schedules` / `course`, the "`el` is a plain DOM Element" `:::info` admonition contrasting with `schedule_registration_options_loaded`, and two examples — a minimal log-every-render block and a practical week-separator block demonstrating the cleanup-then-walk idempotency pattern. The practical example uses `schedule.name`; a one-liner notes it is exposed alongside the documented stable getters.
+**Related specs/PRs:** widgets-v1 spec `W1-20260508-001` (runtime); api-docs commit `1c3d069` on `test` branch (`Document schedule_list_rendered callback with week-separator example`).
