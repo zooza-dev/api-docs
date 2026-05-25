@@ -211,6 +211,6 @@ You should see a list of your programmes (called "courses" in the API).
 #### Next steps
 
 - [Authentication guide](api/authentication.md) — all login methods explained
-- [API endpoints](api/reference) — full reference
+- [API endpoints](api/index.md) — full reference
 - [Error handling](api/errors.md) — status codes and troubleshooting
 - [Concepts and glossary](concepts.md) — understand Zooza terminology
