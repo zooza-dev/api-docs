@@ -58,6 +58,24 @@ if ( window.attachEvent ) {
 </script>
 ```
 
+### Framework modules (npm)
+
+If your website is a JavaScript app, install this widget as an npm package instead of pasting the snippet above — available for **React, Vue, Svelte, Web Components** and vanilla JS. See [Framework modules (npm)](framework-modules.md) for the full guide, regions, and options.
+
+```bash
+npm install @zooza/widgets-react
+```
+
+```tsx
+import { initZooza, ZoozaWidget } from '@zooza/widgets-react';
+
+initZooza({ apiKey: 'YOUR_API_KEY' });
+
+export default function Page() {
+  return <ZoozaWidget type="registration" />;
+}
+```
+
 ## Settings
 
 These settings are managed within the Zooza's main application `Publish > Widget > Registration Form`.

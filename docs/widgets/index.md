@@ -6,13 +6,13 @@ sidebar_position: 1
 
 # Introduction to widgets
 
-**Zooza widgets are the primary way your customers interact with your services online. Seamless integration ensures a smooth experience for both you and your clients. Widgets can be added easily using a WordPress plugin, a Wix plugin, or by pasting a snippet of JavaScript code into your website.**
+**Zooza widgets are the primary way your customers interact with your services online. Seamless integration ensures a smooth experience for both you and your clients. Widgets can be added easily using a WordPress plugin, a Wix plugin, by pasting a snippet of JavaScript code into your website, or — if your site is a JavaScript app — by installing the matching `@zooza/widgets-*` npm package.**
 
 However, this is just the beginning — Zooza offers unparalleled customization for both the appearance and behavior of each widget, giving your business a unique edge.
 
 ## Installation
 
-You can integrate Zooza widgets using one of our official plugins for WordPress or Wix for quick and simple setup, or you can embed them manually. But before you install any widget on your website, consider how you want to use it. This mainly concerns the booking process. Other aspects of the integration are typically very straightforward.
+You can integrate Zooza widgets using one of our official plugins for WordPress or Wix for quick and simple setup, embed them manually with a JavaScript snippet, or — if your website is built with a JavaScript framework — install them as [npm framework modules](framework-modules.md). But before you install any widget on your website, consider how you want to use it. This mainly concerns the booking process. Other aspects of the integration are typically very straightforward.
 
 ### Minimum system requirements
 
@@ -80,6 +80,10 @@ Read more.
 #### Manual embedding
 
 This option gives you most flexibility but is definitely targeted for more technically skilled persons although it does not necessarily require any coding.
+
+#### Framework modules (npm)
+
+If your website is a JavaScript application, install the matching `@zooza/widgets-*` package and render the widget as a component instead of pasting the raw snippet. Official packages exist for **React / Next.js, Vue / Nuxt, Svelte / SvelteKit, Web Components** (plain HTML, Angular, …) and **vanilla JS**. See [Framework modules (npm)](framework-modules.md).
 
 ## Customisation
 
