@@ -4,6 +4,8 @@ description: Overview of the Zooza REST API — authentication, base URLs, and w
 sidebar_position: 1
 ---
 
+import AiPrompt from '@site/src/components/AiPrompt';
+
 # API overview
 
 The Zooza REST API gives you programmatic access to manage programmes, classes, registrations, payments, and more. All responses are JSON.
@@ -35,6 +37,23 @@ flowchart TD
 :::note Different API keys
 Widget API keys and REST API keys are **not interchangeable**. A widget key cannot be used for REST API calls. See [concepts](../concepts.md#api-keys) for details.
 :::
+
+<AiPrompt task="Build a Zooza REST API integration">{`Help me build an integration against the Zooza REST API.
+
+Read the full Zooza API documentation first — it contains the complete endpoint reference, auth flow, base URLs, and error codes:
+https://docs.zooza.online/llms-full.txt
+
+Authentication uses three headers: X-ZOOZA-API-KEY, X-ZOOZA-TOKEN (from POST /v1/login), and X-ZOOZA-COMPANY (from GET /v1/user). Base URLs: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.
+
+What I want to build:
+[describe your use case — e.g. "list all programmes and export enrolled clients to CSV", "sync new bookings into my CRM", or "a back-office tool to manage payments"]
+
+Tasks:
+1. Set up authentication (login -> token -> company id) in [my language: Node.js / Python / PHP / cURL].
+2. Implement the use case above using the correct endpoints from the docs — don't invent endpoints; cite the ones you use.
+3. Handle pagination, errors, and token expiry (401) gracefully.
+
+Ask me for my REST API key, login email, client secret, and region before writing code that runs.`}</AiPrompt>
 
 ---
 
