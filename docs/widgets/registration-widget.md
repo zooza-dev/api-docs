@@ -6,6 +6,7 @@ sidebar_position: 2
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import AiPrompt from '@site/src/components/AiPrompt';
 
 # Registration/Booking widget
 
@@ -57,6 +58,48 @@ if ( window.attachEvent ) {
 } )();
 </script>
 ```
+
+<AiPrompt task="Embed the registration widget into my site">{`I'm integrating the Zooza registration/booking widget into my website.
+
+Read the full Zooza widget & API documentation first for context:
+https://docs.zooza.online/llms-full.txt
+
+Here is the embed snippet I need to install:
+
+<script data-version='v1' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
+( function() {
+function async_load(){
+	document.body.setAttribute('data-zooza-api-url', 'ZOOZA_API_URL');
+	var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+	s.src = document.body.getAttribute('data-zooza-api-url') +
+	 '/widgets/v1/?type=registration&ref=' + encodeURIComponent( window.location.href );
+	var embedder = document.getElementById( 'YOUR_API_KEY' );
+	embedder.parentNode.insertBefore( s, embedder );
+}
+if ( window.attachEvent ) {
+	window.attachEvent( 'onload', async_load );
+} else {
+	window.addEventListener( 'load', async_load, false );
+}
+} )();
+</script>
+
+Tasks:
+1. Tell me exactly where in my page to place this snippet.
+2. Replace YOUR_API_KEY (it appears twice) with the key from Publish > Widget in my Zooza app — ask me for it.
+3. Set ZOOZA_API_URL to my region: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.`}</AiPrompt>
+
+<AiPrompt task="Style the widget to match my site's design">{`I've embedded the Zooza registration widget on my website and now I want it to match my site's existing design.
+
+Read the Zooza widget documentation for the available CSS hooks and the "Use CSS" option:
+https://docs.zooza.online/llms-full.txt
+
+Tasks:
+1. Inspect my site's current design tokens — primary colour, fonts, border radius, spacing.
+2. Write CSS that styles the Zooza widget form (inputs, labels, the submit button, the course list/grid) to match my brand.
+3. Keep the form accessible and responsive on mobile.
+
+My brand: [describe your colours and fonts here, or point me at your stylesheet].`}</AiPrompt>
 
 ## Settings
 
@@ -725,6 +768,22 @@ Enable `print_debug` mode and open your browser's console. You will see printout
     }
 </script>
 ```
+
+<AiPrompt task="Customise the widget's text labels">{`I want to customise the text labels shown in my Zooza registration widget using the translations option.
+
+Read the Zooza widget documentation for the translations option and how to find translation keys:
+https://docs.zooza.online/llms-full.txt
+
+Tasks:
+1. Give me a window.ZOOZA script block with a translations object.
+2. Override the labels I list below with my preferred wording, using the correct translation keys.
+3. Tell me where to place this script relative to the widget embed snippet.
+
+Labels I want to change:
+- [e.g. the "Register" button -> "Book your spot"]
+- [add more here]
+
+If you don't know a key, tell me to enable print_debug and read it from the browser console.`}</AiPrompt>
 
 ### `registration_display_mode`
 
