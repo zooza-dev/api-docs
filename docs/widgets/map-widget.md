@@ -4,6 +4,8 @@ description: The Zooza map widget — location-based class search with map view,
 sidebar_position: 4
 ---
 
+import AiPrompt from '@site/src/components/AiPrompt';
+
 # Map widget
 
 **This widget provides a map view of your locations. Upon selecting a location, its contact details are shown and available classes for this location are listed below the map. When a class is clicked, the customer is taken to the [Registration Form](./registration-widget.md).**
@@ -54,6 +56,48 @@ if ( window.attachEvent ) {
 } )();
 </script>
 ```
+
+<AiPrompt task="Embed the map widget into my site">{`I'm integrating the Zooza map widget into my website.
+
+Read the full Zooza widget & API documentation first for context:
+https://docs.zooza.online/llms-full.txt
+
+Here is the embed snippet I need to install:
+
+<script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
+( function() {
+function async_load(){
+    document.body.setAttribute('data-zooza-api-url', 'ZOOZA_API_URL');
+    var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+    s.src = document.body.getAttribute('data-zooza-api-url') +
+     '/widgets/v2/?type=map&ref=' + encodeURIComponent( window.location.href );
+    var embedder = document.getElementById( 'YOUR_API_KEY' );
+    embedder.parentNode.insertBefore( s, embedder );
+}
+if ( window.attachEvent ) {
+    window.attachEvent( 'onload', async_load );
+} else {
+    window.addEventListener( 'load', async_load, false );
+}
+} )();
+</script>
+
+Tasks:
+1. Tell me exactly where in my page to place this snippet.
+2. Replace YOUR_API_KEY (it appears twice) with the key from Publish > Widget in my Zooza app — ask me for it.
+3. Set ZOOZA_API_URL to my region: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.`}</AiPrompt>
+
+<AiPrompt task="Style the map widget to match my site">{`I've embedded the Zooza map widget and now I want it to match my site's existing design.
+
+Read the Zooza widget documentation for the available CSS hooks and the "Use CSS" option:
+https://docs.zooza.online/llms-full.txt
+
+Tasks:
+1. Inspect my site's current design tokens — primary colour, fonts, border radius, spacing.
+2. Write CSS that styles the map UI (location list, filters, the navigate button) to match my brand.
+3. Keep it accessible and responsive on mobile.
+
+My brand: [describe your colours and fonts here, or point me at your stylesheet].`}</AiPrompt>
 
 ## Settings
 

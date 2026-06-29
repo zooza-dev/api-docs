@@ -6,6 +6,7 @@ sidebar_position: 2
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import AiPrompt from '@site/src/components/AiPrompt';
 
 # Quickstart
 
@@ -78,6 +79,40 @@ Open your page in a browser. You should see a Zooza registration form displaying
 - [Customise your widget](widgets/registration-widget.md) with filters and styling
 - Explore other widgets: [Calendar](widgets/calendar-widget.md), [Map](widgets/map-widget.md), [Profile](widgets/profile-widget.md)
 - Learn [Zooza terminology](concepts.md)
+
+<AiPrompt task="Embed my first Zooza widget">{`Help me embed my first Zooza widget on my website.
+
+Read the full Zooza widget & API documentation first for context:
+https://docs.zooza.online/llms-full.txt
+
+Here is the embed snippet (registration form — change type=registration to calendar, profile, video, map or sales for other widgets):
+
+<script data-version="v1" data-widget-id="zooza" id="YOUR_API_KEY" type="text/javascript">
+(function() {
+  function async_load() {
+    document.body.setAttribute("data-zooza-api-url", "ZOOZA_API_URL");
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src =
+      document.body.getAttribute("data-zooza-api-url") +
+      "/widgets/v1/?type=registration&ref=" +
+      encodeURIComponent(window.location.href);
+    var embedder = document.getElementById("YOUR_API_KEY");
+    embedder.parentNode.insertBefore(s, embedder);
+  }
+  if (window.attachEvent) {
+    window.attachEvent("onload", async_load);
+  } else {
+    window.addEventListener("load", async_load, false);
+  }
+})();
+</script>
+
+Tasks:
+1. Tell me where to place this snippet on my page.
+2. Replace YOUR_API_KEY (it appears twice) with my widget key from Team & Settings > Publish — ask me for it.
+3. Set ZOOZA_API_URL to my region: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.`}</AiPrompt>
 
 ---
 
@@ -211,6 +246,23 @@ You should see a list of your programmes (called "courses" in the API).
 #### Next steps
 
 - [Authentication guide](api/authentication.md) — all login methods explained
-- [API endpoints](api/reference) — full reference
+- [API endpoints](api/index.md) — full reference
 - [Error handling](api/errors.md) — status codes and troubleshooting
 - [Concepts and glossary](concepts.md) — understand Zooza terminology
+
+<AiPrompt task="Build a Zooza REST API integration">{`Help me build an integration against the Zooza REST API.
+
+Read the full Zooza API documentation first — it contains the auth flow, base URLs, endpoints, and error codes:
+https://docs.zooza.online/llms-full.txt
+
+Authentication uses three headers: X-ZOOZA-API-KEY, X-ZOOZA-TOKEN (obtained via POST /v1/login), and X-ZOOZA-COMPANY. Base URLs: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.
+
+What I want to build:
+[describe your use case — e.g. "a script that lists all my programmes and exports enrolled clients to CSV", or "sync new bookings into my CRM"]
+
+Tasks:
+1. Write the authentication step (login -> token) in [my language: Node.js / Python / PHP / cURL].
+2. Implement the use case above using the correct endpoints from the docs.
+3. Handle errors and token expiry gracefully.
+
+Ask me for my API key, client secret, and region before writing code that runs.`}</AiPrompt>
