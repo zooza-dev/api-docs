@@ -59,7 +59,7 @@ The widget reads these fields directly and does **not** compute availability cli
 | `file_available` | `available_from` | Widget renders |
 |---|---|---|
 | `true` | any | File link / thumbnail |
-| `false` | set | "Available from {date}" notice; no download link |
+| `false` | set | "Available from `{date}`" notice; no download link |
 | `false` | null | "Will be published in time" (existing generic text) |
 
 ## Entitlement
