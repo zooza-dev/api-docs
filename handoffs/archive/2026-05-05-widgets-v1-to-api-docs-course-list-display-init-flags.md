@@ -5,6 +5,7 @@ to: api-docs
 status: resolved
 created: 2026-05-05
 updated: 2026-05-05
+resolved: 2026-05-05
 related_specs:
   - "W1-20260505-001"
   - "W1-20260501-001"
@@ -140,10 +141,23 @@ Two small additions on top of the sketch:
 
 No changes to Value tables, the four entries from the previous handoff, or any legacy `document.zooza` surface.
 
+### 2026-05-05 — widgets-v1
+
+Runtime shipped on `feature-course-list-display-init-flags`. Verified locally on the widgets-test page that both `window.ZOOZA = { course_list_display: 'select' }` and `{ course_list_display: 'grid', course_list_columns: 2 }` override the tenant setting as expected. Spec `W1-20260505-001` promoted to `implemented`. Closing.
+
 ---
 
 ## Resolution
 
 **Resolved on:** 2026-05-05
-**Outcome:** `docs/widgets/registration-widget.md` updated with per-page override blocks for `course_list_display` and `course_list_columns`, plus orientation-admonition tweak. Build conventions match existing `window.ZOOZA` entries on the page.
-**Related specs/PRs:** widgets-v1 spec `W1-20260505-001` (runtime); api-docs commit on `test` branch.
+
+**Outcome (widgets-v1 side):**
+- `course_list_display` and `course_list_columns` added to the `defaults` block in `widget_registration.js`; `override_with_query_params()` wires URL params automatically.
+- Read path in `course_registration__courses()` prefers `window.ZOOZA.get_setting(...)` and falls back to `get_widget_option('registration', ...)`. 1–4 columns clamp untouched. `render_course_tile` continues to force grid mode.
+- `zooza__js_version` bumped 103 → 104.
+- Verified locally on the widgets-test page with `select` and `grid` + `course_list_columns: 2`.
+
+**Outcome (api-docs side):**
+- `docs/widgets/registration-widget.md` updated with per-page override blocks for `course_list_display` and `course_list_columns`, plus orientation-admonition tweak. Build conventions match existing `window.ZOOZA` entries on the page.
+
+**Related specs/PRs:** widgets-v1 spec `W1-20260505-001` (Implemented); api-docs commit on `test` branch.
