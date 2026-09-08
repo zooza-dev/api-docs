@@ -18,6 +18,7 @@ const sidebars = {
       label: 'Widgets',
       link: { type: 'doc', id: 'widgets/index' },
       items: [
+        'widgets/embed-methods',
         'widgets/registration-widget',
         'widgets/calendar-widget',
         'widgets/map-widget',

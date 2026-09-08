@@ -53,10 +53,16 @@ Paste this script into your HTML page where you want the registration form to ap
     var embedder = document.getElementById("YOUR_API_KEY");
     embedder.parentNode.insertBefore(s, embedder);
   }
-  if (window.attachEvent) {
-    window.attachEvent("onload", async_load);
+  if (document.readyState !== "loading") {
+    async_load();
+  } else if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", async_load);
   } else {
-    window.addEventListener("load", async_load, false);
+    document.attachEvent("onreadystatechange", function() {
+      if (document.readyState === "complete") {
+        async_load();
+      }
+    });
   }
 })();
 </script>
@@ -101,10 +107,16 @@ Here is the embed snippet (registration form — change type=registration to cal
     var embedder = document.getElementById("YOUR_API_KEY");
     embedder.parentNode.insertBefore(s, embedder);
   }
-  if (window.attachEvent) {
-    window.attachEvent("onload", async_load);
+  if (document.readyState !== "loading") {
+    async_load();
+  } else if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", async_load);
   } else {
-    window.addEventListener("load", async_load, false);
+    document.attachEvent("onreadystatechange", function() {
+      if (document.readyState === "complete") {
+        async_load();
+      }
+    });
   }
 })();
 </script>

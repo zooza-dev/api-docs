@@ -32,12 +32,17 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 ### Embed code
 
-Place the following snippet directly into the `<body>` of your page, where you want the booking form to appear.
+There are two ways to embed this widget, and both are fully supported. See [Choosing an embed method](./embed-methods.md) if you are not sure which one to use.
 
 | Placeholder | Description | Example Value |
 |---|---|---|
-| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice. | `abc123xyz` |
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice in the direct embed, once in the head/body placeholder. | `abc123xyz` |
 | `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
+
+<Tabs groupId="embed-method">
+  <TabItem value="direct" label="Direct embed" default>
+
+Place the following snippet directly into the `<body>` of your page, where you want the widget to appear.
 
 ```javascript
 <script data-version='v1' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
@@ -50,15 +55,38 @@ function async_load(){
 	var embedder = document.getElementById( 'YOUR_API_KEY' );
 	embedder.parentNode.insertBefore( s, embedder );
 }
-if ( window.attachEvent ) {
-	window.attachEvent( 'onload', async_load );
+if ( document.readyState !== 'loading' ) {
+	async_load();
+} else if ( document.addEventListener ) {
+	document.addEventListener( 'DOMContentLoaded', async_load );
 } else {
-	window.addEventListener( 'load', async_load, false );
+	document.attachEvent( 'onreadystatechange', function() {
+		if ( document.readyState === 'complete' ) { async_load(); }
+	} );
 }
 } )();
 </script>
 ```
 
+  </TabItem>
+  <TabItem value="head-body" label="Head + body">
+
+Place the loader in the `<head>` of your page:
+
+```html
+<script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
+```
+
+Then place the placeholder in the `<body>`, where you want the widget to appear:
+
+```html
+<div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
+```
+
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
+
+  </TabItem>
+</Tabs>
 <AiPrompt task="Embed the registration widget into my site">{`I'm integrating the Zooza registration/booking widget into my website.
 
 Read the full Zooza widget & API documentation first for context:
@@ -76,10 +104,14 @@ function async_load(){
 	var embedder = document.getElementById( 'YOUR_API_KEY' );
 	embedder.parentNode.insertBefore( s, embedder );
 }
-if ( window.attachEvent ) {
-	window.attachEvent( 'onload', async_load );
+if ( document.readyState !== 'loading' ) {
+	async_load();
+} else if ( document.addEventListener ) {
+	document.addEventListener( 'DOMContentLoaded', async_load );
 } else {
-	window.addEventListener( 'load', async_load, false );
+	document.attachEvent( 'onreadystatechange', function() {
+		if ( document.readyState === 'complete' ) { async_load(); }
+	} );
 }
 } )();
 </script>
@@ -151,7 +183,7 @@ By default, the widget renders the list of available courses as a `<select>` dro
 :::info Per-page override
 The setting above is the tenant-wide default. Individual pages can override it via `window.ZOOZA` or URL query — useful when one landing page wants a grid and another wants the dropdown without flipping the tenant setting.
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -167,6 +199,15 @@ The setting above is the tenant-wide default. Individual pages can override it v
 
 ```plaintext
 ?course_list_display=grid
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-course-list-display='grid'></div>
 ```
 
   </TabItem>
@@ -193,7 +234,7 @@ Only applies when **Course list display** is set to **Grid**. Picks the number o
 :::info Per-page override
 The setting above is the tenant-wide default. Individual pages can override it via `window.ZOOZA` or URL query.
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -209,6 +250,15 @@ The setting above is the tenant-wide default. Individual pages can override it v
 
 ```plaintext
 ?course_list_columns=3
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-course-list-columns='3'></div>
 ```
 
   </TabItem>
@@ -259,7 +309,7 @@ This will allow you to limit which courses are shown in the booking form.
 |---|---|---|
 | `YOUR_COURSE_ID` | Array of course ids. | `[ 123, 1234 ]` For WordPress see note in its tab. |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -280,6 +330,17 @@ Enter ids as a string delimited by pipe: `123|123`
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-filter-courses='123,456'></div>
+```
+
+Multiple values are comma-separated, not pipe-delimited as in the URL form.
+
+  </TabItem>
 </Tabs>
 
 ### `course_ids`
@@ -288,6 +349,9 @@ _Type: Array, String_
 
 This is the same as [`filter_courses`](#filter_courses) but instead it is defined like this:
 
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
+
 ```javascript
 <script>
     document.zooza = {
@@ -295,6 +359,20 @@ This is the same as [`filter_courses`](#filter_courses) but instead it is define
     }
 </script>
 ```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-course-ids='123,456'></div>
+```
+
+Multiple values are comma-separated, not pipe-delimited as in the URL form.
+
+  </TabItem>
+</Tabs>
 
 ### `course_id`
 
@@ -306,9 +384,24 @@ Use this in URL query to filter classes by course. Only single course ID is allo
 |---|---|---|
 | `YOUR_COURSE_ID` | Course ID. | `123` |
 
+<Tabs groupId="config-surface">
+  <TabItem value="url" label="URL Query">
+
 ```plaintext
 https://sample-site.com/registration?course_id=YOUR_COURSE_ID
 ```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-course-id='123'></div>
+```
+
+  </TabItem>
+</Tabs>
 
 ### `filter_places`
 
@@ -320,7 +413,7 @@ This will limit the displayed classes based on given location(s). This filter us
 |---|---|---|
 | `YOUR_PLACE_ID` | Array of place ids. | `[ 123, 1234 ]` For WordPress see note in its tab. |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -341,6 +434,52 @@ Enter ids as a string delimited by pipe: `123|123`
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-filter-places='123,456'></div>
+```
+
+Multiple values are comma-separated, not pipe-delimited as in the URL form.
+
+  </TabItem>
+</Tabs>
+
+### `place_ids`
+
+_Type: Array, String_
+
+Limit the widget to specific venues. This is the `window.ZOOZA` form of place filtering, and is the counterpart to [`filter_places`](#filter_places) in the same way [`course_ids`](#course_ids) is the counterpart to [`filter_courses`](#filter_courses).
+
+| Value | Description | Example Value |
+|---|---|---|
+| `YOUR_PLACE_ID` | Array of place ids. | `3` or `[ 3, 8 ]` |
+
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        place_ids: [ YOUR_PLACE_ID ]
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-place-ids='3,8'></div>
+```
+
+Multiple values are comma-separated, not pipe-delimited as in the URL form.
+
+  </TabItem>
 </Tabs>
 
 ### `place_id`
@@ -353,9 +492,24 @@ Use this in URL query to filter classes by place. Only single place ID is allowe
 |---|---|---|
 | `YOUR_PID` | PID consists of `place_id` and a `room_id`. They are concatenated using underscore. If you don't want to specify room, just use zero (`123_0`) | `123_123` |
 
+<Tabs groupId="config-surface">
+  <TabItem value="url" label="URL Query">
+
 ```plaintext
 https://sample-site.com/registration?place_id=YOUR_PID
 ```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-place-id='123'></div>
+```
+
+  </TabItem>
+</Tabs>
 
 ### `schedule_id`
 
@@ -367,9 +521,24 @@ Use this in URL query to filter classes by their ID. Only single class ID is all
 |---|---|---|
 | `YOUR_CLASS_ID` | Class id | `123` |
 
+<Tabs groupId="config-surface">
+  <TabItem value="url" label="URL Query">
+
 ```plaintext
 https://sample-site.com/registration?schedule_id=YOUR_SCHEDULE_ID
 ```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-schedule-id='123'></div>
+```
+
+  </TabItem>
+</Tabs>
 
 ### `labels_in`
 
@@ -385,7 +554,7 @@ This option works alongside the [tile-grid course list](#course-list-display) an
 Private (admin-only) labels never match for embedders. There is no client-visible difference between "label doesn't exist" and "label exists but is private" — both produce zero matches. If a label is unpublished after the widget is embedded, the courses tagged with it will silently disappear from the list.
 :::
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -404,6 +573,17 @@ Private (admin-only) labels never match for embedders. There is no client-visibl
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-labels-in='Summer 2026,Autumn 2026'></div>
+```
+
+Multiple values are comma-separated, not pipe-delimited as in the URL form.
+
+  </TabItem>
 </Tabs>
 
 ### `labels_not_in`
@@ -414,7 +594,7 @@ Hide courses tagged with any of the listed labels. Values are **label names** as
 
 Composes with [`labels_in`](#labels_in) (AND), and with [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id). An empty array, empty string, or omitted value means no filter.
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -433,11 +613,27 @@ Composes with [`labels_in`](#labels_in) (AND), and with [`course_ids`](#course_i
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-labels-not-in='Archived,Internal'></div>
+```
+
+Multiple values are comma-separated, not pipe-delimited as in the URL form.
+
+  </TabItem>
 </Tabs>
 
 ### `metadata_in`
 
 _Type: Object — per-key value is an array of strings or pipe-delimited string_
+
+:::note JavaScript only
+This option takes an object keyed by metadata name. It cannot be set as a `data-zooza-*` attribute on a head/body placeholder — HTML attributes are strings. Use a `<script>` block alongside the placeholder.
+:::
+
 
 Show only courses whose metadata matches at least one of the listed values for each listed key. Keys and values are matched **verbatim** against the company's metadata catalogue — case-sensitive, including whitespace and punctuation. Multiple keys compose as **AND across keys** (a course must satisfy every listed key); within a single key the listed values match as **OR** (the course's value for that key must equal one of them).
 
@@ -481,6 +677,11 @@ Private (admin-only) metadata keys never match for embedders. There is no client
 
 _Type: Object — per-key value is an array of strings or pipe-delimited string_
 
+:::note JavaScript only
+This option takes an object keyed by metadata name. It cannot be set as a `data-zooza-*` attribute on a head/body placeholder — HTML attributes are strings. Use a `<script>` block alongside the placeholder.
+:::
+
+
 Hide courses whose metadata matches any of the listed values for the listed keys. Match rules are identical to [`metadata_in`](#metadata_in) — keys and values verbatim, case-sensitive, multiple keys compose as **AND** (a course must avoid every match), values within a single key match as **OR**.
 
 Composes with [`metadata_in`](#metadata_in) (AND), with [`labels_in`](#labels_in) / [`labels_not_in`](#labels_not_in), and with the existing id-based filters [`course_ids`](#course_ids) / [`filter_places`](#filter_places) / [`schedule_id`](#schedule_id). An empty per-key value drops that key from the wire; an empty top-level config means no metadata filter is applied.
@@ -521,7 +722,7 @@ Only meaningful when [Course list display](#course-list-display) is set to **Gri
 | `true` (Default) | After a customer picks a course, other tiles are hidden until they pick "back to all courses". | _Focused single-tile view_ |
 | `false` | All tiles stay visible after a selection; the chosen tile is highlighted with a `selected` class. | _Side-by-side comparison_ |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -540,6 +741,15 @@ Only meaningful when [Course list display](#course-list-display) is set to **Gri
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-course-list-collapse-on-select='false'></div>
+```
+
+  </TabItem>
 </Tabs>
 
 ### `schedule_list_collapse_on_select`
@@ -553,7 +763,7 @@ By default, after the customer picks a class from the schedule list, the other c
 | `true` (Default) | After a class is picked, the other tiles collapse. The chosen tile shows a "change" link. | _Focused single-tile view_ |
 | `false` | All tiles remain visible after a selection. | _Full schedule stays on screen_ |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -569,6 +779,15 @@ By default, after the customer picks a class from the schedule list, the other c
 
 ```plaintext
 ?schedule_list_collapse_on_select=false
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-schedule-list-collapse-on-select='false'></div>
 ```
 
   </TabItem>
@@ -589,7 +808,7 @@ Allowed values:
 | `by_attendance` | By attendance |
 | `pay_as_you_go` | Pay as you go |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -605,6 +824,15 @@ Allowed values:
 
 ```plaintext
 https://sample-site.com/registration?ps=pay_as_you_go
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-ps='pay_as_you_go'></div>
 ```
 
   </TabItem>
@@ -628,7 +856,7 @@ Allowed values:
 | `absolute` | Absolute |
 | `segments` | Blocks |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -647,9 +875,18 @@ https://sample-site.com/registration?f=yearly
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-f='yearly'></div>
+```
+
+  </TabItem>
 </Tabs>
 
-### `multi_step_registration`
+### `multi_step_form`
 
 _Type: Bool_
 
@@ -660,7 +897,7 @@ By default the registration form appears as a single step form, that reveals its
 - Product options (optional)
 - Payment options
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -686,6 +923,15 @@ https://sample-site.com/registration?multi_step_form=true
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-multi-step-form='true'></div>
+```
+
+  </TabItem>
 </Tabs>
 
 ### `preferred_currency`
@@ -702,6 +948,9 @@ This enables you to sell your classes in different currency than defined by your
 |---|---|---|
 | `CODE` | Three letter ISO 4217 currency code | `CZK` |
 
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
+
 ```javascript
 <script>
     window.ZOOZA = {
@@ -710,11 +959,26 @@ This enables you to sell your classes in different currency than defined by your
 </script>
 ```
 
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-preferred-currency='CZK'></div>
+```
+
+  </TabItem>
+</Tabs>
+
 ### `print_debug`
 
 _Type: Bool_
 
 This will print additional debug information to the browser's console. It is especially useful for tracking translations if you want to replace some of the default texts.
+
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
 
 ```javascript
 <script>
@@ -724,9 +988,26 @@ This will print additional debug information to the browser's console. It is esp
 </script>
 ```
 
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-print-debug='true'></div>
+```
+
+  </TabItem>
+</Tabs>
+
 ### `translations`
 
 _Type: Object_
+
+:::note JavaScript only
+This option takes an object of custom strings. It cannot be set as a `data-zooza-*` attribute on a head/body placeholder — HTML attributes are strings. Use a `<script>` block alongside the placeholder.
+:::
+
 
 If you want to replace any of the text used in the booking form, you can do that by providing your own custom translations.
 
@@ -800,6 +1081,9 @@ Example usages:
 |---|---|---|
 | `REGISTRATION_DISPLAY_MODE` | [Enum](../enums.md#registration_display_mode) of your choice | `trials_only` |
 
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
+
 ```javascript
 <script>
     window.ZOOZA = {
@@ -807,6 +1091,18 @@ Example usages:
     }
 </script>
 ```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-registration-display-mode='trials_only'></div>
+```
+
+  </TabItem>
+</Tabs>
 
 ### `lang`
 
@@ -818,7 +1114,7 @@ Language of the widget is defined by your Zooza account. You can change this lan
 |---|---|---|
 | `LANGUAGE_CODE` | [Language code](../enums.md#supported-languages) of your choice | `en-EN` |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="url" label="URL Query">
 
 ```plaintext
@@ -831,6 +1127,15 @@ https://sample-site.com/registration?lang=LANGUAGE_CODE
 ```html
 <html lang="LANGUAGE_CODE">
 </html>
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-lang='en-EN'></div>
 ```
 
   </TabItem>
@@ -908,6 +1213,10 @@ You'll see these appear after key steps in the registration flow. They can be us
 
 ## Events and callbacks
 
+
+:::note JavaScript only
+Callbacks take functions, so none of them can be set as a `data-zooza-*` attribute on a head/body placeholder. Register them in a `<script>` block alongside the placeholder.
+:::
 You can hook into widget lifecycle events using the `callback` property.
 
 ### `schedule_registration_options_loaded`
