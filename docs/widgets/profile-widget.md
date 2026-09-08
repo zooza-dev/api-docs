@@ -4,6 +4,9 @@ description: The Zooza profile widget — customer portal for booking history, p
 sidebar_position: 5
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Profile widget
 
 **This is essentially a members only area, or a customer portal. It displays order/booking history as well as allows management of all bookings and payments.**
@@ -28,12 +31,17 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 ### Embed code
 
-Place the following snippet directly into the `<body>` of your page, where you want the booking form to appear.
+There are two ways to embed this widget, and both are fully supported. See [Choosing an embed method](./embed-methods.md) if you are not sure which one to use.
 
 | Placeholder | Description | Example Value |
 |---|---|---|
-| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice. | `abc123xyz` |
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice in the direct embed, once in the head/body placeholder. | `abc123xyz` |
 | `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
+
+<Tabs groupId="embed-method">
+  <TabItem value="direct" label="Direct embed" default>
+
+Place the following snippet directly into the `<body>` of your page, where you want the widget to appear.
 
 ```javascript
 <script data-version='v1' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
@@ -46,14 +54,38 @@ function async_load(){
 	var embedder = document.getElementById( 'YOUR_API_KEY' );
 	embedder.parentNode.insertBefore( s, embedder );
 }
-if ( window.attachEvent ) {
-	window.attachEvent( 'onload', async_load );
+if ( document.readyState !== 'loading' ) {
+	async_load();
+} else if ( document.addEventListener ) {
+	document.addEventListener( 'DOMContentLoaded', async_load );
 } else {
-	window.addEventListener( 'load', async_load, false );
+	document.attachEvent( 'onreadystatechange', function() {
+		if ( document.readyState === 'complete' ) { async_load(); }
+	} );
 }
 } )();
 </script>
 ```
+
+  </TabItem>
+  <TabItem value="head-body" label="Head + body">
+
+Place the loader in the `<head>` of your page:
+
+```html
+<script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
+```
+
+Then place the placeholder in the `<body>`, where you want the widget to appear:
+
+```html
+<div data-zooza-widget='profile' data-zooza-id='YOUR_API_KEY'></div>
+```
+
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
+
+  </TabItem>
+</Tabs>
 
 ## Settings
 
@@ -110,6 +142,11 @@ See [valid options](#embed-code) for `API_URL` and `YOUR_API_KEY` above.
 ### `translations`
 
 _Type: Object_
+
+:::note JavaScript only
+This option takes an object of custom strings. It cannot be set as a `data-zooza-*` attribute on a head/body placeholder — HTML attributes are strings. Use a `<script>` block alongside the placeholder.
+:::
+
 
 If you want to replace any of the text used in the booking form, you can do that by providing your own custom translations. [See this reference](./registration-widget.md#translations) for more details.
 

@@ -31,12 +31,17 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 ### Embed code
 
-Place the following snippet directly into the `<body>` of your page, where you want the booking form to appear.
+There are two ways to embed this widget, and both are fully supported. See [Choosing an embed method](./embed-methods.md) if you are not sure which one to use.
 
 | Placeholder | Description | Example Value |
 |---|---|---|
-| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice. | `abc123xyz` |
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice in the direct embed, once in the head/body placeholder. | `abc123xyz` |
 | `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
+
+<Tabs groupId="embed-method">
+  <TabItem value="direct" label="Direct embed" default>
+
+Place the following snippet directly into the `<body>` of your page, where you want the widget to appear.
 
 ```javascript
 <script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
@@ -49,14 +54,38 @@ function async_load(){
     var embedder = document.getElementById( 'YOUR_API_KEY' );
     embedder.parentNode.insertBefore( s, embedder );
 }
-if ( window.attachEvent ) {
-    window.attachEvent( 'onload', async_load );
+if ( document.readyState !== 'loading' ) {
+    async_load();
+} else if ( document.addEventListener ) {
+    document.addEventListener( 'DOMContentLoaded', async_load );
 } else {
-    window.addEventListener( 'load', async_load, false );
+    document.attachEvent( 'onreadystatechange', function() {
+        if ( document.readyState === 'complete' ) { async_load(); }
+    } );
 }
 } )();
 </script>
 ```
+
+  </TabItem>
+  <TabItem value="head-body" label="Head + body">
+
+Place the loader in the `<head>` of your page:
+
+```html
+<script async src='ZOOZA_API_URL/widgets/v2/loader.js'></script>
+```
+
+Then place the placeholder in the `<body>`, where you want the widget to appear:
+
+```html
+<div data-zooza-widget='calendar' data-zooza-id='YOUR_API_KEY'></div>
+```
+
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
+
+  </TabItem>
+</Tabs>
 
 ## Settings
 
@@ -180,7 +209,7 @@ This will allow you to limit which courses are shown in the booking form.
 |---|---|---|
 | `YOUR_COURSE_ID` | Array of course ids. | `[ 123, 1234 ]` For WordPress see note in its tab. |
 
-<Tabs>
+<Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
@@ -201,6 +230,17 @@ Enter ids as a string delimited by pipe: `123|123`
 ```
 
   </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='calendar'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-filter-courses='123,456'></div>
+```
+
+Multiple values are comma-separated, not pipe-delimited as in the URL form.
+
+  </TabItem>
 </Tabs>
 
 ### `course_id`
@@ -215,9 +255,24 @@ Pass any valid course_id, or array of course_ids delimited by pipe character `|`
 |---|---|---|
 | `YOUR_COURSE_ID` | Course ID or list of course IDs delimited by pipe. | `123` |
 
+<Tabs groupId="config-surface">
+  <TabItem value="url" label="URL Query">
+
 ```plaintext
 https://sample-site.com/calendar?course_id=YOUR_COURSE_ID
 ```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='calendar'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-course-id='123'></div>
+```
+
+  </TabItem>
+</Tabs>
 
 ### `place_id`
 
@@ -231,15 +286,33 @@ Presets the active location in the location selection. You don't need to provide
 |---|---|---|
 | `YOUR_PLACE_ID` | Place id or list of place ids delimited by pipe. | `123` |
 
+<Tabs groupId="config-surface">
+  <TabItem value="url" label="URL Query">
+
 ```plaintext
 https://sample-site.com/calendar?place_id=YOUR_PLACE_ID
 ```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='calendar'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-place-id='123'></div>
+```
+
+  </TabItem>
+</Tabs>
 
 ### `hide_filter_course`
 
 _Type: Bool_
 
 Overrides widget's setting and hides the calendar filter.
+
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
 
 ```javascript
 <script>
@@ -249,9 +322,69 @@ Overrides widget's setting and hides the calendar filter.
 </script>
 ```
 
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='calendar'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-hide-filter-course='true'></div>
+```
+
+  </TabItem>
+</Tabs>
+
+### `bps`
+
+_Type: Integer_
+
+Show only a specific billing period (term block). The value is a `billing_period_id`, which limits the calendar to sessions belonging to that term block.
+
+| Value | Description | Example Value |
+|---|---|---|
+| `BILLING_PERIOD_ID` | Id of the billing period (term block). | `42` |
+
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
+
+The `window.ZOOZA` form additionally requires `pbs` to be truthy — it is a legacy enable-flag for this form only, and is not needed for the URL Query or Data attribute forms.
+
+```javascript
+<script>
+    window.ZOOZA = {
+        bps: BILLING_PERIOD_ID,
+        pbs: 1
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+?bps=BILLING_PERIOD_ID
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='calendar'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-bps='42'></div>
+```
+
+  </TabItem>
+</Tabs>
+
 ## Events
 
 ### `event_tile_render`
+
+:::note JavaScript only
+This option takes a callback function. It cannot be set as a `data-zooza-*` attribute on a head/body placeholder — HTML attributes are strings. Use a `<script>` block alongside the placeholder.
+:::
+
 
 Minor customisations can be achieved by targeting individual tile's elements and hiding them via CSS. Should you require more precise or heavier customisation, you can provide callback to calendar renderer and customise the tile by yourself.
 
