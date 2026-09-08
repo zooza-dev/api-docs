@@ -12,6 +12,8 @@ const config = {
   organizationName: 'zooza',
   projectName: 'api-docs',
 
+  trailingSlash: true,
+
   onBrokenLinks: 'throw',
   markdown: {
     mermaid: true,
@@ -63,7 +65,7 @@ const config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.7,
-          ignorePatterns: ['/tags/**'],
+          ignorePatterns: ['/tags/**', '/search'],
           filename: 'sitemap.xml',
         },
       }),

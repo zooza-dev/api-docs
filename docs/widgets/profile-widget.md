@@ -6,6 +6,7 @@ sidebar_position: 5
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import AiPrompt from '@site/src/components/AiPrompt';
 
 # Profile widget
 
@@ -86,6 +87,51 @@ Initialisation options can be set directly on the placeholder as [`data-zooza-*`
 
   </TabItem>
 </Tabs>
+<AiPrompt task="Embed the profile widget into my site">{`I'm integrating the Zooza profile widget (customer portal) into my website.
+
+Read the full Zooza widget & API documentation first for context:
+https://docs.zooza.online/llms-full.txt
+
+Here is the embed snippet I need to install:
+
+<script data-version='v1' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
+( function() {
+function async_load(){
+	document.body.setAttribute('data-zooza-api-url', 'ZOOZA_API_URL');
+	var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+	s.src = document.body.getAttribute('data-zooza-api-url') +
+	 '/widgets/v1/?type=profile&ref=' + encodeURIComponent( window.location.href );
+	var embedder = document.getElementById( 'YOUR_API_KEY' );
+	embedder.parentNode.insertBefore( s, embedder );
+}
+if ( document.readyState !== 'loading' ) {
+	async_load();
+} else if ( document.addEventListener ) {
+	document.addEventListener( 'DOMContentLoaded', async_load );
+} else {
+	document.attachEvent( 'onreadystatechange', function() {
+		if ( document.readyState === 'complete' ) { async_load(); }
+	} );
+}
+} )();
+</script>
+
+Tasks:
+1. Tell me exactly where in my page to place this snippet (this is a logged-in members area).
+2. Replace YOUR_API_KEY (it appears twice) with the key from Publish > Widget in my Zooza app — ask me for it.
+3. Set ZOOZA_API_URL to my region: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.`}</AiPrompt>
+
+<AiPrompt task="Style the profile widget to match my site">{`I've embedded the Zooza profile widget (customer portal) and now I want it to match my site's existing design.
+
+Read the Zooza widget documentation for the available CSS hooks and the "Use CSS" option:
+https://docs.zooza.online/llms-full.txt
+
+Tasks:
+1. Inspect my site's current design tokens — primary colour, fonts, border radius, spacing.
+2. Write CSS that styles the portal (booking history, payment list, buttons) to match my brand.
+3. Keep it accessible and responsive on mobile.
+
+My brand: [describe your colours and fonts here, or point me at your stylesheet].`}</AiPrompt>
 
 ## Settings
 
@@ -149,6 +195,22 @@ This option takes an object of custom strings. It cannot be set as a `data-zooza
 
 
 If you want to replace any of the text used in the booking form, you can do that by providing your own custom translations. [See this reference](./registration-widget.md#translations) for more details.
+
+<AiPrompt task="Customise the profile widget's text labels">{`I want to customise the text labels shown in my Zooza profile widget using the translations option.
+
+Read the Zooza widget documentation for the translations option and how to find translation keys:
+https://docs.zooza.online/llms-full.txt
+
+Tasks:
+1. Give me a window.ZOOZA script block with a translations object.
+2. Override the labels I list below with my preferred wording, using the correct translation keys.
+3. Tell me where to place this script relative to the widget embed snippet.
+
+Labels I want to change:
+- [e.g. a portal heading or button label]
+- [add more here]
+
+If you don't know a key, tell me to enable print_debug and read it from the browser console.`}</AiPrompt>
 
 ## Events
 

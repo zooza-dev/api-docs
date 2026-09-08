@@ -6,6 +6,7 @@ sidebar_position: 2
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import AiPrompt from '@site/src/components/AiPrompt';
 
 # Authentication
 
@@ -272,3 +273,23 @@ Use the `id` from the appropriate company in the `X-ZOOZA-COMPANY` header for su
 - Tokens are **long-lived** but may be invalidated by Zooza at any time.
 - There is no explicit refresh mechanism — if a token becomes invalid, re-authenticate using one of the methods above.
 - Store tokens securely and handle `401 Unauthorized` responses by re-initiating the login flow.
+
+<AiPrompt task="Implement the Zooza REST API auth flow">{`Help me implement authentication against the Zooza REST API.
+
+Read the full Zooza API documentation first — it has the exact login methods, headers, and error codes:
+https://docs.zooza.online/llms-full.txt
+
+How Zooza auth works (passwordless):
+1. Every request needs three headers: X-ZOOZA-API-KEY, X-ZOOZA-TOKEN, X-ZOOZA-COMPANY.
+2. Obtain X-ZOOZA-TOKEN via POST /v1/login. For server-to-server use verification_method "client_secret".
+3. Get the company id from GET /v1/user (user.companies[].id) and pass it as X-ZOOZA-COMPANY.
+4. Tokens are long-lived but can be invalidated — handle 401 by re-authenticating.
+
+Base URLs: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.
+
+Tasks:
+1. Write a reusable auth helper in [my language: Node.js / Python / PHP] that logs in, caches the token, and resolves my company id.
+2. Make it automatically re-authenticate on a 401 response.
+3. Read secrets from environment variables, never hardcode them.
+
+Ask me for my REST API key, login email, client secret, and region before writing code that runs.`}</AiPrompt>
