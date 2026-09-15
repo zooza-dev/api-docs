@@ -32,41 +32,24 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 ### Embed code
 
-There are two ways to embed this widget, and both are fully supported. See [Choosing an embed method](./embed-methods.md) if you are not sure which one to use.
+Embed this widget with a placeholder element and the Zooza loader. The loader can sit in the `<body>` right after the placeholder, or in the `<head>` so the widget starts loading earlier. See [Choosing an embed method](./embed-methods.md) if you are not sure which one to use.
 
 | Placeholder | Description | Example Value |
 |---|---|---|
-| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears twice in the direct embed, once in the head/body placeholder. | `abc123xyz` |
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears once, on the placeholder (twice in the legacy script). | `abc123xyz` |
 | `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
 
 <Tabs groupId="embed-method">
-  <TabItem value="direct" label="Direct embed" default>
+  <TabItem value="body" label="Body only" default>
 
-Place the following snippet directly into the `<body>` of your page, where you want the widget to appear.
+Place the placeholder and the loader in the `<body>` of your page, where you want the widget to appear.
 
-```javascript
-<script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
-( function() {
-function async_load(){
-    document.body.setAttribute('data-zooza-api-url', 'ZOOZA_API_URL');
-    var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-    s.src = document.body.getAttribute('data-zooza-api-url') +
-     '/widgets/v2/?type=map&ref=' + encodeURIComponent( window.location.href );
-    var embedder = document.getElementById( 'YOUR_API_KEY' );
-    embedder.parentNode.insertBefore( s, embedder );
-}
-if ( document.readyState !== 'loading' ) {
-    async_load();
-} else if ( document.addEventListener ) {
-    document.addEventListener( 'DOMContentLoaded', async_load );
-} else {
-    document.attachEvent( 'onreadystatechange', function() {
-        if ( document.readyState === 'complete' ) { async_load(); }
-    } );
-}
-} )();
-</script>
+```html
+<div data-zooza-widget='map' data-zooza-id='YOUR_API_KEY'></div>
+<script async src='ZOOZA_API_URL/widgets/v2/loader.js'></script>
 ```
+
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
 
   </TabItem>
   <TabItem value="head-body" label="Head + body">
@@ -86,14 +69,15 @@ Then place the placeholder in the `<body>`, where you want the widget to appear:
 Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
 
   </TabItem>
-</Tabs>
-<AiPrompt task="Embed the map widget into my site">{`I'm integrating the Zooza map widget into my website.
+  <TabItem value="legacy" label="Legacy script">
 
-Read the full Zooza widget & API documentation first for context:
-https://docs.zooza.online/llms-full.txt
+:::note Legacy embed
+This is the original embed snippet. It remains fully supported and existing embeds keep working, but it is no longer maintained or developed. New capabilities, such as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder), are only available with the placeholder embed.
+:::
 
-Here is the embed snippet I need to install:
+Place the following snippet directly into the `<body>` of your page, where you want the widget to appear.
 
+```html
 <script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
 ( function() {
 function async_load(){
@@ -115,10 +99,23 @@ if ( document.readyState !== 'loading' ) {
 }
 } )();
 </script>
+```
+
+  </TabItem>
+</Tabs>
+<AiPrompt task="Embed the map widget into my site">{`I'm integrating the Zooza map widget into my website.
+
+Read the full Zooza widget & API documentation first for context:
+https://docs.zooza.online/llms-full.txt
+
+Here is the embed snippet I need to install:
+
+<div data-zooza-widget='map' data-zooza-id='YOUR_API_KEY'></div>
+<script async src='ZOOZA_API_URL/widgets/v2/loader.js'></script>
 
 Tasks:
-1. Tell me exactly where in my page to place this snippet.
-2. Replace YOUR_API_KEY (it appears twice) with the key from Publish > Widget in my Zooza app — ask me for it.
+1. Tell me exactly where in my page to place this snippet. Both lines can stay together in the <body>, or the loader <script> can move into <head> so the widget starts loading earlier — recommend what fits my site.
+2. Replace YOUR_API_KEY with the key from Publish > Widget in my Zooza app — ask me for it.
 3. Set ZOOZA_API_URL to my region: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.`}</AiPrompt>
 
 <AiPrompt task="Style the map widget to match my site">{`I've embedded the Zooza map widget and now I want it to match my site's existing design.
