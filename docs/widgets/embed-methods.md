@@ -1,54 +1,86 @@
 ---
 title: Choosing an embed method
-description: The two ways to embed a Zooza widget — the direct body snippet and the head/body split loader — and when to use each.
+description: How to embed a Zooza widget — a placeholder plus the loader, placed in the body only or split between head and body — and the legacy script snippet.
 sidebar_position: 2
 ---
 
 # Choosing an embed method
 
-**Every Zooza widget can be embedded in two ways. Both are fully supported, and neither is deprecated — pick the one that fits your page.**
+**Every Zooza widget is embedded with two pieces: a placeholder element marking where the widget renders, and the Zooza loader script. The only choice is where the loader goes.**
 
-## The two methods
+## The embed
 
-### Direct embed
-
-A single `<script>` snippet placed in the `<body>` of your page, at the spot where the widget should appear. The script injects the widget bundle and renders it in place.
-
-This is the simplest option when a page carries one widget, and it is what the Zooza app hands you by default.
-
-### Head + body split
-
-Two parts:
-
-- a small **loader** in the page `<head>`, and
-- a **placeholder** element in the `<body>` marking where the widget renders:
+The placeholder names the widget type and carries your API key:
 
 ```html
 <div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
 ```
 
-The loader starts fetching while the page is still being parsed, and the widget mounts inside the placeholder.
+The loader is a single script tag. Its URL carries your region host and the widget version:
+
+```html
+<script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
+```
+
+| Widget | `data-zooza-widget` | Loader version |
+|---|---|---|
+| Registration | `registration` | `v1` |
+| Profile | `profile` | `v1` |
+| Calendar | `calendar` | `v2` |
+| Checkout | `checkout` | `v2` |
+| Video | `video` | `v2` |
+| Map | `map` | `v2` |
+
+The widget mounts inside the placeholder.
+
+## Where to put the loader
+
+### Body only
+
+Both pieces go in the `<body>`, at the spot where the widget should appear:
+
+```html
+<div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
+<script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
+```
+
+This is the simplest option — one copy-paste, no template changes.
+
+### Head + body
+
+The loader goes in the page `<head>`, the placeholder in the `<body>`:
+
+```html
+<!-- in <head> -->
+<script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
+
+<!-- in <body>, where the widget should appear -->
+<div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
+```
+
+The loader is requested while the browser is still parsing the page, so the widget area fills sooner.
 
 ## Which one should I use?
 
-| | Direct embed | Head + body |
+| | Body only | Head + body |
 |---|---|---|
-| Where it goes | One snippet in the body | Loader in `<head>`, placeholder in `<body>` |
-| Starts loading | When the DOM is ready | During page parse, earlier |
-| Renders | In place of the snippet | Inside the placeholder element |
-| Best for | A single widget, quickest setup | Pages where the widget area should fill as early as possible |
+| Where it goes | Placeholder and loader together in the body | Loader in `<head>`, placeholder in `<body>` |
+| Starts loading | When the browser reaches the snippet | During page parse, as early as possible |
+| Best for | Quickest setup, page builders that only allow body content | Pages where the widget is the main content |
 
-The practical difference is **when loading starts**. The head loader is requested while the browser is still parsing the page, so on a heavy page the widget area fills noticeably sooner. The direct embed cannot start until its own snippet has been parsed.
+If the widget sits below the fold and the page is light, the difference is not worth restructuring your template for. If the widget is the main content of the page, put the loader in the head.
 
-If the widget sits below the fold and the page is light, the difference is not worth restructuring your template for. If the widget is the main content of the page, the head/body split is the better choice.
+## Legacy script
 
-:::info Already embedded with the direct method?
-There is nothing to migrate. The direct embed stays valid and keeps working. Switch only if you want the earlier start.
+Before the placeholder embed, widgets were embedded with a single inline `<script data-widget-id='zooza' id='YOUR_API_KEY'>` snippet. That snippet is still shown under **Legacy script** on each widget page.
+
+:::info Already using the legacy script?
+It remains fully supported and existing embeds keep working — there is nothing you have to change. It is, however, no longer maintained or developed: new capabilities, such as [configuring a widget on the placeholder](#configuring-a-widget-on-the-placeholder), are only available with the placeholder embed. Switch when you want those, or the earlier start.
 :::
 
 ## Where the region host lives
 
-Both methods need the Zooza API URL for your region:
+The embed needs the Zooza API URL for your region:
 
 | Region | API URL |
 |---|---|
@@ -56,11 +88,11 @@ Both methods need the Zooza API URL for your region:
 | UK | `https://uk.api.zooza.app` |
 | UAE | `https://asia.api.zooza.app` |
 
-In the direct embed it is set inside the snippet. In the head/body split it is part of the loader `src` only — the placeholder does not need it, because the loader derives the host from its own script URL.
+It is part of the loader `src` only — the placeholder does not need it, because the loader derives the host from its own script URL. In the legacy script it is set inside the snippet.
 
 ## Configuring a widget on the placeholder
 
-With the head/body method, initialisation options can ride on the placeholder itself as `data-zooza-*` attributes, instead of a separate `window.ZOOZA` block.
+Initialisation options can ride on the placeholder itself as `data-zooza-*` attributes, instead of a separate `window.ZOOZA` block.
 
 The attribute name is `data-zooza-` followed by the option key with underscores written as hyphens — so the option `course_list_display` becomes `data-zooza-course-list-display`:
 
@@ -86,4 +118,4 @@ Each widget page lists the options it accepts — see [Registration widget](./re
 
 ## Getting the snippet
 
-Both snippets are generated for you in the Zooza app under `Publish > Widget`, with your API key and region already filled in.
+The embed is generated for you in the Zooza app under `Publish > Widget`, with your API key and region already filled in.
