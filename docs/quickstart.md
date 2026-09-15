@@ -36,45 +36,22 @@ Widgets are pre-built Zooza components that you embed directly on your website. 
 
 #### Step 2: Add the embed code
 
-Paste this script into your HTML page where you want the registration form to appear. Replace `YOUR_API_KEY` with your actual widget API key, and `ZOOZA_API_URL` with your [region's base URL](concepts.md#api-regions).
+Paste these two lines into your HTML page where you want the registration form to appear. Replace `YOUR_API_KEY` with your actual widget API key, and `ZOOZA_API_URL` with your [region's base URL](concepts.md#api-regions).
 
 ```html
-<script data-version="v1" data-widget-id="zooza" id="YOUR_API_KEY" type="text/javascript">
-(function() {
-  function async_load() {
-    document.body.setAttribute("data-zooza-api-url", "ZOOZA_API_URL");
-    var s = document.createElement("script");
-    s.type = "text/javascript";
-    s.async = true;
-    s.src =
-      document.body.getAttribute("data-zooza-api-url") +
-      "/widgets/v1/?type=registration&ref=" +
-      encodeURIComponent(window.location.href);
-    var embedder = document.getElementById("YOUR_API_KEY");
-    embedder.parentNode.insertBefore(s, embedder);
-  }
-  if (document.readyState !== "loading") {
-    async_load();
-  } else if (document.addEventListener) {
-    document.addEventListener("DOMContentLoaded", async_load);
-  } else {
-    document.attachEvent("onreadystatechange", function() {
-      if (document.readyState === "complete") {
-        async_load();
-      }
-    });
-  }
-})();
-</script>
+<div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
+<script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
 ```
 
 For the Europe region, `ZOOZA_API_URL` is `https://api.zooza.app`.
 
-:::tip Other widget types
-Change the `type=registration` parameter to embed different widgets: `calendar`, `profile`, `video`, `sales`, `map`.
+:::tip Load faster from the head
+You can move the loader `<script>` into your page `<head>` and keep only the placeholder `<div>` in the body — the widget then starts loading earlier. See [Choosing an embed method](widgets/embed-methods.md).
 :::
 
-![Embed code in Zooza](/img/widget-embed-code.png)
+:::tip Other widget types
+Change `data-zooza-widget` to embed a different widget, and match the loader version: `registration` and `profile` use `v1`; `calendar`, `checkout`, `video` and `map` use `v2`.
+:::
 
 #### Step 3: Verify
 
@@ -91,39 +68,14 @@ Open your page in a browser. You should see a Zooza registration form displaying
 Read the full Zooza widget & API documentation first for context:
 https://docs.zooza.online/llms-full.txt
 
-Here is the embed snippet (registration form — change type=registration to calendar, profile, video, map or sales for other widgets):
+Here is the embed snippet (registration form — for other widgets change data-zooza-widget to profile (loader v1), or calendar, checkout, video or map (loader v2)):
 
-<script data-version="v1" data-widget-id="zooza" id="YOUR_API_KEY" type="text/javascript">
-(function() {
-  function async_load() {
-    document.body.setAttribute("data-zooza-api-url", "ZOOZA_API_URL");
-    var s = document.createElement("script");
-    s.type = "text/javascript";
-    s.async = true;
-    s.src =
-      document.body.getAttribute("data-zooza-api-url") +
-      "/widgets/v1/?type=registration&ref=" +
-      encodeURIComponent(window.location.href);
-    var embedder = document.getElementById("YOUR_API_KEY");
-    embedder.parentNode.insertBefore(s, embedder);
-  }
-  if (document.readyState !== "loading") {
-    async_load();
-  } else if (document.addEventListener) {
-    document.addEventListener("DOMContentLoaded", async_load);
-  } else {
-    document.attachEvent("onreadystatechange", function() {
-      if (document.readyState === "complete") {
-        async_load();
-      }
-    });
-  }
-})();
-</script>
+<div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
+<script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
 
 Tasks:
-1. Tell me where to place this snippet on my page.
-2. Replace YOUR_API_KEY (it appears twice) with my widget key from Team & Settings > Publish — ask me for it.
+1. Tell me where to place this snippet on my page. Both lines can stay together in the <body>, or the loader <script> can move into <head> so the widget starts loading earlier — recommend what fits my site.
+2. Replace YOUR_API_KEY with my widget key from Team & Settings > Publish — ask me for it.
 3. Set ZOOZA_API_URL to my region: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.`}</AiPrompt>
 
 ---
