@@ -61,6 +61,8 @@ How your customers navigate to a booking:
 
 **[Checkout Widget](checkout-widget.md)** — Handles purchases for digital products and service orders.
 
+**[Contact Widget](contact-widget.md)** — Replaces your website's contact form and turns every enquiry into a contact in Zooza.
+
 ### Installation options
 
 :::warning Important
