@@ -25,6 +25,7 @@ const sidebars = {
         'widgets/profile-widget',
         'widgets/video-widget',
         'widgets/checkout-widget',
+        'widgets/contact-widget',
       ],
     },
     {

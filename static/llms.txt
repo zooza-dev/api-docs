@@ -26,6 +26,7 @@
 - [Profile Widget](https://docs.zooza.online/widgets/profile-widget): Customer portal — booking history, payment management, make-up session booking.
 - [Video Widget](https://docs.zooza.online/widgets/video-widget): Secure video content embedding for logged-in users.
 - [Checkout Widget](https://docs.zooza.online/widgets/checkout-widget): Purchase flow for digital products, coupons, and vouchers.
+- [Contact Widget](https://docs.zooza.online/widgets/contact-widget): Contact form that turns website enquiries into Zooza contacts — form configurations, hidden fields, campaign attribution, spam protection, styling, analytics events.
 
 ## Reference
 

@@ -50,7 +50,7 @@ You can move the loader `<script>` into your page `<head>` and keep only the pla
 :::
 
 :::tip Other widget types
-Change `data-zooza-widget` to embed a different widget, and match the loader version: `registration` and `profile` use `v1`; `calendar`, `checkout`, `video` and `map` use `v2`.
+Change `data-zooza-widget` to embed a different widget, and match the loader version: `registration`, `profile` and `contact` use `v1`; `calendar`, `checkout`, `video` and `map` use `v2`.
 :::
 
 #### Step 3: Verify
@@ -60,7 +60,7 @@ Open your page in a browser. You should see a Zooza registration form displaying
 #### Next steps
 
 - [Customise your widget](widgets/registration-widget.md) with filters and styling
-- Explore other widgets: [Calendar](widgets/calendar-widget.md), [Map](widgets/map-widget.md), [Profile](widgets/profile-widget.md)
+- Explore other widgets: [Calendar](widgets/calendar-widget.md), [Map](widgets/map-widget.md), [Profile](widgets/profile-widget.md), [Contact](widgets/contact-widget.md)
 - Learn [Zooza terminology](concepts.md)
 
 <AiPrompt task="Embed my first Zooza widget">{`Help me embed my first Zooza widget on my website.
@@ -68,7 +68,7 @@ Open your page in a browser. You should see a Zooza registration form displaying
 Read the full Zooza widget & API documentation first for context:
 https://docs.zooza.online/llms-full.txt
 
-Here is the embed snippet (registration form — for other widgets change data-zooza-widget to profile (loader v1), or calendar, checkout, video or map (loader v2)):
+Here is the embed snippet (registration form — for other widgets change data-zooza-widget to profile or contact (loader v1), or calendar, checkout, video or map (loader v2)):
 
 <div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
 <script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>
