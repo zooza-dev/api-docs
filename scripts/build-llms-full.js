@@ -28,6 +28,7 @@ const PROSE_DOCS = [
   'widgets/profile-widget.md',
   'widgets/video-widget.md',
   'widgets/checkout-widget.md',
+  'widgets/contact-widget.md',
   'enums.md',
 ];
 

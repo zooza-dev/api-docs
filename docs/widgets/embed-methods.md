@@ -26,6 +26,7 @@ The loader is a single script tag. Its URL carries your region host and the widg
 |---|---|---|
 | Registration | `registration` | `v1` |
 | Profile | `profile` | `v1` |
+| Contact | `contact` | `v1` |
 | Calendar | `calendar` | `v2` |
 | Checkout | `checkout` | `v2` |
 | Video | `video` | `v2` |
@@ -114,7 +115,7 @@ Values are interpreted the same way as URL query parameters:
 
 `data-zooza-widget`, `data-zooza-id` and `data-zooza-api-url` are reserved for the embed itself and are never treated as options.
 
-Each widget page lists the options it accepts — see [Registration widget](./registration-widget.md), [Calendar widget](./calendar-widget.md), [Map widget](./map-widget.md), [Profile widget](./profile-widget.md), [Video widget](./video-widget.md) and [Checkout widget](./checkout-widget.md).
+Each widget page lists the options it accepts — see [Registration widget](./registration-widget.md), [Calendar widget](./calendar-widget.md), [Map widget](./map-widget.md), [Profile widget](./profile-widget.md), [Video widget](./video-widget.md), [Checkout widget](./checkout-widget.md) and [Contact widget](./contact-widget.md).
 
 ## Getting the snippet
 
