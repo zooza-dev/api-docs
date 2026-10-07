@@ -50,7 +50,7 @@ You can move the loader `<script>` into your page `<head>` and keep only the pla
 :::
 
 :::tip Other widget types
-Change `data-zooza-widget` to embed a different widget, and match the loader version: `registration`, `profile` and `contact` use `v1`; `calendar`, `checkout`, `video` and `map` use `v2`.
+Change `data-zooza-widget` to embed a different widget, and match the loader version: `registration`, `profile`, `contact` and `checkout` use `v1`; `calendar`, `video` and `map` use `v2`.
 :::
 
 #### Step 3: Verify
@@ -68,7 +68,7 @@ Open your page in a browser. You should see a Zooza registration form displaying
 Read the full Zooza widget & API documentation first for context:
 https://docs.zooza.online/llms-full.txt
 
-Here is the embed snippet (registration form — for other widgets change data-zooza-widget to profile or contact (loader v1), or calendar, checkout, video or map (loader v2)):
+Here is the embed snippet (registration form — for other widgets change data-zooza-widget to profile, contact or checkout (loader v1), or calendar, video or map (loader v2)):
 
 <div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY'></div>
 <script async src='ZOOZA_API_URL/widgets/v1/loader.js'></script>

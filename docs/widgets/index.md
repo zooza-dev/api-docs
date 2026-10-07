@@ -59,7 +59,7 @@ How your customers navigate to a booking:
 
 **[Video Widget](video-widget.md)** — Embeds video content related to your services.
 
-**[Checkout Widget](checkout-widget.md)** — Handles purchases for digital products and service orders.
+**[Checkout Widget](checkout-widget.md)** — Sells your products, including entry passes with a payment plan, and takes the buyer through payment. Replaces the [legacy v2 checkout](checkout-widget-v2.md).
 
 **[Contact Widget](contact-widget.md)** — Replaces your website's contact form and turns every enquiry into a contact in Zooza.
 
