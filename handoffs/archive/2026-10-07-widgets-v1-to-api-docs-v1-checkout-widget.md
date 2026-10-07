@@ -2,7 +2,7 @@
 handoff_id: widgets-v1-to-api-docs-20261007-001
 from: widgets-v1
 to: api-docs
-status: agreed
+status: resolved
 created: 2026-10-07
 updated: 2026-10-07
 related_specs: ["W1-20260918-002"]
@@ -115,6 +115,11 @@ v2 custom CSS won't carry over; keep v2 reachable.
 
 ## Resolution
 <!-- Filled when status moves to "resolved" -->
-**Resolved on:**
-**Outcome:**
-**Related specs/PRs:**
+**Resolved on:** 2026-10-07
+**Outcome:** Built as agreed. `docs/widgets/checkout-widget.md` now documents the v1 checkout (embed, URL parameters,
+buyer flow, settings, styling, migration from v2). The legacy page moved to `docs/widgets/checkout-widget-v2.md`
+with a deprecation banner, and wrong v2 claims were corrected (`data-zooza-product`, coupon field). Loader tables,
+quickstart, the widgets index and llms.txt list checkout as v1. Merged to `test` (staging). Production goes out
+with the widgets release via the production deploy workflow. Open follow-ups for widgets-v1: update spec
+W1-20260918-002, and decide on a wp-plugin handoff for the v1 checkout embed.
+**Related specs/PRs:** W1-20260918-002; api-docs branch `feature-v1-checkout-widget`
