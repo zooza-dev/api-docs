@@ -25,7 +25,8 @@
 - [Map Widget](https://docs.zooza.online/widgets/map-widget): Location-based venue and class search with map view.
 - [Profile Widget](https://docs.zooza.online/widgets/profile-widget): Customer portal — booking history, payment management, make-up session booking.
 - [Video Widget](https://docs.zooza.online/widgets/video-widget): Secure video content embedding for logged-in users.
-- [Checkout Widget](https://docs.zooza.online/widgets/checkout-widget): Purchase flow for digital products, coupons, and vouchers.
+- [Checkout Widget](https://docs.zooza.online/widgets/checkout-widget): Sells products, including entry passes with a payment plan; product chosen via ?product= in the page URL.
+- [Checkout Widget v2 (deprecated)](https://docs.zooza.online/widgets/checkout-widget-v2): Legacy v2 checkout, kept for existing embeds.
 - [Contact Widget](https://docs.zooza.online/widgets/contact-widget): Contact form that turns website enquiries into Zooza contacts — form configurations, hidden fields, campaign attribution, spam protection, styling, analytics events.
 
 ## Reference
