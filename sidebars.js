@@ -14,6 +14,29 @@ const sidebars = {
       label: 'Quickstart',
     },
     {
+      type: 'doc',
+      id: 'make-up-sessions',
+      label: 'Make-up sessions',
+    },
+    {
+      type: 'doc',
+      id: 'ai-assistants',
+      label: 'AI assistants & MCP',
+    },
+    {
+      type: 'category',
+      label: 'Examples',
+      link: { type: 'doc', id: 'examples/index' },
+      items: [
+        'examples/multi-step-trial-booking',
+        'examples/branded-booking-tiles',
+        'examples/location-map',
+        'examples/filtered-timetable',
+        'examples/custom-catalogue',
+        'examples/chatbot-logged-in-client',
+      ],
+    },
+    {
       type: 'category',
       label: 'Widgets',
       link: { type: 'doc', id: 'widgets/index' },
@@ -25,6 +48,7 @@ const sidebars = {
         'widgets/profile-widget',
         'widgets/video-widget',
         'widgets/checkout-widget',
+        'widgets/checkout-widget-v2',
         'widgets/contact-widget',
       ],
     },

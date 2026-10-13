@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="mockup.css">
+<style>
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .chip { border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 15px; font-size: 14px; }
+  .chip.on { background: var(--plum); border-color: var(--plum); color: #fff; font-weight: 700; }
+  .clear { font-size: 14px; color: var(--muted); margin: 4px 0 20px; }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  .day h4 { margin: 0 0 8px; font-size: 15px; }
+  .cls { background: #fff; border: 1.5px solid var(--line); border-top: 4px solid var(--mint); border-radius: 14px; padding: 10px 10px 12px; font-size: 12px; margin-bottom: 10px; text-align: center; }
+  .cls.alt { border-top-color: var(--sun); }
+  .cls .term { color: var(--muted); }
+  .cls b { display: block; color: var(--plum); font-size: 14px; margin: 6px 0 2px; }
+  .cls .ok { color: #2f8f6b; font-weight: 700; margin: 6px 0 8px; }
+  .cls .wl { color: #b4542f; font-weight: 700; margin: 6px 0 8px; }
+  .cls .btn { padding: 5px 12px; font-size: 12px; }
+  .empty { border: 1.5px dashed var(--line); border-radius: 14px; padding: 18px 8px; font-size: 12px; color: var(--muted); text-align: center; }
+</style></head>
+<body><div class="browser">
+  <div class="browser__bar"><i></i><i></i><i></i><div class="browser__url">littlemovers.example/timetable/</div></div>
+  <div class="site-nav"><div class="logo">little<span>movers</span></div><div class="nav-links"><span>Classes</span><span>Locations</span><span>Timetable</span><span>Parent zone</span></div><div class="nav-cta">Book a trial</div></div>
+  <div class="page">
+    <div class="eyebrow">Timetable</div><h1>This term's classes</h1>
+    <div class="chips"><span class="chip on">Riverton</span><span class="chip">Oakbridge</span><span class="chip">Hillcrest</span><span class="chip">Elm Park</span></div>
+    <div class="chips"><span class="chip">Tiny Movers</span><span class="chip on">Mini Movers</span><span class="chip">Big Movers</span><span class="chip">Family</span></div>
+    <div class="clear">✕ Clear filters</div>
+    <div class="week">
+      <div class="day"><h4>Monday</h4><div class="cls"><div class="term">7 Sep – 28 Jun</div><b>Mini Movers · Beginners</b>16:00 – 16:45<br>Riverside Hall<div class="ok">Spaces available</div><span class="btn btn--solid">Enrol</span></div></div>
+      <div class="day"><h4>Tuesday</h4><div class="empty">No classes</div></div>
+      <div class="day"><h4>Wednesday</h4><div class="cls alt"><div class="term">9 Sep – 30 Jun</div><b>Mini Movers · Morning</b>10:00 – 10:45<br>Riverside Hall<div class="ok">Spaces available</div><span class="btn btn--solid">Enrol</span></div></div>
+      <div class="day"><h4>Thursday</h4><div class="cls"><div class="term">10 Sep – 1 Jul</div><b>Mini Movers · Improvers</b>16:30 – 17:15<br>Mill Lane Studio<div class="wl">Waiting list</div><span class="btn">Join list</span></div></div>
+      <div class="day"><h4>Friday</h4><div class="empty">No classes</div></div>
+      <div class="day"><h4>Saturday</h4><div class="cls alt"><div class="term">12 Sep – 26 Jun</div><b>Mini Movers · Weekend</b>09:30 – 10:15<br>Riverside Hall<div class="ok">Spaces available</div><span class="btn btn--solid">Enrol</span></div><div class="cls"><div class="term">12 Sep – 26 Jun</div><b>Mini Movers · Weekend 2</b>10:30 – 11:15<br>Riverside Hall<div class="ok">Spaces available</div><span class="btn btn--solid">Enrol</span></div></div>
+      <div class="day"><h4>Sunday</h4><div class="empty">No classes</div></div>
+    </div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div></body></html>

@@ -12,6 +12,10 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 **This widget shows a real time calendar of activities based on your settings.**
 
+:::tip See it in practice
+- [Weekly timetable with filters](/examples/filtered-timetable)
+:::
+
 ## Installation
 
 ### WordPress

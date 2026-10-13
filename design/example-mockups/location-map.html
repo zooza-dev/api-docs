@@ -1,0 +1,55 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="mockup.css">
+<style>
+  .wrap { display: grid; grid-template-columns: 1fr 330px; gap: 18px; }
+  .map { position: relative; border-radius: 24px; overflow: hidden; height: 470px; background: #cfe9f2; }
+  .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .search { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; gap: 10px; align-items: center; }
+  .search input { flex: 1; border: 0; border-radius: 999px; padding: 11px 18px; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.08); font-family: inherit; }
+  .radius { background: #fff; border-radius: 999px; padding: 9px 16px; font-size: 13px; box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+  .panel h3 { margin: 0 0 4px; color: var(--plum); }
+  .panel .addr { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
+  .cls { border-top: 1px solid var(--line); padding: 12px 0; font-size: 14px; }
+  .cls b { display: block; }
+  .cls span { color: var(--muted); }
+  .cls a { float: right; color: var(--plum); font-weight: 800; text-decoration: none; }
+</style></head>
+<body><div class="browser">
+  <div class="browser__bar"><i></i><i></i><i></i><div class="browser__url">littlemovers.example/locations/</div></div>
+  <div class="site-nav"><div class="logo">little<span>movers</span></div><div class="nav-links"><span>Classes</span><span>Locations</span><span>Timetable</span><span>Parent zone</span></div><div class="nav-cta">Book a trial</div></div>
+  <div class="page">
+    <div class="center"><div class="eyebrow">Locations</div><h1>Find your nearest class</h1><p class="lead">We run classes in twelve towns, with new venues every term. Search by postcode or browse the map.</p></div>
+    <div class="wrap">
+      <div class="map">
+        <svg viewBox="0 0 800 470" preserveAspectRatio="xMidYMid slice">
+          <path d="M120 470 C 90 380, 160 330, 150 260 C 140 190, 210 150, 260 120 C 320 85, 300 30, 360 10 L 520 0 C 560 60, 520 120, 580 160 C 640 200, 620 280, 660 330 C 700 380, 690 430, 720 470 Z" fill="#e7f1dc"/>
+          <path d="M420 470 C 430 420, 470 400, 500 360 C 540 310, 600 330, 640 380 C 670 420, 700 440, 720 470 Z" fill="#d8eacb"/>
+          <path d="M180 300 C 260 280, 330 330, 420 300 S 560 240, 640 280" stroke="#fff" stroke-width="5" fill="none" opacity=".8"/>
+          <path d="M300 120 C 330 200, 360 260, 380 360 S 400 440, 410 470" stroke="#fff" stroke-width="4" fill="none" opacity=".8"/>
+          <g fill="#ff8a6b" stroke="#fff" stroke-width="3">
+            <path d="M330 150 c0-14 22-14 22 0 c0 12-11 22-11 22 s-11-10-11-22z"/>
+            <path d="M262 236 c0-14 22-14 22 0 c0 12-11 22-11 22 s-11-10-11-22z"/>
+            <path d="M440 270 c0-14 22-14 22 0 c0 12-11 22-11 22 s-11-10-11-22z"/>
+            <path d="M520 220 c0-14 22-14 22 0 c0 12-11 22-11 22 s-11-10-11-22z"/>
+            <path d="M380 340 c0-14 22-14 22 0 c0 12-11 22-11 22 s-11-10-11-22z"/>
+            <path d="M560 360 c0-14 22-14 22 0 c0 12-11 22-11 22 s-11-10-11-22z"/>
+          </g>
+          <path d="M434 266 c0-20 34-20 34 0 c0 18-17 32-17 32 s-17-14-17-32z" fill="#5b2a86" stroke="#fff" stroke-width="3"/>
+          <circle cx="451" cy="300" r="70" fill="#5b2a86" opacity=".08"/>
+        </svg>
+        <div class="search"><input value="RV4 2LM"><div class="radius">Within 10 miles ▾</div><div class="radius">◎ Near me</div></div>
+      </div>
+      <div class="card panel">
+        <h3>Riverside Community Hall</h3>
+        <p class="addr">12 Mill Road, Riverton RV4 2LM</p>
+        <span class="btn btn--sun">Navigate</span>
+        <div style="margin-top:14px">
+          <div class="cls"><a href="#">Book →</a><b>Tiny Movers</b><span>Mon 16:00 · 12–24 months</span></div>
+          <div class="cls"><a href="#">Book →</a><b>Mini Movers</b><span>Wed 10:00 · 2–3 years</span></div>
+          <div class="cls"><a href="#">Book →</a><b>Big Movers</b><span>Sat 09:30 · 4–6 years</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand, map and data</div>
+  </div>
+</div></body></html>

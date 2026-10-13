@@ -12,6 +12,10 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 **This widget provides a map view of your locations. Upon selecting a location, its contact details are shown and available classes for this location are listed below the map. When a class is clicked, the customer is taken to the [Registration Form](./registration-widget.md).**
 
+:::tip See it in practice
+- [Branch and franchise location map](/examples/location-map)
+:::
+
 ## Installation
 
 ### WordPress

@@ -10,6 +10,10 @@ sidebar_position: 1
 
 However, this is just the beginning — Zooza offers unparalleled customization for both the appearance and behavior of each widget, giving your business a unique edge.
 
+:::tip See it in practice
+- [All integration examples](/examples)
+:::
+
 ## Installation
 
 You can integrate Zooza widgets using one of our official plugins for WordPress or Wix for quick and simple setup, or you can embed them manually. But before you install any widget on your website, consider how you want to use it. This mainly concerns the booking process. Other aspects of the integration are typically very straightforward.
@@ -59,7 +63,7 @@ How your customers navigate to a booking:
 
 **[Video Widget](video-widget.md)** — Embeds video content related to your services.
 
-**[Checkout Widget](checkout-widget.md)** — Handles purchases for digital products and service orders.
+**[Checkout Widget](checkout-widget.md)** — Sells your products, including entry passes with a payment plan, and takes the buyer through payment. Replaces the [legacy v2 checkout](checkout-widget-v2.md).
 
 **[Contact Widget](contact-widget.md)** — Replaces your website's contact form and turns every enquiry into a contact in Zooza.
 

@@ -2,6 +2,7 @@
 id: registration-widget-buyer-fields
 title: Buyer-Only Extra Fields
 sidebar_label: Buyer-Only Extra Fields
+description: Collect buyer-scoped extra fields once per booking in the Zooza registration widget instead of once per attendee.
 ---
 
 # Buyer-Only Extra Fields in the Registration Widget

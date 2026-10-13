@@ -27,8 +27,8 @@ The loader is a single script tag. Its URL carries your region host and the widg
 | Registration | `registration` | `v1` |
 | Profile | `profile` | `v1` |
 | Contact | `contact` | `v1` |
+| Checkout | `checkout` | `v1` |
 | Calendar | `calendar` | `v2` |
-| Checkout | `checkout` | `v2` |
 | Video | `video` | `v2` |
 | Map | `map` | `v2` |
 

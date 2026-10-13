@@ -30,7 +30,10 @@ Every REST API request requires these three headers:
 
 ## Obtaining your REST API key
 
-REST API keys are different from widget API keys and must be requested through [Zooza support](mailto:support@zooza.online). A widget API key **cannot** be used for REST API calls.
+1. Create a free Zooza account at [signup.zooza.online](https://signup.zooza.online) if you don't have one yet.
+2. Request a REST API key from [Zooza support](mailto:support@zooza.online), mentioning the company you created.
+
+REST API keys are different from widget API keys. A widget API key **cannot** be used for REST API calls.
 
 ---
 

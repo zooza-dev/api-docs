@@ -12,6 +12,10 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 **This is essentially a members only area, or a customer portal. It displays order/booking history as well as allows management of all bookings and payments.**
 
+:::tip See it in practice
+- [Give your AI chatbot the logged-in client](/examples/chatbot-logged-in-client)
+:::
+
 ## Installation
 
 ### WordPress

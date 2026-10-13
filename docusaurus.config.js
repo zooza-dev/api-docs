@@ -65,7 +65,7 @@ const config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.7,
-          ignorePatterns: ['/tags/**', '/search'],
+          ignorePatterns: ['/tags/**', '/search', '/search/'],
           filename: 'sitemap.xml',
         },
       }),
@@ -116,6 +116,7 @@ const config = {
         },
         items: [
           { to: '/quickstart', label: 'Quickstart', position: 'left' },
+          { to: '/examples', label: 'Examples', position: 'left' },
           { to: '/widgets', label: 'Widgets', position: 'left' },
           { to: '/api', label: 'API', position: 'left' },
           {
@@ -134,6 +135,7 @@ const config = {
             items: [
               { label: 'Quickstart', to: '/quickstart' },
               { label: 'Concepts', to: '/concepts' },
+              { label: 'Examples', to: '/examples' },
               { label: 'Widgets', to: '/widgets' },
               { label: 'API Reference', to: '/api' },
               { label: 'Enums', to: '/enums' },

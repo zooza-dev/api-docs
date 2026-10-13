@@ -132,6 +132,33 @@ A widget group is a set of widgets sharing the same widget API key. One group pe
 
 ---
 
+## Terms in other languages
+
+Zooza runs in many markets, and clients, staff and search queries use local words for the same concepts. Use this table to map a local term to the English name used in these docs and to the API name.
+
+| English (docs) | API | Slovak | Czech | Polish | German | French |
+|---|---|---|---|---|---|---|
+| Programme | `course` | Program / Kurz | Kurz | Program | Programm / Kurs | Programme |
+| Class | `schedule` | Skupina / Lekcia | Skupina / Lekce | Grupa | Gruppe / Kurs | Classe |
+| Session | `event` | Termín / Hodina / Lekcia | Termín / Hodina / Lekce | Termin / Zajęcia | Termin / Stunde / Einheit | Séance |
+| Booking | `registration` | Prihlásenie / Zápis / Registrácia | Přihlášení / Zápis / Registrace | Rezerwacja / Zapis | Buchung / Anmeldung | Réservation |
+| Client | `user` | Klient / Zákazník | Klient / Zákazník | Klient | Kunde / Klient | Client |
+| Instructor | `trainer` | Lektor | Lektor | Instruktor | Kursleiter | Instructeur |
+| Venue | `place` | Miesto / Sála / Prevádzka | Místo / Sál / Provozovna | Miejsce | Standort / Ort / Halle | Lieu |
+| Trial session | `trial` | Skúšobná hodina | Ukázková / Zkušební hodina | Lekcja próbna | Probestunde / Schnupperstunde | Séance d'essai |
+| Make-up session | `replacement` | Náhradná hodina / Náhrada / Náhradka | Náhradní hodina / Náhrada | Termin zastępczy | Ersatzstunde / Nachholtermin | Séance de rattrapage |
+| Waiting list | `waitlist` | Čakacia listina / Poradovník | Čekací listina / Pořadník | — | Warteliste | — |
+| Block | `segment` | Blok | Blok | Blok | Block | Bloc |
+| Payment plan | `payment_schedule` | Platobný plán | Platební plán | Plan płatności | Zahlungsplan | Plan de paiement |
+| Aliquot (pro-rated price) | `aliquot` | Alikvóta / alikvótna suma | Alikvota | Płatność proporcjonalna | Anteilige Zahlung | — |
+| Membership / subscription | — | Členstvo / Predplatné | Členství / Předplatné | Członkostwo | Mitgliedschaft / Abo | Abonnement |
+
+:::note Make-up session ≠ free credits
+A make-up session replaces a session the client missed. Free credits are extra sessions granted on top of a booking. They are different features in Zooza, even though some operators use the words loosely.
+:::
+
+---
+
 ## API regions
 
 | Region | Base URL |

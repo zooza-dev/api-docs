@@ -1,0 +1,203 @@
+---
+title: Checkout widget (v2, deprecated)
+sidebar_label: Checkout widget (v2, deprecated)
+description: The legacy v2 Zooza checkout widget. Deprecated — use the v1 checkout widget for new embeds.
+sidebar_position: 7
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import AiPrompt from '@site/src/components/AiPrompt';
+
+:::warning Deprecated
+This page describes the **legacy v2 checkout widget**, loaded from `/widgets/v2/`. It keeps working on existing websites, but it is no longer developed. For new embeds, use the [checkout widget](./checkout-widget.md) loaded from `/widgets/v1/`. See [Migrating from the v2 checkout](./checkout-widget.md#migrating-from-the-v2-checkout).
+:::
+
+# Checkout widget (v2, deprecated)
+
+**This widget provides a way to purchase digital products and services such as Videos or eBooks, discount coupons, prepaid coupons or Entrance vouchers or other various services.**
+
+## Installation
+
+### WordPress
+
+When your WordPress plugin is installed, just head to `Settings > Zooza` and from dropdown of pages, select a page where you want the form to appear.
+
+#### Shortcodes
+
+You can also use shortcodes to place the form anywhere within the page. More configuration options for shortcodes is described below in their respective sections.
+
+```plaintext
+[zooza type="checkout"]
+```
+
+### Wix
+
+In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key and as a widget choose `Checkout`.
+
+### Embed code
+
+Embed this widget with a placeholder element and the Zooza loader. The loader can sit in the `<body>` right after the placeholder, or in the `<head>` so the widget starts loading earlier. See [Choosing an embed method](./embed-methods.md) if you are not sure which one to use.
+
+| Placeholder | Description | Example Value |
+|---|---|---|
+| `YOUR_API_KEY` | Replace with the API key found in the application under `Publish > Widget`. Appears once, on the placeholder (twice in the legacy script). | `abc123xyz` |
+| `ZOOZA_API_URL` | Replace with the Zooza API URL for your region: Europe: `https://api.zooza.app`, UK: `https://uk.api.zooza.app`, UAE: `https://asia.api.zooza.app` | `https://api.zooza.app` |
+
+<Tabs groupId="embed-method">
+  <TabItem value="body" label="Body only" default>
+
+Place the placeholder and the loader in the `<body>` of your page, where you want the widget to appear.
+
+```html
+<div data-zooza-widget='checkout' data-zooza-id='YOUR_API_KEY'></div>
+<script async src='ZOOZA_API_URL/widgets/v2/loader.js'></script>
+```
+
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
+
+  </TabItem>
+  <TabItem value="head-body" label="Head + body">
+
+Place the loader in the `<head>` of your page:
+
+```html
+<script async src='ZOOZA_API_URL/widgets/v2/loader.js'></script>
+```
+
+Then place the placeholder in the `<body>`, where you want the widget to appear:
+
+```html
+<div data-zooza-widget='checkout' data-zooza-id='YOUR_API_KEY'></div>
+```
+
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
+
+  </TabItem>
+  <TabItem value="legacy" label="Legacy script">
+
+:::note Legacy embed
+This is the original embed snippet. It remains fully supported and existing embeds keep working, but it is no longer maintained or developed. New capabilities, such as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder), are only available with the placeholder embed.
+:::
+
+Place the following snippet directly into the `<body>` of your page, where you want the widget to appear.
+
+```html
+<script data-version='v2' data-widget-id='zooza' id='YOUR_API_KEY' type='text/javascript'>
+( function() {
+function async_load(){
+    document.body.setAttribute('data-zooza-api-url', 'ZOOZA_API_URL');
+    var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+    s.src = document.body.getAttribute('data-zooza-api-url') +
+     '/widgets/v2/?type=checkout&ref=' + encodeURIComponent( window.location.href );
+    var embedder = document.getElementById( 'YOUR_API_KEY' );
+    embedder.parentNode.insertBefore( s, embedder );
+}
+if ( document.readyState !== 'loading' ) {
+    async_load();
+} else if ( document.addEventListener ) {
+    document.addEventListener( 'DOMContentLoaded', async_load );
+} else {
+    document.attachEvent( 'onreadystatechange', function() {
+        if ( document.readyState === 'complete' ) { async_load(); }
+    } );
+}
+} )();
+</script>
+```
+
+  </TabItem>
+</Tabs>
+<AiPrompt task="Embed the checkout widget into my site">{`I'm integrating the Zooza checkout widget into my website.
+
+Read the full Zooza widget & API documentation first for context:
+https://docs.zooza.online/llms-full.txt
+
+Here is the embed snippet I need to install:
+
+<div data-zooza-widget='checkout' data-zooza-id='YOUR_API_KEY'></div>
+<script async src='ZOOZA_API_URL/widgets/v2/loader.js'></script>
+
+Tasks:
+1. Tell me exactly where in my page to place this snippet. Both lines can stay together in the <body>, or the loader <script> can move into <head> so the widget starts loading earlier — recommend what fits my site.
+2. Replace YOUR_API_KEY with the key from Publish > Widget in my Zooza app — ask me for it.
+3. Set ZOOZA_API_URL to my region: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.`}</AiPrompt>
+
+<AiPrompt task="Style the checkout widget to match my site">{`I've embedded the Zooza checkout widget and now I want it to match my site's existing design.
+
+Read the Zooza widget documentation for the available CSS hooks and the "Use CSS" option:
+https://docs.zooza.online/llms-full.txt
+
+Tasks:
+1. Inspect my site's current design tokens — primary colour, fonts, border radius, spacing.
+2. Write CSS that styles the checkout flow (product list, buyer form, the pay button) to match my brand.
+3. Keep it accessible and responsive on mobile.
+
+My brand: [describe your colours and fonts here, or point me at your stylesheet].`}</AiPrompt>
+
+## Settings
+
+These settings are managed within the Zooza's main application `Publish > Widget > Checkout`.
+
+### URL
+
+This will let Zooza know where your widget resides so that it can [redirect your customers](index.md#importance-of-a-url) to it when necessary.
+
+### Use CSS
+
+This will load default Zooza styling. By default this is turned on. Typically you only want to override couple of styles but if you want, you can turn this off and create your own styling from scratch. However we recommend downloading the default styling and go from there, instead of building everything from scratch.
+
+You can download the default css from this URL:
+
+`API_URL/widgets/v2/css/?widget=checkout`
+
+## Initialisation options
+
+### `product`
+
+_Type: Integer, String_
+
+Preselects which product the checkout sells. When this is not set, the widget renders a product selector and lets the customer choose.
+
+| Value | Description | Example Value |
+|---|---|---|
+| `YOUR_PRODUCT_ID` | Id of the product to sell. | `123` |
+
+Set it in the URL of the page the widget is on. It cannot be set on the placeholder.
+
+```plaintext
+https://sample-site.com/checkout?product=YOUR_PRODUCT_ID
+```
+
+### `currency`
+
+_Type: String (Three letter ISO 4217 code)_
+
+Sets the currency the checkout is presented in. The currency must be configured on the product.
+
+| Value | Description | Example Value |
+|---|---|---|
+| `CODE` | Three letter ISO 4217 currency code. | `CZK` |
+
+<Tabs groupId="config-surface">
+  <TabItem value="url" label="URL Query">
+
+```plaintext
+https://sample-site.com/checkout?currency=CODE
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='checkout'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-currency='CZK'></div>
+```
+
+  </TabItem>
+</Tabs>
+
+:::note Paying an existing registration is not an embed option
+`registration`, `r` and `payment_response` are runtime parameters — they identify a single transaction and arrive on a generated payment link. They are not embed-time configuration and should not be set on the placeholder.
+:::
