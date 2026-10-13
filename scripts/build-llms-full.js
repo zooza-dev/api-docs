@@ -22,10 +22,13 @@ const PROSE_DOCS = [
   'api/authentication.md',
   'api/errors.md',
   'widgets/index.md',
+  'widgets/embed-methods.md',
   'widgets/registration-widget.md',
+  'widgets/registration-widget-buyer-fields.md',
   'widgets/calendar-widget.md',
   'widgets/map-widget.md',
   'widgets/profile-widget.md',
+  'widgets/event-documents.md',
   'widgets/video-widget.md',
   'widgets/checkout-widget.md',
   'widgets/contact-widget.md',
@@ -44,8 +47,17 @@ function stripMdxImports(content) {
   return content.replace(/^import\s+.+from\s+['"].+['"]\s*;?\s*$/gm, '').trimStart();
 }
 
+// Reuse the positioning intro from llms.txt (everything before the first "## " section)
+const llmsIntro = fs
+  .readFileSync(path.join(ROOT, 'static', 'llms.txt'), 'utf8')
+  .split(/^## /m)[0]
+  .replace(/^# .*\n/, '')
+  .trim();
+
 const parts = [
-  '# Zooza API Documentation — Full Text',
+  '# Zooza Developer Docs — Full Text',
+  '',
+  llmsIntro,
   '',
   'Machine-readable API spec (OpenAPI 3.0): https://docs.zooza.online/zooza_api_v1.yaml',
   '',
