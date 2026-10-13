@@ -9,7 +9,7 @@ owner: api-docs
 last_verified: 2026-10-13
 project_type: other
 depends_on: []
-related_handoffs: []
+related_handoffs: ["2026-10-13-api-docs-to-zooza-web-developer-landing-and-docs-links.md"]
 tags: [seo, geo, llms-txt, content, discoverability]
 feature_branch: "feature/seo-ai-discoverability"
 changelog: ""
@@ -75,7 +75,7 @@ docs.zooza.online is currently written for people who are already Zooza customer
   3. How Zooza handles it — concepts, relevant endpoints/widgets, code examples
   4. Get started — free account, API key, AiPrompt block
 - Page titles and descriptions target problem queries, not Zooza terminology.
-- Add `FAQPage`/`HowTo`-style structured data where it fits the content.
+- No `FAQPage`/`HowTo` structured data: Google stopped showing HowTo rich results and limited FAQ rich results to government/health sites (2023). Existing `TechArticle` JSON-LD is enough.
 - Each recipe linked from `llms.txt`, homepage and relevant reference pages.
 
 **Phase 3 — AI-agent entry point**
@@ -98,11 +98,11 @@ docs.zooza.online is currently written for people who are already Zooza customer
 - [x] Every non-generated page under `docs/` has a `description` in frontmatter.
 - [x] Homepage `<title>` and meta description describe Zooza as infrastructure for class businesses and mention at least booking, make-ups and payments.
 - [x] `llms.txt` intro explains what Zooza solves and how to get access (free account + API key) before the page list.
-- [ ] All 6 first-wave recipe pages published, each with the four-part structure and an AiPrompt block.
-- [ ] Each recipe page is linked from `llms.txt` and from the homepage or a section index.
-- [ ] "Use Zooza with AI coding agents" page exists and is linked from homepage and `llms.txt`.
+- [x] All 6 first-wave recipe pages published, each with the four-part structure and an AiPrompt block.
+- [x] Each recipe page is linked from `llms.txt` and from the homepage or a section index.
+- [x] "Use Zooza with AI coding agents" page exists and is linked from homepage and `llms.txt`.
 - [x] `npm run build` passes with `onBrokenLinks: 'throw'`.
-- [ ] Handoff to the zooza.online owner created and linked in `related_handoffs`.
+- [x] Handoff to the zooza.online owner created and linked in `related_handoffs`.
 - [ ] Target query list and baseline recorded in this spec's Notes.
 
 ## Project Context
@@ -140,7 +140,13 @@ docs.zooza.online is currently written for people who are already Zooza customer
 - Observed: indance.cz forwards the Zooza `token` cookie to its chatbot vendor — our example explicitly warns against this. Consider telling the client.
 - All six first-wave examples published with illustrations (static/img/examples/, sources in design/example-mockups/, rendered with headless Chrome at 1280px).
 
+**2026-10-13 (later)**
+- Homepage "See it in practice" section; "See it in practice" tips on registration, map, profile, calendar widget pages, widgets index and API overview.
+- Concepts: "Terms in other languages" table (from sdd-workflow terminology.yml) so local queries (náhradné hodiny, Nachholtermin, …) map to English pages.
+- New pages: `make-up-sessions.md` (rules sourced from api-v1 code/domain docs) and `ai-assistants.md` (coding agents + MCP server https://mcp.zooza.app/mcp, OAuth, open-source repo).
+- Gaps found in public OpenAPI: make-up search view (`view=replacements_search`), `delete_replacement`, `custom_replacements`, `admin_managed_replacements` not documented — candidate handoff to api-v1.
+- MCP README claims knowledge tools work without sign-in, but middleware requires a token — not repeated in docs.
+- zooza.online repo is `zooza-web` (Astro). Handoff sent for /developers/ landing, contextual links and build-vs-buy article.
+
 **Open questions**
-- Which repo/person owns zooza.online (target of the cross-linking handoff)?
-- Is the MCP server public/usable by third-party developers, or only internal?
 - Additional use cases the owner will add to the recipe list.
