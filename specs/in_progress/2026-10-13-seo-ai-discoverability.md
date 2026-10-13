@@ -138,7 +138,7 @@ docs.zooza.online is currently written for people who are already Zooza customer
 - Published: multi-step trial booking, branded booking tiles (CSS + render_*_tile), AI chatbot with logged-in client.
 - Source patterns (reference only, not named on the site): babyballet.fr (multi-step trials_only), foxgym.sk (render_course_tile/render_schedule_tile), magikats.co.uk (CSS skin, trial sessions), playfulmotion.co.uk (map widget), tsnexum.sk + indance.cz (server-rendered filtered timetable), babybalance.sk (full custom catalogue via backend), indance.cz (chatbot fed from zooza_user_logged_in).
 - Observed: indance.cz forwards the Zooza `token` cookie to its chatbot vendor — our example explicitly warns against this. Consider telling the client.
-- Remaining examples: location map, filtered timetable, full custom catalogue via REST API.
+- All six first-wave examples published with illustrations (static/img/examples/, sources in design/example-mockups/, rendered with headless Chrome at 1280px).
 
 **Open questions**
 - Which repo/person owns zooza.online (target of the cross-linking handoff)?

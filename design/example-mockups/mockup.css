@@ -1,0 +1,58 @@
+/* Fictional "Little Movers" brand used for integration example illustrations.
+   Deliberately unrelated to Zooza's and any client's branding. */
+:root {
+  --plum: #5b2a86;
+  --plum-dark: #431f63;
+  --sun: #ffc83d;
+  --mint: #7fd1b9;
+  --coral: #ff8a6b;
+  --cream: #fffaf2;
+  --ink: #2d2338;
+  --muted: #6a5f74;
+  --line: #e6dcef;
+  --card: #ffffff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
+  background: #d9d3e0;
+  padding: 28px;
+}
+.browser {
+  background: var(--cream);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(45, 35, 56, .18);
+}
+.browser__bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; background: #efe9f4; border-bottom: 1px solid var(--line);
+}
+.browser__bar i { width: 11px; height: 11px; border-radius: 50%; background: #d4c8df; display: inline-block; }
+.browser__url {
+  margin-left: 12px; flex: 1; background: #fff; border-radius: 8px;
+  padding: 5px 12px; font-size: 13px; color: var(--muted);
+}
+.site-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px; background: #fff; border-bottom: 1px solid var(--line);
+}
+.logo { font-weight: 800; font-size: 22px; color: var(--plum); letter-spacing: -.02em; }
+.logo span { color: var(--coral); }
+.nav-links { display: flex; gap: 26px; font-size: 15px; color: var(--muted); }
+.nav-cta { background: var(--coral); color: #fff; border-radius: 999px; padding: 9px 18px; font-weight: 700; font-size: 14px; }
+.page { padding: 36px 56px 48px; }
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 800; color: var(--coral); }
+h1 { font-size: 34px; margin: 6px 0 8px; color: var(--plum); letter-spacing: -.02em; }
+.lead { color: var(--muted); font-size: 16px; margin: 0 0 24px; max-width: 640px; }
+.center { text-align: center; }
+.center .lead { margin-left: auto; margin-right: auto; }
+.btn { display: inline-block; border-radius: 999px; padding: 8px 18px; font-weight: 700; font-size: 14px; border: 2px solid var(--plum); color: var(--plum); background: transparent; }
+.btn--solid { background: var(--plum); color: #fff; }
+.btn--sun { background: var(--sun); border-color: var(--sun); color: var(--ink); }
+.card { background: var(--card); border: 1.5px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.muted { color: var(--muted); }
+.tag { display: inline-block; background: #f1e9f8; color: var(--plum); border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 700; margin-right: 6px; }
+.note { font-size: 12px; color: #8a7f94; text-align: right; margin-top: 10px; }

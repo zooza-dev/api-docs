@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="mockup.css">
+<style>
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .course { background: #fff; border: 1.5px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+  .thumb { aspect-ratio: 4 / 3; display: grid; place-items: center; }
+  .thumb svg { width: 46%; }
+  .body { padding: 14px 18px 18px; }
+  .body h3 { margin: 0 0 4px; color: var(--plum); font-size: 18px; }
+  .dur { font-weight: 800; font-size: 14px; margin: 0 0 6px; }
+  .body p { font-size: 14px; margin: 0 0 12px; }
+  .sessions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .session { background: #fff; border: 1.5px solid var(--line); border-top: 4px solid var(--sun); border-radius: 16px; padding: 14px 16px; }
+  .session b { color: var(--plum); display: block; }
+  .session small { display: block; color: var(--muted); margin: 4px 0; }
+  .price { font-weight: 800; margin: 2px 0 10px; }
+  h2 { font-size: 20px; color: var(--plum); margin: 26px 0 0; }
+</style></head>
+<body><div class="browser">
+  <div class="browser__bar"><i></i><i></i><i></i><div class="browser__url">littlemovers.example/classes/</div></div>
+  <div class="site-nav"><div class="logo">little<span>movers</span></div><div class="nav-links"><span>Classes</span><span>Locations</span><span>Timetable</span><span>Parent zone</span></div><div class="nav-cta">Book a trial</div></div>
+  <div class="page">
+    <div class="eyebrow">Our classes</div>
+    <h1>Pick an age group</h1>
+    <div class="grid">
+      <div class="course"><div class="thumb" style="background:#fff1c9"><svg viewBox="0 0 100 100"><circle cx="50" cy="38" r="20" fill="#ffc83d"/><rect x="30" y="58" width="40" height="30" rx="14" fill="#ff8a6b"/></svg></div>
+        <div class="body"><h3>Tiny Movers</h3><p class="dur">45 min per session</p><p class="muted">Rolling, crawling and first steps to music.</p><span class="btn">See times</span></div></div>
+      <div class="course"><div class="thumb" style="background:#dcf3ec"><svg viewBox="0 0 100 100"><circle cx="50" cy="36" r="18" fill="#7fd1b9"/><rect x="28" y="56" width="44" height="32" rx="14" fill="#5b2a86"/></svg></div>
+        <div class="body"><h3>Mini Movers</h3><p class="dur">45 min per session</p><p class="muted">Balance, rhythm and copy-me games.</p><span class="btn">See times</span></div></div>
+      <div class="course"><div class="thumb" style="background:#f1e9f8"><svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="17" fill="#ff8a6b"/><path d="M26 88 L50 52 L74 88 Z" fill="#5b2a86"/></svg></div>
+        <div class="body"><h3>Big Movers</h3><p class="dur">60 min per session</p><p class="muted">Ballet basics and confidence on stage.</p><span class="btn">See times</span></div></div>
+    </div>
+    <h2>Mini Movers · choose a class</h2>
+    <div class="sessions">
+      <div class="session"><b>Mondays · from 7 Sep 2026</b><small>16:00 – 16:45 · Spaces available</small><div class="price">£72 / month</div><span class="btn">Choose</span></div>
+      <div class="session"><b>Wednesdays · from 9 Sep 2026</b><small>10:00 – 10:45 · Spaces available</small><div class="price">£72 / month</div><span class="btn">Choose</span></div>
+      <div class="session"><b>Saturdays · from 12 Sep 2026</b><small>09:30 – 10:15 · Full</small><div class="price">£72 / month</div><span class="btn">Choose</span></div>
+    </div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div></body></html>

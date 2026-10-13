@@ -18,6 +18,12 @@ The parent is often already logged in, through the Zooza [profile widget](../wid
 - hand the conversation to staff with the right client attached,
 - look up the parent's bookings through **your** backend, safely.
 
+## How it looks
+
+![Parent zone with bookings and a website chatbot that greets the logged-in parent and answers about the next class](/img/examples/chatbot-logged-in-client.png)
+
+*Illustration with a fictional brand and data.*
+
 ## What you'd have to build yourself
 
 Without Zooza you would need your own client accounts, login, session handling and booking data, and a way to keep all of it in sync with the chatbot. Here, Zooza already owns the client account and login. You only listen to two browser events and forward a few fields.

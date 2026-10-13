@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="mockup.css">
+<style>
+  .layout { display: grid; grid-template-columns: 1fr 380px; gap: 26px; align-items: end; }
+  .profile { display: grid; gap: 12px; }
+  .hello { font-size: 20px; font-weight: 800; color: var(--plum); }
+  .booking { display: flex; justify-content: space-between; align-items: center; }
+  .booking b { color: var(--plum); }
+  .chat { background: #fff; border-radius: 22px; box-shadow: 0 16px 40px rgba(45,35,56,.18); overflow: hidden; }
+  .chat__head { background: var(--plum); color: #fff; padding: 14px 18px; font-weight: 800; display: flex; justify-content: space-between; }
+  .chat__head small { font-weight: 600; opacity: .8; }
+  .chat__body { padding: 16px; display: grid; gap: 10px; font-size: 14px; background: #faf7fc; }
+  .msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; line-height: 1.45; }
+  .bot { background: #fff; border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+  .me { background: var(--plum); color: #fff; justify-self: end; border-bottom-right-radius: 4px; }
+  .ctx { font-size: 11px; color: var(--muted); text-align: center; }
+  .chat__input { padding: 12px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+</style></head>
+<body><div class="browser">
+  <div class="browser__bar"><i></i><i></i><i></i><div class="browser__url">littlemovers.example/parent-zone/</div></div>
+  <div class="site-nav"><div class="logo">little<span>movers</span></div><div class="nav-links"><span>Classes</span><span>Locations</span><span>Timetable</span><span>Parent zone</span></div><div class="nav-cta">Anna ▾</div></div>
+  <div class="page">
+    <div class="layout">
+      <div class="profile">
+        <div class="eyebrow">Parent zone</div>
+        <div class="hello">Welcome back, Anna</div>
+        <div class="card booking"><div><b>Emma · Mini Movers</b><br><span class="muted">Saturdays 09:30 · Riverside Hall</span></div><span class="btn">Details</span></div>
+        <div class="card booking"><div><b>Leo · Tiny Movers</b><br><span class="muted">Mondays 16:00 · Riverside Hall</span></div><span class="btn">Details</span></div>
+        <div class="card booking"><div><b>Make-up available</b><br><span class="muted">Emma missed 10 Oct: book a replacement</span></div><span class="btn btn--sun">Book</span></div>
+      </div>
+      <div class="chat">
+        <div class="chat__head">Milo, your class helper <small>● online</small></div>
+        <div class="chat__body">
+          <div class="ctx">Signed in as Anna Example</div>
+          <div class="msg bot">Hi Anna! How can I help with Emma's or Leo's classes today?</div>
+          <div class="msg me">When is Emma's next class?</div>
+          <div class="msg bot">Emma's next Mini Movers class is <b>Saturday 17 Oct at 09:30</b> at Riverside Hall. She also has one make-up to use. Want me to show free slots?</div>
+          <div class="msg me">Yes please</div>
+        </div>
+        <div class="chat__input">Type a message…</div>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand, people and data</div>
+  </div>
+</div></body></html>

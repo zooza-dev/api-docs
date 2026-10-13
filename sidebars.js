@@ -20,6 +20,9 @@ const sidebars = {
       items: [
         'examples/multi-step-trial-booking',
         'examples/branded-booking-tiles',
+        'examples/location-map',
+        'examples/filtered-timetable',
+        'examples/custom-catalogue',
         'examples/chatbot-logged-in-client',
       ],
     },

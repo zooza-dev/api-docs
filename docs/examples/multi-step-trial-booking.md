@@ -31,6 +31,8 @@ The Zooza registration widget already does all of this. The page below is config
 
 ## How it looks
 
+![Multi-step trial booking form: step tabs, age-group tiles in two columns and trial session cards](/img/examples/multi-step-trial-booking.png)
+
 Little Movers' "Book your trial" page shows four step tabs: **1. Class → 2. Your details → 3. Payment → 4. Review → 5. Done**. The first step shows the age groups as tiles in two columns:
 
 | Tiny Movers · 12–24 months | Mini Movers · 2–3 years |

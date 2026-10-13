@@ -12,6 +12,10 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 The booking form is often the first part of your site that looks "different". Parents notice when the fonts, colours and card style change halfway through booking. You want the form to look like the rest of the site while Zooza keeps handling capacity, pricing, trials and payment.
 
+## How it looks
+
+![Branded booking widget: illustrated programme tiles with duration, and class tiles with price and availability](/img/examples/branded-booking-tiles.png)
+
 ## Two levels of customisation
 
 | Level | Effort | You control |
