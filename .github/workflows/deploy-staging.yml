@@ -31,6 +31,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Add noindex for staging
+        run: |
+          cat > static/.htaccess << 'EOF'
+          Header set X-Robots-Tag "noindex, nofollow"
+          EOF
+
       - name: Build site
         run: npm run build
 
