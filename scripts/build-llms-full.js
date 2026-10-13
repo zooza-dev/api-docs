@@ -18,14 +18,26 @@ const OUTPUT_FILE = path.join(ROOT, 'static', 'llms-full.txt');
 const PROSE_DOCS = [
   'concepts.md',
   'quickstart.md',
+  'make-up-sessions.md',
+  'ai-assistants.md',
+  'examples/index.md',
+  'examples/multi-step-trial-booking.md',
+  'examples/branded-booking-tiles.md',
+  'examples/location-map.md',
+  'examples/filtered-timetable.md',
+  'examples/custom-catalogue.md',
+  'examples/chatbot-logged-in-client.md',
   'api/index.md',
   'api/authentication.md',
   'api/errors.md',
   'widgets/index.md',
+  'widgets/embed-methods.md',
   'widgets/registration-widget.md',
+  'widgets/registration-widget-buyer-fields.md',
   'widgets/calendar-widget.md',
   'widgets/map-widget.md',
   'widgets/profile-widget.md',
+  'widgets/event-documents.md',
   'widgets/video-widget.md',
   'widgets/checkout-widget.md',
   'widgets/contact-widget.md',
@@ -44,8 +56,17 @@ function stripMdxImports(content) {
   return content.replace(/^import\s+.+from\s+['"].+['"]\s*;?\s*$/gm, '').trimStart();
 }
 
+// Reuse the positioning intro from llms.txt (everything before the first "## " section)
+const llmsIntro = fs
+  .readFileSync(path.join(ROOT, 'static', 'llms.txt'), 'utf8')
+  .split(/^## /m)[0]
+  .replace(/^# .*\n/, '')
+  .trim();
+
 const parts = [
-  '# Zooza API Documentation — Full Text',
+  '# Zooza Developer Docs — Full Text',
+  '',
+  llmsIntro,
   '',
   'Machine-readable API spec (OpenAPI 3.0): https://docs.zooza.online/zooza_api_v1.yaml',
   '',

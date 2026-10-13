@@ -2,6 +2,7 @@
 id: event-documents
 title: Event Document Display
 sidebar_label: Event Documents
+description: Show session-attached documents, image galleries and preparation materials to participants in the Zooza profile widget.
 ---
 
 # Event Document Display in the Profile Widget

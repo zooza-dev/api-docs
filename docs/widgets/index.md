@@ -10,6 +10,10 @@ sidebar_position: 1
 
 However, this is just the beginning — Zooza offers unparalleled customization for both the appearance and behavior of each widget, giving your business a unique edge.
 
+:::tip See it in practice
+- [All integration examples](/examples)
+:::
+
 ## Installation
 
 You can integrate Zooza widgets using one of our official plugins for WordPress or Wix for quick and simple setup, or you can embed them manually. But before you install any widget on your website, consider how you want to use it. This mainly concerns the booking process. Other aspects of the integration are typically very straightforward.

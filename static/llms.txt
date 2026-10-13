@@ -1,34 +1,72 @@
-# Zooza API Documentation
+# Zooza Developer Docs
 
-> Zooza is a class management platform. This documentation covers the REST API
-> and embeddable widgets for integrating Zooza into third-party websites and
-> custom backends.
+> Zooza is ready-made backend infrastructure for businesses that run classes,
+> courses and activities (kids' clubs, swimming, dance, music, sports, language
+> schools, franchises). Instead of building booking and billing logic from
+> scratch, developers build their own websites, forms and apps on top of the
+> Zooza REST API and embeddable widgets.
+
+Zooza already handles the parts that are hard to get right:
+
+- Class booking and registration forms, including trial classes and waiting lists
+- Make-up sessions: entitlement, capacity and expiry rules enforced automatically
+- Installments, subscriptions and recurring payments, with Stripe and GoCardless integrations
+- Integrations with accounting and local payment systems
+- Class and course listings, schedules, venue and franchise maps
+- Multi-company networks (franchises, multi-brand operators)
+
+Getting access is self-serve: create a free Zooza account at https://signup.zooza.online,
+then request a REST API key from Zooza support (support@zooza.online). Widgets only
+need the widget API key shown in the Zooza admin under Team & Settings > Publish. The API runs in three regions
+(Europe, UK, UAE) with stable, versioned endpoints described by an OpenAPI 3.0 spec.
 
 ## Getting Started
 
-- [Quickstart](https://docs.zooza.online/quickstart): Five-minute guide to embedding your first widget or making your first API call.
-- [Concepts & Glossary](https://docs.zooza.online/concepts): Definitions for all Zooza-specific terminology — programmes, classes, sessions, places, blocks, and more.
+- [Quickstart](https://docs.zooza.online/quickstart/): Five-minute guide to embedding your first widget or making your first API call.
+- [Concepts & Glossary](https://docs.zooza.online/concepts/): Definitions for all Zooza-specific terminology — programmes, classes, sessions, places, blocks, and more.
+
+## How Zooza handles it
+
+- [Make-up sessions](https://docs.zooza.online/make-up-sessions/): How make-ups (replacement classes) are earned, limited, expired, scoped and booked; extra capacity for full classes, waiting lists, custom make-ups; widget and API usage.
+
+## AI
+
+- [AI assistants & MCP](https://docs.zooza.online/ai-assistants/): How coding agents should use these docs and the OpenAPI spec; the Zooza MCP server (https://mcp.zooza.app/mcp, Streamable HTTP, OAuth with Zooza login) for running classes, bookings and attendance from Claude and other MCP clients.
+
+## Integration examples
+
+- [Examples overview](https://docs.zooza.online/examples/): Real-world integration patterns with copy-paste code, built on a fictional kids' activity business.
+- [Multi-step trial booking form](https://docs.zooza.online/examples/multi-step-trial-booking/): Step-by-step trial class sign-up (age-group tiles, trial session picker, details, payment) configured without custom code.
+- [Branded course and session tiles](https://docs.zooza.online/examples/branded-booking-tiles/): Restyle the booking widget with CSS, or render your own tiles with render_course_tile / render_schedule_tile and course metadata.
+- [Location map](https://docs.zooza.online/examples/location-map/): Branch and franchise map with postcode search, radius filter and classes per venue, using the map widget.
+- [Filtered timetable](https://docs.zooza.online/examples/filtered-timetable/): Server-rendered weekly timetable from the REST API (schedules, courses, places) with filters and deep links into booking.
+- [Custom catalogue](https://docs.zooza.online/examples/custom-catalogue/): Custom programme catalogue and class picker; CMS owns content, Zooza owns classes, availability, waiting lists and booking.
+- [AI chatbot with the logged-in client](https://docs.zooza.online/examples/chatbot-logged-in-client/): Pass the logged-in parent from Zooza into a website chatbot and answer booking questions safely via your backend and the REST API.
 
 ## API Reference
 
-- [API Overview](https://docs.zooza.online/api): When to use the REST API, base URLs by region, authentication summary.
-- [Authentication](https://docs.zooza.online/api/authentication): Passwordless auth via email verification, PIN code, or client_secret. Includes code examples.
-- [Error Handling](https://docs.zooza.online/api/errors): HTTP status codes, error response format, common error scenarios, and debugging tips.
-- [API Operations](https://docs.zooza.online/api/reference): Full REST API reference — all endpoints with request/response schemas.
+- [API Overview](https://docs.zooza.online/api/): When to use the REST API, base URLs by region, authentication summary.
+- [Authentication](https://docs.zooza.online/api/authentication/): How to get a REST API key; passwordless auth via email verification, PIN code, or client_secret. Includes code examples.
+- [Error Handling](https://docs.zooza.online/api/errors/): HTTP status codes, error response format, common error scenarios, and debugging tips.
+- [API Operations](https://docs.zooza.online/api/reference/): Full REST API reference — all endpoints with request/response schemas.
 - [OpenAPI Spec](https://docs.zooza.online/zooza_api_v1.yaml): Machine-readable OpenAPI 3.0 specification (full API contract).
 
 ## Widgets
 
-- [Widget Overview](https://docs.zooza.online/widgets): Installation options (WordPress, Wix, embed code), cookies, customer journey patterns.
-- [Registration Widget](https://docs.zooza.online/widgets/registration-widget): Booking and class registration form — settings, filters, analytics events, callbacks.
-- [Calendar Widget](https://docs.zooza.online/widgets/calendar-widget): Real-time class schedule and availability views — settings, custom sessions import.
-- [Map Widget](https://docs.zooza.online/widgets/map-widget): Location-based venue and class search with map view.
-- [Profile Widget](https://docs.zooza.online/widgets/profile-widget): Customer portal — booking history, payment management, make-up session booking.
-- [Video Widget](https://docs.zooza.online/widgets/video-widget): Secure video content embedding for logged-in users.
-- [Checkout Widget](https://docs.zooza.online/widgets/checkout-widget): Sells products, including entry passes with a payment plan; product chosen via ?product= in the page URL.
-- [Checkout Widget v2 (deprecated)](https://docs.zooza.online/widgets/checkout-widget-v2): Legacy v2 checkout, kept for existing embeds.
-- [Contact Widget](https://docs.zooza.online/widgets/contact-widget): Contact form that turns website enquiries into Zooza contacts — form configurations, hidden fields, campaign attribution, spam protection, styling, analytics events.
+- [Widget Overview](https://docs.zooza.online/widgets/): Installation options (WordPress, Wix, embed code), cookies, customer journey patterns.
+- [Embed Methods](https://docs.zooza.online/widgets/embed-methods/): Ways to load Zooza widgets on a website.
+- [Registration Widget](https://docs.zooza.online/widgets/registration-widget/): Booking and class registration form — settings, filters, analytics events, callbacks.
+- [Buyer-Only Extra Fields](https://docs.zooza.online/widgets/registration-widget-buyer-fields/): Registration form fields collected once per buyer instead of per attendee.
+- [Calendar Widget](https://docs.zooza.online/widgets/calendar-widget/): Real-time class schedule and availability views — settings, custom sessions import.
+- [Map Widget](https://docs.zooza.online/widgets/map-widget/): Location-based venue and class search with map view.
+- [Profile Widget](https://docs.zooza.online/widgets/profile-widget/): Customer portal — booking history, payment management, make-up session booking.
+- [Event Documents](https://docs.zooza.online/widgets/event-documents/): Session-attached documents and galleries shown to participants in the profile widget.
+- [Video Widget](https://docs.zooza.online/widgets/video-widget/): Secure video content embedding for logged-in users.
+- [Checkout Widget](https://docs.zooza.online/widgets/checkout-widget/): Sells products, including entry passes with a payment plan; product chosen via ?product= in the page URL.
+- [Checkout Widget v2 (deprecated)](https://docs.zooza.online/widgets/checkout-widget-v2/): Legacy v2 checkout, kept for existing embeds.
+- [Contact Widget](https://docs.zooza.online/widgets/contact-widget/): Contact form that turns website enquiries into Zooza contacts — form configurations, hidden fields, campaign attribution, spam protection, styling, analytics events.
 
 ## Reference
 
-- [Enums Reference](https://docs.zooza.online/enums): All enumeration values used across the API and widgets, including supported languages.
+- [Enums Reference](https://docs.zooza.online/enums/): All enumeration values used across the API and widgets, including supported languages.
+- [Full documentation as one file](https://docs.zooza.online/llms-full.txt): All prose pages concatenated in Markdown.

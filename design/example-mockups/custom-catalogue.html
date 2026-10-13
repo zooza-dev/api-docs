@@ -1,0 +1,53 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="mockup.css">
+<style>
+  .cols { display: grid; grid-template-columns: 250px 1fr; gap: 22px; }
+  .filters { background: var(--plum); color: #fff; border-radius: 20px; padding: 20px; }
+  .filters h3 { margin: 0 0 14px; color: var(--sun); font-size: 22px; }
+  .filters label { display: block; font-size: 13px; margin: 12px 0 6px; opacity: .9; }
+  .select { background: #fff; color: var(--ink); border-radius: 10px; padding: 9px 12px; font-size: 14px; }
+  .pill { display: inline-block; background: #fff; color: var(--plum); border-radius: 8px; padding: 5px 10px; font-size: 12px; margin: 0 4px 6px 0; }
+  .pill.on { background: var(--sun); color: var(--ink); font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .prog { border-radius: 18px; overflow: hidden; background: #fff; border: 1.5px solid var(--line); }
+  .art { height: 120px; display: grid; place-items: center; }
+  .prog .b { padding: 12px 16px 16px; }
+  .prog h4 { margin: 0; font-size: 17px; color: var(--plum); }
+  .prog .age { color: var(--coral); font-weight: 700; font-size: 14px; }
+  .prog p { font-size: 13px; color: var(--muted); margin: 6px 0 12px; }
+  .picker { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .picker h3 { grid-column: 1 / -1; margin: 0; color: var(--plum); }
+  .slot { background: #fff8e4; border-radius: 16px; padding: 14px 16px; font-size: 14px; }
+  .slot b { color: var(--plum); display: block; margin-bottom: 4px; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #2f8f6b; margin-right: 6px; }
+  .dot.full { background: #d0603b; }
+</style></head>
+<body><div class="browser">
+  <div class="browser__bar"><i></i><i></i><i></i><div class="browser__url">littlemovers.example/programmes/</div></div>
+  <div class="site-nav"><div class="logo">little<span>movers</span></div><div class="nav-links"><span>Programmes</span><span>Locations</span><span>Shop</span><span>Parent zone</span></div><div class="nav-cta">My profile</div></div>
+  <div class="page">
+    <div class="eyebrow">Programmes</div><h1>Classes for every stage</h1>
+    <div class="cols">
+      <div class="filters">
+        <h3>Filter</h3>
+        <label>Town</label><div class="select">Riverton ▾</div>
+        <label>Child's age</label><div class="select">3–12 months ▾</div>
+        <label>Programme type</label>
+        <span class="pill on">Baby classes</span><span class="pill">Toddler dance</span><span class="pill">Family</span><span class="pill">Holiday camps</span>
+      </div>
+      <div>
+        <div class="grid">
+          <div class="prog"><div class="art" style="background:#fff1c9"><svg width="70" viewBox="0 0 100 100"><circle cx="50" cy="40" r="24" fill="#ffc83d"/><circle cx="50" cy="80" r="16" fill="#ff8a6b"/></svg></div><div class="b"><h4>Tiny Movers 1</h4><div class="age">3–5 months</div><p>First rhythms, songs and gentle movement.</p><span class="btn">See more</span></div></div>
+          <div class="prog"><div class="art" style="background:#fde3dc"><svg width="70" viewBox="0 0 100 100"><circle cx="50" cy="40" r="24" fill="#ff8a6b"/><circle cx="50" cy="80" r="16" fill="#5b2a86"/></svg></div><div class="b"><h4>Tiny Movers 2</h4><div class="age">6–8 months</div><p>Rolling, reaching and sensory play.</p><span class="btn">See more</span></div></div>
+          <div class="prog"><div class="art" style="background:#dcf3ec"><svg width="70" viewBox="0 0 100 100"><circle cx="50" cy="40" r="24" fill="#7fd1b9"/><circle cx="50" cy="80" r="16" fill="#ffc83d"/></svg></div><div class="b"><h4>Explorers</h4><div class="age">9–12 months</div><p>Crawling courses and first balance.</p><span class="btn">See more</span></div></div>
+        </div>
+        <div class="picker">
+          <h3>Tiny Movers 1 · Riverton: choose your class</h3>
+          <div class="slot"><b>Riverside Community Hall</b>Mondays 10:00 · 60 min · Instructor: Ellie<br><span class="dot"></span>Places available <span class="btn btn--solid" style="float:right;margin-top:-6px">Sign up</span></div>
+          <div class="slot"><b>Mill Lane Studio</b>Thursdays 09:30 · 60 min · Instructor: Priya<br><span class="dot full"></span>Full: join the waiting list <span class="btn" style="float:right;margin-top:-6px">Sign up</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div></body></html>
