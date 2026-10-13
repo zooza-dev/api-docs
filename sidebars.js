@@ -15,6 +15,16 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Examples',
+      link: { type: 'doc', id: 'examples/index' },
+      items: [
+        'examples/multi-step-trial-booking',
+        'examples/branded-booking-tiles',
+        'examples/chatbot-logged-in-client',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Widgets',
       link: { type: 'doc', id: 'widgets/index' },
       items: [

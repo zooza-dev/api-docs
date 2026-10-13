@@ -133,6 +133,13 @@ docs.zooza.online is currently written for people who are already Zooza customer
 - Signup URL confirmed: https://signup.zooza.online (linked from zooza.online). REST key is still issued by support.
 - zooza.online already has feature pages (e.g. `/features/trial-booking/`, `/features/class-registration-booking/`) — recipes should cross-link them.
 
+**Phase 3b started — 2026-10-13**
+- New `docs/examples/` section (navbar "Examples", sidebar, llms.txt, llms-full.txt) with a fictional brand "Little Movers"; code is fictional but uses only documented settings/callbacks/events.
+- Published: multi-step trial booking, branded booking tiles (CSS + render_*_tile), AI chatbot with logged-in client.
+- Source patterns (reference only, not named on the site): babyballet.fr (multi-step trials_only), foxgym.sk (render_course_tile/render_schedule_tile), magikats.co.uk (CSS skin, trial sessions), playfulmotion.co.uk (map widget), tsnexum.sk + indance.cz (server-rendered filtered timetable), babybalance.sk (full custom catalogue via backend), indance.cz (chatbot fed from zooza_user_logged_in).
+- Observed: indance.cz forwards the Zooza `token` cookie to its chatbot vendor — our example explicitly warns against this. Consider telling the client.
+- Remaining examples: location map, filtered timetable, full custom catalogue via REST API.
+
 **Open questions**
 - Which repo/person owns zooza.online (target of the cross-linking handoff)?
 - Is the MCP server public/usable by third-party developers, or only internal?

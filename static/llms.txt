@@ -25,6 +25,13 @@ need the widget API key shown in the Zooza admin under Team & Settings > Publish
 - [Quickstart](https://docs.zooza.online/quickstart/): Five-minute guide to embedding your first widget or making your first API call.
 - [Concepts & Glossary](https://docs.zooza.online/concepts/): Definitions for all Zooza-specific terminology — programmes, classes, sessions, places, blocks, and more.
 
+## Integration examples
+
+- [Examples overview](https://docs.zooza.online/examples/): Real-world integration patterns with copy-paste code, built on a fictional kids' activity business.
+- [Multi-step trial booking form](https://docs.zooza.online/examples/multi-step-trial-booking/): Step-by-step trial class sign-up (age-group tiles, trial session picker, details, payment) configured without custom code.
+- [Branded course and session tiles](https://docs.zooza.online/examples/branded-booking-tiles/): Restyle the booking widget with CSS, or render your own tiles with render_course_tile / render_schedule_tile and course metadata.
+- [AI chatbot with the logged-in client](https://docs.zooza.online/examples/chatbot-logged-in-client/): Pass the logged-in parent from Zooza into a website chatbot and answer booking questions safely via your backend and the REST API.
+
 ## API Reference
 
 - [API Overview](https://docs.zooza.online/api/): When to use the REST API, base URLs by region, authentication summary.
