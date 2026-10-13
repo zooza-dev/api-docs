@@ -25,6 +25,10 @@ need the widget API key shown in the Zooza admin under Team & Settings > Publish
 - [Quickstart](https://docs.zooza.online/quickstart/): Five-minute guide to embedding your first widget or making your first API call.
 - [Concepts & Glossary](https://docs.zooza.online/concepts/): Definitions for all Zooza-specific terminology — programmes, classes, sessions, places, blocks, and more.
 
+## AI
+
+- [AI assistants & MCP](https://docs.zooza.online/ai-assistants/): How coding agents should use these docs and the OpenAPI spec; the Zooza MCP server (https://mcp.zooza.app/mcp, Streamable HTTP, OAuth with Zooza login) for running classes, bookings and attendance from Claude and other MCP clients.
+
 ## Integration examples
 
 - [Examples overview](https://docs.zooza.online/examples/): Real-world integration patterns with copy-paste code, built on a fictional kids' activity business.

@@ -14,6 +14,11 @@ const sidebars = {
       label: 'Quickstart',
     },
     {
+      type: 'doc',
+      id: 'ai-assistants',
+      label: 'AI assistants & MCP',
+    },
+    {
       type: 'category',
       label: 'Examples',
       link: { type: 'doc', id: 'examples/index' },

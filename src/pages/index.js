@@ -163,7 +163,8 @@ export default function Home() {
                 Write the code yourself, or hand{' '}
                 <a href="/llms.txt">llms.txt</a> and the{' '}
                 <a href="/zooza_api_v1.yaml">OpenAPI spec</a> to your AI coding
-                agent.
+                agent. Running the business from Claude? See{' '}
+                <Link to="/ai-assistants">AI assistants &amp; MCP</Link>.
               </p>
             </li>
           </ol>

@@ -18,6 +18,7 @@ const OUTPUT_FILE = path.join(ROOT, 'static', 'llms-full.txt');
 const PROSE_DOCS = [
   'concepts.md',
   'quickstart.md',
+  'ai-assistants.md',
   'examples/index.md',
   'examples/multi-step-trial-booking.md',
   'examples/branded-booking-tiles.md',
