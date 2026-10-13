@@ -25,7 +25,7 @@ related_specs: [DOC-20261013-001]
    - `/features/trial-booking/` → the multi-step trial booking example,
    - `/mcp/` → the docs "AI assistants & MCP" page,
    - localized variants where they exist.
-3. **A "build vs. buy a class booking system" article** on the zooza.online blog. It should be aimed at developers and technical owners weighing a custom build, honest about trade-offs, and link to the docs examples. api-docs can supply a full English draft.
+3. **A "build vs. buy a class booking system" article** on the zooza.online blog. It should be aimed at developers and technical owners weighing a custom build, honest about trade-offs, and link to the docs examples. A full English draft is ready in the api-docs repo: `drafts/2026-10-13-build-vs-buy-class-booking-system.md`.
 
 ### Why we need it
 
