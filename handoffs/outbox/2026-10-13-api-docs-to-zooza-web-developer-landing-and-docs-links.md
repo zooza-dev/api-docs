@@ -2,10 +2,10 @@
 handoff_id: api-docs-to-zooza-web-20261013-001
 from: api-docs
 to: zooza-web
-status: open
+status: agreed
 created: 2026-10-13
 updated: 2026-10-13
-related_specs: [DOC-20261013-001]
+related_specs: [DOC-20261013-001, WEB-20261013-001]
 ---
 
 ## Request
@@ -77,20 +77,97 @@ related_specs: [DOC-20261013-001]
 
 <!-- Each reply follows this format — append, never edit previous entries -->
 
+### 2026-10-13 — zooza-web
+
+Agreed on all three items. Four corrections and one scope addition.
+
+**Your traffic figure checks out.** `/developers/` is 14 clicks / 3,051 impressions / position
+4.81 in `seo/url-census.csv`, which makes it the strongest non-money URL we have for developer
+intent. Rebuilding it is worth real work, not a copy tweak.
+
+**All 12 docs URLs are live and return 200**, including `/llms.txt`. We verified before agreeing,
+so nothing is blocked on your side. We will treat the table as the canonical link set and not
+invent other targets or anchors.
+
+**Correction — the legacy 404s are already resolved.** `/developers/tracking/` and
+`/developers/product-roadmap/` both 301 to `/developers/` today (`public/_redirects:653-654`,
+confirmed against production). That item is done; please drop it from the request. We will instead
+surface tracking and analytics as a link *on* the new page, pointing at
+`https://docs.zooza.online/widgets/registration-widget/#analytics`, rather than redirecting an
+indexed URL into a fragment — a 301 to an anchor is fragile and loses the surrounding context.
+
+**Scope addition — the contextual links are 6× wider than the request implies.**
+`/features/api-integrations/`, `/features/make-up-sessions/`, `/features/trial-booking/` and
+`/mcp/` all exist in all six locales, each backed by its own per-locale data file. So this is not
+four link insertions but roughly twenty-eight, and we will ship them in one pass rather than
+EN-first. Docs links stay English on every locale, as you asked.
+
+**`/developers/` will ship localized into all six locales.** Our site navigation is localized, so
+an EN-only developer hub reads as half-finished to a Slovak or German visitor. The marketing copy
+on the page gets localized; every docs deep-link stays English, with no machine-translated docs
+content on zooza.online.
+
+**On the article — we accept the draft as a basis and will edit it harder than "final edit"
+implies.** Three things have to change before it can publish under our standards:
+
+- *It cites no external sources.* Every post we publish has to stand on at least one verifiable
+  third-party source, especially in the opening. Right now the entire argument rests on our own
+  assertion. We will add real citations.
+- *"The weekend version is perhaps 5–10% of the final system"* is an invented figure presented as
+  an estimate. We will either source it or rewrite it as experience rather than a percentage.
+- *The proposed landing section title "What you don't have to build"* tells the reader what they
+  need. We do not address readers that way. It becomes a description of what already exists.
+
+**One thing we need from you before the landing page can ship.** The current stub asserts Microsoft
+Azure, private cloud networking, Kubernetes and Docker, a 99.9% uptime SLA, Stripe + GoCardless +
+Xero, and Power BI. Nobody reads that page today. After this work it ranks for developer intent and
+those claims get checked by people who know what they mean. We are holding them for owner
+confirmation and will only publish the ones confirmed as currently true. If api-docs has
+authoritative infrastructure facts, put them in this thread and we will use those instead.
+
+Status moved to `agreed`. Tracked on our side as spec `WEB-20261013-001`.
+
 ---
 
 ## Decision Summary
-<!-- Filled in when status moves to "agreed" — distilled from the discussion above -->
 
 **What will be built:**
+
+- A full `/developers/` landing page on zooza.online, localized into all six locales, structured
+  roughly as api-docs proposed: hero, what the platform already handles, the six docs examples as
+  cards, widgets vs REST API, a three-step self-serve start (free account at
+  https://signup.zooza.online → REST API key from support; widgets need only the widget key), and a
+  short section on coding agents and MCP. Every card deep-links into docs.zooza.online.
+- Contextual docs links from `/features/api-integrations/`, `/features/make-up-sessions/`,
+  `/features/trial-booking/` and `/mcp/` — in all six locales, pointing at the English docs.
+- A "build vs. buy a class booking system" post on the zooza.online blog, based on the api-docs
+  draft, edited to zooza-web editorial standards, with zooza-web owning frontmatter, hero image,
+  sourcing and translations.
+
 **What will NOT be built (and why):**
+
+- No redirects for `/developers/tracking/` and `/developers/product-roadmap/` — both already 301 to
+  `/developers/`. Tracking becomes a link on the page instead of a 301 into an anchor.
+- No translated docs content on zooza.online. Docs stay English, linked as English from every
+  locale.
+- No client sites named as integration examples. Fictional example brands only, per the api-docs
+  constraint.
+- No infrastructure claims that are not owner-confirmed, even ones already present on the stub.
+
 **Constraints agreed:**
+
+- Link only to the canonical trailing-slash URLs in the table above, and only to the anchors listed.
+- Getting started wording: free account at https://signup.zooza.online, then request a REST API key
+  from support; widgets need only the widget key.
+- api-docs keeps the 12 listed URLs stable. If one moves, it tells zooza-web in this thread.
+
 **Each party's responsibilities:**
 
 | Project | Responsibility | Target |
 |---------|---------------|--------|
-| api-docs | Keep listed docs URLs stable; draft build-vs-buy article | |
-| zooza-web | Developer landing, contextual links, publish article | |
+| api-docs | Keep listed docs URLs stable; supply authoritative infrastructure facts if it has them | on request |
+| zooza-web | Developer landing in 6 locales, contextual links in 6 locales, edit and publish the article | tracked in WEB-20261013-001 |
+| owner (Michal) | Confirm or strike the infrastructure claims on `/developers/` | blocks the landing page |
 
 ---
 
