@@ -15,6 +15,11 @@ const sidebars = {
     },
     {
       type: 'doc',
+      id: 'make-up-sessions',
+      label: 'Make-up sessions',
+    },
+    {
+      type: 'doc',
       id: 'ai-assistants',
       label: 'AI assistants & MCP',
     },
