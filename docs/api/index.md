@@ -10,6 +10,12 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 The Zooza REST API gives you programmatic access to manage programmes, classes, registrations, payments, and more. All responses are JSON.
 
+:::tip See it in practice
+- [Weekly timetable with filters](/examples/filtered-timetable)
+- [Custom course catalogue](/examples/custom-catalogue)
+- [AI chatbot with the logged-in client](/examples/chatbot-logged-in-client)
+:::
+
 ## When to use the REST API
 
 Zooza offers two integration approaches: **widgets** (embeddable UI components) and the **REST API** (programmatic access). They are not mutually exclusive — many integrations use both.

@@ -30,6 +30,15 @@ const CAPABILITIES = [
   },
 ];
 
+const EXAMPLES = [
+  { title: 'Multi-step trial booking', to: '/examples/multi-step-trial-booking' },
+  { title: 'Branded booking tiles', to: '/examples/branded-booking-tiles' },
+  { title: 'Branch & franchise map', to: '/examples/location-map' },
+  { title: 'Filtered weekly timetable', to: '/examples/filtered-timetable' },
+  { title: 'Custom course catalogue', to: '/examples/custom-catalogue' },
+  { title: 'AI chatbot with logged-in client', to: '/examples/chatbot-logged-in-client' },
+];
+
 function PathCard({ title, description, to, cta }) {
   return (
     <Link to={to} className={styles.pathCard}>
@@ -90,6 +99,24 @@ export default function Home() {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className={styles.section}>
+          <h2>See it in practice</h2>
+          <p className={styles.sectionLead}>
+            Integration patterns Zooza customers run today, with copy-paste
+            code.
+          </p>
+          <ul className={styles.exampleList}>
+            {EXAMPLES.map(({ title, to }) => (
+              <li key={to}>
+                <Link to={to}>{title} →</Link>
+              </li>
+            ))}
+          </ul>
+          <p className={styles.sectionMore}>
+            <Link to="/examples">All examples</Link>
+          </p>
         </section>
 
         <section className={styles.section}>

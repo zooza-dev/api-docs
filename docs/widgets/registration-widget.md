@@ -12,6 +12,13 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 **This widget is used to place the registration / booking form on your website. You can place as many instances of this widget as you wish, there is no limit on this. Each form can have many of its settings overridden per instance. This allows you to pre-filter the classes that are listed in the form, or change its appearance and behaviour based on the use case you're solving.**
 
+:::tip See it in practice
+- [Multi-step trial booking](/examples/multi-step-trial-booking)
+- [Branded course and session tiles](/examples/branded-booking-tiles)
+- [Weekly timetable with filters](/examples/filtered-timetable)
+- [Custom course catalogue](/examples/custom-catalogue)
+:::
+
 ## Installation
 
 ### WordPress
