@@ -2,9 +2,9 @@
 handoff_id: widgets-v1-to-api-docs-20260908-001
 from: widgets-v1
 to: api-docs
-status: agreed
+status: resolved
 created: 2026-09-08
-updated: 2026-09-08
+updated: 2026-10-14
 related_specs:
   - W1-20260908-001
 related_handoffs:
@@ -232,4 +232,6 @@ config as a third init-options tab.
 ---
 
 ## Resolution
-<!-- Filled in when status moves to "resolved" -->
+**Resolved on:** 2026-10-14
+**Outcome:** Every widget page shows the placeholder + loader embed in two placements (Body only, Head + body), and `docs/widgets/embed-methods.md` ("Choosing an embed method") explains when to use which. Verified against production docs on 2026-10-14.
+**Related specs/PRs:** zooza-dev/api-docs PR #1, #2 (deployed 2026-10-13)

@@ -1322,6 +1322,81 @@ window.ZOOZA = {
 
 The widget exposes `schedule.name` on each entry alongside the stable getters listed in [`render_schedule_tile`](#render_schedule_tile) — it is the human-readable label the widget itself uses on the tile.
 
+### `segment_list_rendered`
+
+Sibling of [`schedule_list_rendered`](#schedule_list_rendered) for the list of **Blocks** shown when a class is sold in blocks (for example with [`registration_display_mode`](#registration_display_mode) set to `segments_only`). Fires immediately after the widget renders the block list and appends it to the DOM. Use it to group blocks under headings, inject your own controls, add badges or attach analytics.
+
+The callback fires **once per render of the block list, including when no block has free capacity**, so you can react to the all-full case too. It fires again whenever the list is re-rendered, so make your handler idempotent. Remove anything you injected on a previous run before adding it again.
+
+#### Params
+
+The callback receives a single object argument with the following attributes:
+
+| Attribute | Description |
+|---|---|
+| `el` | The `.zooza_segments` container as a **plain DOM `Element`** (not a jQuery object). Holds all rendered `.zooza_segments_segment[data-id]` tiles. |
+| `segments` | Array of block objects in render order. `segments[ i ]` matches the i-th tile inside `el`. Each entry has the same stable members as the `segment` in [`render_segment_tile`](#render_segment_tile). |
+| `course` | The currently selected course. Same stable shape as the `course` arg in [`render_course_tile`](#render_course_tile). |
+| `schedule` | The class the blocks belong to. Same stable members as the `schedule` arg in [`render_schedule_tile`](#render_schedule_tile), plus `schedule.name`. `schedule_list_rendered` has no equivalent, because blocks always belong to one class. |
+
+##### Minimal example — group blocks under headings
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        segment_list_rendered: ( { el, segments } ) => {
+            // Idempotent: clear headings injected by a previous render
+            el.querySelectorAll( '.my-block-heading' ).forEach( ( node ) => node.remove() );
+
+            const tiles = el.querySelectorAll( '.zooza_segments_segment' );
+            let last_group = null;
+
+            tiles.forEach( ( tile, index ) => {
+                // e.g. "Technique 1", "Technique 2", "Choreography 1" → group by first word
+                const group = ( segments[ index ].name || '' ).split( ' ' )[ 0 ];
+                if ( group === last_group ) {
+                    return;
+                }
+                last_group = group;
+
+                const heading = document.createElement( 'h4' );
+                heading.className = 'my-block-heading';
+                heading.textContent = group;
+                tile.parentNode.insertBefore( heading, tile );
+            } );
+        },
+    },
+};
+```
+
+### `on_segment_selected`
+
+Fires after the customer selects **or** deselects a Block, once the widget has updated the selection. Use it to react to the current selection, for example to enforce your own limits on which combinations of blocks can be chosen.
+
+#### Params
+
+| Attribute | Description |
+|---|---|
+| `button` | jQuery object of the select control that was clicked |
+| `wrapper` | jQuery object of the block tile (`.zooza_segments_segment`). It has the `selected` class when the block is now selected. |
+
+Read the full current selection from the DOM with `document.querySelectorAll( '.zooza_segments_segment.selected' )`, where each tile carries its block id in `data-id`.
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        on_segment_selected: ( { wrapper } ) => {
+            const selected = document.querySelectorAll( '.zooza_segments_segment.selected' );
+            console.info( `Block ${ wrapper.data( 'id' ) } toggled, ${ selected.length } selected` );
+        },
+    },
+};
+```
+
+:::note jQuery objects
+Like [`schedule_registration_options_loaded`](#schedule_registration_options_loaded), this callback passes jQuery objects for legacy reasons. If you don't use jQuery, take the plain element with `wrapper.get( 0 )`.
+:::
+
 ### `render_course_tile`
 
 Returns the HTML that goes **inside** a single course tile. The widget owns everything else: the `<div class="zooza_courses_course" data-course_id="<id>">` wrapper, the grid layout, the "Select" CTA, the collapse-on-select, and the "back to all courses" affordance. Register this callback when you want a different look for the courses than the built-in default — your own headings, images, marketing copy, prices, badges, anything.
@@ -1499,6 +1574,46 @@ The widget delegates click on these classes — your tile content can include an
 | `zooza_schedules_schedule_change` | Change selected class (collapse mode only) |
 
 If your tile content does not include `zooza_schedules_schedule_select`, the widget auto-appends a default Choose CTA so the customer can always advance.
+:::
+
+:::caution The `course` argument
+The second argument, `course`, is not delivered reliably in every flow today. If you need the selected course, read it from [`document.ZOOZA.model.selected_course()`](#data-model) or capture it in [`schedule_list_rendered`](#schedule_list_rendered).
+:::
+
+### `render_segment_tile`
+
+Mirror of [`render_schedule_tile`](#render_schedule_tile) for **Blocks**. Returns the HTML that goes inside a single `<div class="zooza_segments_segment" data-id="<id>">` tile. The widget owns the wrapper, its data attributes, the select/deselect click handling and the `selected` class.
+
+Unlike `render_schedule_tile`, the callback receives a **single object** `{ segment, course }`, not positional arguments. Block objects have no reference back to their course, so the course is delivered in the object and is always available.
+
+#### Params
+
+| Attribute | Description |
+|---|---|
+| `segment` | The block. Stable members: `id`, `name`, `price`, `capacity`, `registrations`, `capacity_left`, `earliest_available_date` (a date string when a full block frees up within the delayed-start window, otherwise `null`). |
+| `course` | The currently selected course. Same stable shape as the `course` arg in [`render_course_tile`](#render_course_tile). |
+
+#### Return
+
+A `string`, DOM `Node`, or jQuery object, the same as the other renderers.
+
+##### Minimal example — name and free places
+
+```javascript
+window.ZOOZA = {
+    callback: {
+        render_segment_tile: ( { segment, course } ) => `
+            <div class="my-block">
+                <strong>${ segment.name }</strong>
+                <span>${ segment.capacity_left } places left</span>
+            </div>
+        `,
+    },
+};
+```
+
+:::info The select control
+The select control for blocks is different from courses and classes. The widget looks for an **`a.zooza_button`** inside your content and uses it as the select/deselect control. If there is none, it appends the default **Choose** button, but only for blocks that can be selected: blocks with `capacity_left > 0`, or with an `earliest_available_date`. Full blocks with no upcoming place get no button, the same as the default tile.
 :::
 
 ## Data model

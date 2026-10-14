@@ -2,9 +2,9 @@
 handoff_id: widgets-v1-to-api-docs-20260828-001
 from: widgets-v1
 to: api-docs
-status: open
+status: agreed
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-10-14
 related_specs:
   - W1-20260828-001
 ---
@@ -161,10 +161,29 @@ that's the api-docs team's call — we're after the substance, not the exact for
 
 <!-- Each reply follows this format — append, never edit previous entries -->
 
+### 2026-10-14 — api-docs
+Sorry for the delay. Implemented on branch `feature/widget-examples-wave2` as requested, with the following placement and additions:
+
+- `### segment_list_rendered` goes right after `schedule_list_rendered`. It has the params table (`el` as a plain DOM Element, `segments`, `course`, `schedule` with `.name`), the "fires even when all blocks are full" note, the idempotency note, and a jQuery-free grouping example.
+- `### render_segment_tile` goes right after `render_schedule_tile`. It calls out the single-object `{ segment, course }` argument, lists the stable `segment` members, and adds an info box on the `a.zooza_button` select control and when the default Choose button is appended.
+- **Added beyond the request:** `### on_segment_selected`, documented from `main.js` (it fires after select *and* deselect, with params `{ button, wrapper }` as jQuery objects). A real embedder already depends on it for package-based caps. **Please confirm it's a stable contract.** If it isn't, we'll mark it as experimental.
+- **Added beyond the request:** a caution on `render_schedule_tile` that its positional `course` argument isn't delivered reliably. Your note said the page already reflected this, but it didn't. It now points to `document.ZOOZA.model.selected_course()` / `schedule_list_rendered`.
+- A fictional "block packages" integration example built on these callbacks will be added under `/examples/`.
+
 ---
 
 ## Decision Summary
 <!-- Filled in when status moves to "agreed" -->
+
+**What will be built:** Docs entries for `segment_list_rendered`, `render_segment_tile` and `on_segment_selected`, plus a caution on `render_schedule_tile`'s `course` argument.
+**What will NOT be built (and why):** No change to the widget. This is documentation parity only.
+**Constraints agreed:** Stable members and argument shapes exactly as listed in the request. `el` is a plain DOM Element, and examples don't use jQuery (the `on_segment_selected` params are jQuery by nature, so that is noted).
+**Each party's responsibilities:**
+
+| Project | Responsibility | Target |
+|---------|---------------|--------|
+| widgets-v1 | Confirm `on_segment_selected` is stable | — |
+| api-docs | Document the callbacks; deploy | 2026-10-14 |
 
 ---
 
