@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="mockup.css">
+<style>
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 10px 0 26px; }
+  .tab { background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 12px 6px; text-align: center; color: var(--plum); }
+  .tab b { display: block; font-size: 24px; line-height: 1.1; }
+  .tab small { font-size: 12px; font-weight: 700; opacity: .7; }
+  .tab.on { background: var(--plum); border-color: var(--plum); color: #fff; }
+  h3 { margin: 0 0 12px; color: var(--plum); }
+  .cls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .c { background: #fff; border: 1.5px solid var(--line); border-top: 4px solid var(--sun); border-radius: 16px; padding: 14px 16px; }
+  .c b { color: var(--plum); display: block; }
+  .c small { display: block; color: var(--muted); margin: 4px 0 10px; }
+</style></head>
+<body><div class="browser">
+  <div class="browser__bar"><i></i><i></i><i></i><div class="browser__url">littlemovers.example/drama/</div></div>
+  <div class="site-nav"><div class="logo">little<span>movers</span></div><div class="nav-links"><span>Classes</span><span>Locations</span><span>Timetable</span><span>Parent zone</span></div><div class="nav-cta">Book a trial</div></div>
+  <div class="page">
+    <div class="eyebrow">Drama club</div><h1>How old is your child?</h1>
+    <div class="tabs">
+      <div class="tab"><b>3–4</b><small>years</small></div>
+      <div class="tab on"><b>5–7</b><small>years</small></div>
+      <div class="tab"><b>8–10</b><small>years</small></div>
+      <div class="tab"><b>11–13</b><small>years</small></div>
+      <div class="tab"><b>14–18</b><small>years</small></div>
+    </div>
+    <h3>Classes for 5–7 years</h3>
+    <div class="cls">
+      <div class="c"><b>14 Sep 2026 – 21 Jun 2027</b><small>Mondays · Spaces available</small><span class="btn">Choose</span></div>
+      <div class="c"><b>16 Sep 2026 – 23 Jun 2027</b><small>Wednesdays · Spaces available</small><span class="btn">Choose</span></div>
+      <div class="c"><b>19 Sep 2026 – 26 Jun 2027</b><small>Saturdays · Full</small><span class="btn">Choose</span></div>
+    </div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div></body></html>

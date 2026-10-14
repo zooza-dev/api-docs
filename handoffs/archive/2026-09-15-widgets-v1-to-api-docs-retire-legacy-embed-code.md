@@ -2,9 +2,9 @@
 handoff_id: widgets-v1-to-api-docs-20260915-001
 from: widgets-v1
 to: api-docs
-status: agreed
+status: resolved
 created: 2026-09-15
-updated: 2026-09-15
+updated: 2026-10-14
 related_specs: [W1-20260908-001, W1-20260914-001, W1-20260914-002]
 ---
 
@@ -87,7 +87,6 @@ Not covered: there is no contact widget page in api-docs today, so `contact` is 
 ---
 
 ## Resolution
-<!-- Filled in when status moves to "resolved" -->
-**Resolved on:**
-**Outcome:**
-**Related specs/PRs:**
+**Resolved on:** 2026-10-14
+**Outcome:** As agreed: placeholder + loader is the default on every widget page, the quickstart, the embed-methods page and the AI prompts. The legacy inline script is kept as a labelled "Legacy script" tab. Done 2026-09-15 and verified 2026-10-14.
+**Related specs/PRs:** zooza-dev/api-docs (2026-09-15), PR #1, #2
