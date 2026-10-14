@@ -17,6 +17,9 @@ import AiPrompt from '@site/src/components/AiPrompt';
 - [Branded course and session tiles](/examples/branded-booking-tiles)
 - [Weekly timetable with filters](/examples/filtered-timetable)
 - [Custom course catalogue](/examples/custom-catalogue)
+- [Age-group tabs](/examples/age-tabs)
+- [Block packages with selection limits](/examples/block-packages)
+- [Package your customisation as a WordPress plugin](/examples/wordpress-plugin)
 :::
 
 ## Installation

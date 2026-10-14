@@ -33,10 +33,13 @@ const CAPABILITIES = [
 const EXAMPLES = [
   { title: 'Multi-step trial booking', to: '/examples/multi-step-trial-booking' },
   { title: 'Branded booking tiles', to: '/examples/branded-booking-tiles' },
+  { title: 'Age-group tabs', to: '/examples/age-tabs' },
+  { title: 'Block packages with limits', to: '/examples/block-packages' },
   { title: 'Branch & franchise map', to: '/examples/location-map' },
   { title: 'Filtered weekly timetable', to: '/examples/filtered-timetable' },
   { title: 'Custom course catalogue', to: '/examples/custom-catalogue' },
   { title: 'AI chatbot with logged-in client', to: '/examples/chatbot-logged-in-client' },
+  { title: 'WordPress plugin with a shortcode', to: '/examples/wordpress-plugin' },
 ];
 
 function PathCard({ title, description, to, cta }) {
