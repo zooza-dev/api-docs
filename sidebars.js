@@ -30,10 +30,13 @@ const sidebars = {
       items: [
         'examples/multi-step-trial-booking',
         'examples/branded-booking-tiles',
+        'examples/age-tabs',
+        'examples/block-packages',
         'examples/location-map',
         'examples/filtered-timetable',
         'examples/custom-catalogue',
         'examples/chatbot-logged-in-client',
+        'examples/wordpress-plugin',
       ],
     },
     {

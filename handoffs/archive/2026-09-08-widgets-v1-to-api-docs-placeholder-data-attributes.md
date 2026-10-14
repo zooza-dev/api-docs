@@ -2,9 +2,9 @@
 handoff_id: widgets-v1-to-api-docs-20260908-002
 from: widgets-v1
 to: api-docs
-status: agreed
+status: resolved
 created: 2026-09-08
-updated: 2026-09-08
+updated: 2026-10-14
 related_specs:
   - W1-20260908-001
 related_handoffs:
@@ -245,4 +245,6 @@ only" note.
 ---
 
 ## Resolution
-<!-- Filled in when status moves to "resolved" -->
+**Resolved on:** 2026-10-14
+**Outcome:** Every option that has its own section on a widget page carries a "Data attribute" tab (`data-zooza-<key with _ → ->`), and function/object options are marked "JavaScript only". Options from the agreed list that have no section of their own in the docs yet (e.g. registration `hide_preselected`, `currency`; several calendar filters; profile `lang`/`print_debug`) were not given new sections. If they should be public, send a follow-up handoff. The v1 checkout reads `product` / `currency` from the page URL only, per the later v1 checkout handoff.
+**Related specs/PRs:** zooza-dev/api-docs PR #1, #2 (deployed 2026-10-13)

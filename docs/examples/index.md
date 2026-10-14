@@ -14,6 +14,8 @@ All examples use the same made-up business, **Little Movers**, which runs weekly
 
 - [Multi-step trial booking form](./multi-step-trial-booking.md): a step-by-step sign-up that only offers trial classes. Configuration only, no custom code.
 - [Branded course and session tiles](./branded-booking-tiles.md): make the booking widget look like the rest of your site, starting with CSS and then replacing whole tiles with your own templates.
+- [Age-group tabs](./age-tabs.md): parents pick their child's age first. Programmes are shown as a row of age tabs read from metadata.
+- [Block packages with selection limits](./block-packages.md): blocks grouped by category, with Starter / Plus / Pro packages that cap how many blocks of each category can be chosen.
 
 ## Listings, timetables & maps
 
@@ -24,6 +26,7 @@ All examples use the same made-up business, **Little Movers**, which runs weekly
 ## Apps & integrations
 
 - [Give your AI chatbot the logged-in client](./chatbot-logged-in-client.md): pass the client who is signed in to Zooza into your website chatbot, so it can greet them by name and look up their bookings safely.
+- [Package your customisation as a WordPress plugin](./wordpress-plugin.md): a shortcode with per-page settings that survives page builders stripping inline scripts.
 
 ## Before you start
 

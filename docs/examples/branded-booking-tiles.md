@@ -93,6 +93,15 @@ Little Movers uses a plum and sunshine-yellow palette with rounded cards. Scope 
 
 The `selected` class is added to the chosen tile when [`course_list_collapse_on_select`](../widgets/registration-widget.md#course_list_collapse_on_select) is `false`. For other parts of the form, download the widget's default stylesheet and start from its selectors, as described in [Use CSS](../widgets/registration-widget.md#use-css).
 
+### Without touching the website: custom CSS in the Zooza admin
+
+If you can't edit the site's stylesheet, for example on a hosted website builder, paste the same CSS into **Publish > Widget > Custom CSS** in the Zooza admin. The widget loads it after its default styles, so plain overrides win.
+
+- **One stylesheet serves both the registration and the profile widget**, so put the rules for both in the same file and scope them by each widget's classes.
+- Prefix rules with `div.zooza` (the widget's root) instead of your own placeholder class, because the stylesheet doesn't know your markup.
+- Define your palette once as CSS variables on `div.zooza` and reuse them.
+- Leave `font-family` alone if the site's fonts should apply. The widget inherits the page font by default.
+
 ## Level 2: your own tile templates
 
 To change what's *inside* a tile, register [`render_course_tile`](../widgets/registration-widget.md#render_course_tile) and [`render_schedule_tile`](../widgets/registration-widget.md#render_schedule_tile). Your function returns the tile's inner HTML. The widget keeps the wrapper, selection and booking flow.

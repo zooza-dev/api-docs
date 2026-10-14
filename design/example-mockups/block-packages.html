@@ -1,0 +1,44 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="mockup.css">
+<style>
+  .pk { display: flex; gap: 8px; margin: 6px 0 4px; }
+  .pk span { border: 2px solid var(--plum); color: var(--plum); border-radius: 999px; padding: 7px 18px; font-weight: 800; font-size: 14px; background: #fff; }
+  .pk span.on { background: var(--plum); color: #fff; }
+  .hint { font-size: 13px; color: var(--muted); margin: 6px 0 14px; }
+  h4 { margin: 18px 0 8px; color: var(--plum); font-size: 16px; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .blk { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; font-size: 13px; }
+  .blk b { display: block; color: var(--ink); font-size: 14px; margin-bottom: 2px; }
+  .blk .m { color: var(--muted); margin-bottom: 8px; }
+  .blk.sel { border-color: var(--plum); background: #faf6fd; }
+  .blk.lock { opacity: .45; }
+  .blk .lk { font-size: 12px; color: var(--muted); }
+  .total { margin-top: 18px; display: flex; justify-content: space-between; align-items: center; background: #fff8e4; border-radius: 14px; padding: 12px 16px; font-weight: 800; }
+</style></head>
+<body><div class="browser">
+  <div class="browser__bar"><i></i><i></i><i></i><div class="browser__url">littlemovers.example/season-blocks/</div></div>
+  <div class="site-nav"><div class="logo">little<span>movers</span></div><div class="nav-links"><span>Classes</span><span>Locations</span><span>Timetable</span><span>Parent zone</span></div><div class="nav-cta">Book a trial</div></div>
+  <div class="page">
+    <div class="eyebrow">Teen dance · Spring season</div><h1>Build your season</h1>
+    <div class="pk"><span>Starter</span><span class="on">Plus</span><span>Pro</span></div>
+    <div class="hint">Plus: 2 × Technique · 1 × Repertoire · 1 × Choreography</div>
+    <h4>Technique</h4>
+    <div class="row">
+      <div class="blk sel"><b>Technique 1</b><div class="m">6 Jan – 3 Feb · 5 places left · £48</div><span class="btn btn--solid">Selected</span></div>
+      <div class="blk sel"><b>Technique 2</b><div class="m">10 Feb – 10 Mar · 3 places left · £48</div><span class="btn btn--solid">Selected</span></div>
+      <div class="blk lock"><b>Technique 3</b><div class="m">17 Mar – 14 Apr · 8 places left · £48</div><div class="lk">Package limit reached</div></div>
+    </div>
+    <h4>Repertoire</h4>
+    <div class="row">
+      <div class="blk"><b>Repertoire: Nutcracker</b><div class="m">6 Jan – 10 Mar · 4 places left · £72</div><span class="btn">Choose</span></div>
+      <div class="blk"><b>Repertoire: Swan Lake</b><div class="m">17 Mar – 26 May · 6 places left · £72</div><span class="btn">Choose</span></div>
+    </div>
+    <h4>Choreography</h4>
+    <div class="row">
+      <div class="blk sel"><b>Choreography: Contemporary</b><div class="m">6 Jan – 10 Mar · 2 places left · £60</div><span class="btn btn--solid">Selected</span></div>
+      <div class="blk lock"><b>Choreography: Jazz</b><div class="m">17 Mar – 26 May · 7 places left · £60</div><div class="lk">Package limit reached</div></div>
+    </div>
+    <div class="total"><span>3 blocks selected</span><span>£156 · <span class="btn btn--solid" style="margin-left:8px">Continue</span></span></div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div></body></html>
