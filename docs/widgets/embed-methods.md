@@ -30,7 +30,7 @@ The loader is a single script tag. Its URL carries your region host and the widg
 | Checkout | `checkout` | `v1` |
 | Calendar | `calendar` | `v2` |
 | Video | `video` | `v2` |
-| Map | `map` | `v2` |
+| Map | `map` | `v1` |
 
 The widget mounts inside the placeholder.
 
@@ -116,6 +116,62 @@ Values are interpreted the same way as URL query parameters:
 `data-zooza-widget`, `data-zooza-id` and `data-zooza-api-url` are reserved for the embed itself and are never treated as options.
 
 Each widget page lists the options it accepts — see [Registration widget](./registration-widget.md), [Calendar widget](./calendar-widget.md), [Map widget](./map-widget.md), [Profile widget](./profile-widget.md), [Video widget](./video-widget.md), [Checkout widget](./checkout-widget.md) and [Contact widget](./contact-widget.md).
+
+## Setting options from JavaScript
+
+Options can also be set in a `<script>` block placed before the loader. Put each widget's options under `window.ZOOZA.widgets`, keyed by the widget, so they reach only that widget:
+
+```html
+<script>
+window.ZOOZA = {
+    widgets: {
+        registration: { course_ids: [ 3911 ], multi_step_form: true },
+        map:          { map_view: { center: { lat: 48.1486, lng: 17.1077 }, zoom: 13 } }
+    }
+};
+</script>
+```
+
+| Widget | Key |
+|---|---|
+| Registration | `registration` (also for embeds that load `type=registration_new`) |
+| Profile | `profile` |
+| Contact | `contact` |
+| Checkout | `checkout` |
+| Map | `map` |
+
+Every option a v1 widget page documents, including `translations`, `lang` and `callback`, can be set this way.
+
+### Which setting wins
+
+When an option is set in more than one place, the later one in this list wins:
+
+1. the widget's default, or its setting in the Zooza app
+2. the flat form, `window.ZOOZA.<option>`
+3. `window.ZOOZA.widgets.<widget>.<option>`
+4. a [`data-zooza-*` attribute](#configuring-a-widget-on-the-placeholder) on the placeholder
+5. a URL query parameter
+
+Objects such as `translations` and `callback` are merged key by key, so a flat `callback.on_schedule_selected` and a namespaced `callback.render_segment_tile` both apply. For the same key, the later form in the list wins.
+
+### Two widgets of the same type
+
+`window.ZOOZA.widgets.registration` applies to every registration widget on the page. To set up two registration widgets differently, put the options that differ on each placeholder as `data-zooza-*` attributes — an attribute stays with its own placeholder:
+
+```html
+<div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY' data-zooza-course-ids='3911'></div>
+<div data-zooza-widget='registration' data-zooza-id='YOUR_API_KEY' data-zooza-course-ids='4120'></div>
+```
+
+### The flat form
+
+Options set directly on `window.ZOOZA`, such as `window.ZOOZA.translations`, are still supported, and existing pages keep working. The flat object is shared by every widget on the page, though, so an option meant for one widget reaches all of them. Prefer the `widgets` form for new pages.
+
+One exception: with the placeholder embed, the registration widget ignores a flat `window.ZOOZA.course_ids` or `window.ZOOZA.place_ids`, because another widget on the page could set them. Use `window.ZOOZA.widgets.registration` or the placeholder attributes for these.
+
+:::note v2 widgets
+The [calendar](./calendar-widget.md) and [video](./video-widget.md) widgets, and the deprecated v2 checkout and map, read only the flat form.
+:::
 
 ## Getting the snippet
 

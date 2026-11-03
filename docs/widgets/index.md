@@ -57,13 +57,13 @@ How your customers navigate to a booking:
 
 **[Calendar Widget](calendar-widget.md)** — Displays available dates and times for your classes and sessions.
 
-**[Map Widget](map-widget.md)** — Shows locations where your services are available and allows customers to search for a class based on the location.
+**[Map Widget](map-widget.md)** — Shows your venues on a map and lists the classes nearby, ordered by travel time, so customers can find a class close to them. Replaces the [legacy v2 map](./deprecated/map-widget-v2.md).
 
 **[Profile Widget](profile-widget.md)** — Lets users view and manage their personal information and bookings.
 
 **[Video Widget](video-widget.md)** — Embeds video content related to your services.
 
-**[Checkout Widget](checkout-widget.md)** — Sells your products, including entry passes with a payment plan, and takes the buyer through payment. Replaces the [legacy v2 checkout](checkout-widget-v2.md).
+**[Checkout Widget](checkout-widget.md)** — Sells your products, including entry passes with a payment plan, and takes the buyer through payment. Replaces the [legacy v2 checkout](./deprecated/checkout-widget-v2.md).
 
 **[Contact Widget](contact-widget.md)** — Replaces your website's contact form and turns every enquiry into a contact in Zooza.
 

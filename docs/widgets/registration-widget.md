@@ -188,7 +188,7 @@ By default, the widget renders the list of available courses as a `<select>` dro
 | Grid | Courses appear as tiles in a configurable column grid. Each tile shows the course name, the first 5 lines of its description, and a Select button. | _2 × 2 grid of tiles_ |
 
 :::info Per-page override
-The setting above is the tenant-wide default. Individual pages can override it via `window.ZOOZA` or URL query — useful when one landing page wants a grid and another wants the dropdown without flipping the tenant setting.
+The setting above is the tenant-wide default. Individual pages can override it via [JavaScript](./embed-methods.md#setting-options-from-javascript) or URL query — useful when one landing page wants a grid and another wants the dropdown without flipping the tenant setting.
 
 <Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
@@ -196,7 +196,11 @@ The setting above is the tenant-wide default. Individual pages can override it v
 ```javascript
 <script>
     window.ZOOZA = {
-        course_list_display: 'grid'
+        widgets: {
+            registration: {
+                course_list_display: 'grid'
+            }
+        }
     }
 </script>
 ```
@@ -239,7 +243,7 @@ Only applies when **Course list display** is set to **Grid**. Picks the number o
 | 4 | Four columns. | _4 × N grid_ |
 
 :::info Per-page override
-The setting above is the tenant-wide default. Individual pages can override it via `window.ZOOZA` or URL query.
+The setting above is the tenant-wide default. Individual pages can override it via [JavaScript](./embed-methods.md#setting-options-from-javascript) or URL query.
 
 <Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
@@ -247,7 +251,11 @@ The setting above is the tenant-wide default. Individual pages can override it v
 ```javascript
 <script>
     window.ZOOZA = {
-        course_list_columns: 3
+        widgets: {
+            registration: {
+                course_list_columns: 3
+            }
+        }
     }
 </script>
 ```
@@ -294,12 +302,16 @@ See [valid options](#embed-code) for `API_URL` and `YOUR_API_KEY` above.
 
 ## Initialisation options
 
-In general, you can customise how the widget is initialized either via JavaScript or via URL query parameters. Due to legacy reasons, some of the parameters are defined into `document.zooza` and some into `window.ZOOZA`. It is always shown along each property which way to use. However the concept stays the same: insert the script tag before the embed code.
+You can customise how the widget is initialised per page — from JavaScript, as a [`data-zooza-*` attribute](./embed-methods.md#configuring-a-widget-on-the-placeholder) on the placeholder, or as a URL query parameter. Each option below shows the forms it accepts.
+
+From JavaScript, set options under `window.ZOOZA.widgets.registration` in a `<script>` placed before the loader, so they apply to the registration widget only. See [Setting options from JavaScript](./embed-methods.md#setting-options-from-javascript) for how the namespace works and which form wins when an option is set more than once.
+
+Some older options are still set through `document.zooza`. They are marked as such and keep working.
 
 :::info Customising the course and schedule lists
 The widget gives you three ways to control how courses and classes appear:
 
-1. **Admin Settings (with per-page override)** — [Course list display](#course-list-display) and [Course grid columns](#course-grid-columns). Tenant-wide defaults, also overridable per page via `window.ZOOZA` / URL.
+1. **Admin Settings (with per-page override)** — [Course list display](#course-list-display) and [Course grid columns](#course-grid-columns). Tenant-wide defaults, also overridable per page via JavaScript / URL.
 2. **[`course_list_collapse_on_select`](#course_list_collapse_on_select) / [`schedule_list_collapse_on_select`](#schedule_list_collapse_on_select)** — JS or URL-query flags for keeping all tiles visible after a selection.
 3. **[`render_course_tile`](#render_course_tile) / [`render_schedule_tile`](#render_schedule_tile) callbacks** — return the inside of a single tile; the widget keeps owning the shell, click delegation, and collapse behaviour.
 
@@ -354,15 +366,27 @@ Multiple values are comma-separated, not pipe-delimited as in the URL form.
 
 _Type: Array, String_
 
-This is the same as [`filter_courses`](#filter_courses) but instead it is defined like this:
+Limit the widget to specific courses. This is the JavaScript form of course filtering, and is the counterpart to [`filter_courses`](#filter_courses).
+
+| Value | Description | Example Value |
+|---|---|---|
+| `YOUR_COURSE_ID` | Array of course ids. | `123` or `[ 123, 456 ]` |
+
+:::note Placeholder embed ignores the flat form
+With the placeholder embed, a flat `window.ZOOZA.course_ids` is ignored on purpose, because other widgets on the page could set it. Use `window.ZOOZA.widgets.registration.course_ids` or the `data-zooza-course-ids` attribute.
+:::
 
 <Tabs groupId="config-surface">
   <TabItem value="js" label="JavaScript">
 
 ```javascript
 <script>
-    document.zooza = {
-        course_ids: [ YOUR_COURSE_ID ]
+    window.ZOOZA = {
+        widgets: {
+            registration: {
+                course_ids: [ YOUR_COURSE_ID ]
+            }
+        }
     }
 </script>
 ```
@@ -458,7 +482,11 @@ Multiple values are comma-separated, not pipe-delimited as in the URL form.
 
 _Type: Array, String_
 
-Limit the widget to specific venues. This is the `window.ZOOZA` form of place filtering, and is the counterpart to [`filter_places`](#filter_places) in the same way [`course_ids`](#course_ids) is the counterpart to [`filter_courses`](#filter_courses).
+Limit the widget to specific venues. This is the JavaScript form of place filtering, and is the counterpart to [`filter_places`](#filter_places) in the same way [`course_ids`](#course_ids) is the counterpart to [`filter_courses`](#filter_courses).
+
+:::note Placeholder embed ignores the flat form
+With the placeholder embed, a flat `window.ZOOZA.place_ids` is ignored on purpose, because other widgets on the page could set it. Use `window.ZOOZA.widgets.registration.place_ids` or the `data-zooza-place-ids` attribute.
+:::
 
 | Value | Description | Example Value |
 |---|---|---|
@@ -470,7 +498,11 @@ Limit the widget to specific venues. This is the `window.ZOOZA` form of place fi
 ```javascript
 <script>
     window.ZOOZA = {
-        place_ids: [ YOUR_PLACE_ID ]
+        widgets: {
+            registration: {
+                place_ids: [ YOUR_PLACE_ID ]
+            }
+        }
     }
 </script>
 ```
@@ -567,7 +599,11 @@ Private (admin-only) labels never match for embedders. There is no client-visibl
 ```javascript
 <script>
     window.ZOOZA = {
-        labels_in: [ "Summer 2026", "Kids — beginners" ]
+        widgets: {
+            registration: {
+                labels_in: [ "Summer 2026", "Kids — beginners" ]
+            }
+        }
     }
 </script>
 ```
@@ -607,7 +643,11 @@ Composes with [`labels_in`](#labels_in) (AND), and with [`course_ids`](#course_i
 ```javascript
 <script>
     window.ZOOZA = {
-        labels_not_in: [ "Archived", "Internal" ]
+        widgets: {
+            registration: {
+                labels_not_in: [ "Archived", "Internal" ]
+            }
+        }
     }
 </script>
 ```
@@ -649,7 +689,7 @@ Composes with [`metadata_not_in`](#metadata_not_in) (AND), with [`labels_in`](#l
 This option works alongside the [tile-grid course list](#course-list-display) and the [`render_course_tile`](#render_course_tile) callback — metadata filtering is applied first, then the surviving courses are rendered. The same data is exposed on `course.metadata` inside the per-tile callback, so you can both filter and display from the same source.
 
 :::info JavaScript form is safe for special characters; URL form is raw
-The widget URL-encodes metadata keys and values when constructing the api request from the JavaScript form, so `&`, `=`, `+`, `#`, spaces, and punctuation are all safe to use in `window.ZOOZA.metadata_in`. The URL Query form is **not** auto-encoded — if you write the URL by hand (or template it server-side), encode `&`, `=`, `#`, and `+` yourself, the same way you would for any query parameter.
+The widget URL-encodes metadata keys and values when constructing the api request from the JavaScript form, so `&`, `=`, `+`, `#`, spaces, and punctuation are all safe to use in `window.ZOOZA.widgets.registration.metadata_in`. The URL Query form is **not** auto-encoded — if you write the URL by hand (or template it server-side), encode `&`, `=`, `#`, and `+` yourself, the same way you would for any query parameter.
 :::
 
 :::info Private metadata keys are silently invisible
@@ -662,9 +702,13 @@ Private (admin-only) metadata keys never match for embedders. There is no client
 ```javascript
 <script>
     window.ZOOZA = {
-        metadata_in: {
-            color: [ "red", "blue" ],
-            age_band: "6-8"
+        widgets: {
+            registration: {
+                metadata_in: {
+                    color: [ "red", "blue" ],
+                    age_band: "6-8"
+                }
+            }
         }
     }
 </script>
@@ -699,8 +743,12 @@ Composes with [`metadata_in`](#metadata_in) (AND), with [`labels_in`](#labels_in
 ```javascript
 <script>
     window.ZOOZA = {
-        metadata_not_in: {
-            archived: [ "true" ]
+        widgets: {
+            registration: {
+                metadata_not_in: {
+                    archived: [ "true" ]
+                }
+            }
         }
     }
 </script>
@@ -735,7 +783,11 @@ Only meaningful when [Course list display](#course-list-display) is set to **Gri
 ```javascript
 <script>
     window.ZOOZA = {
-        course_list_collapse_on_select: false
+        widgets: {
+            registration: {
+                course_list_collapse_on_select: false
+            }
+        }
     }
 </script>
 ```
@@ -776,7 +828,11 @@ By default, after the customer picks a class from the schedule list, the other c
 ```javascript
 <script>
     window.ZOOZA = {
-        schedule_list_collapse_on_select: false
+        widgets: {
+            registration: {
+                schedule_list_collapse_on_select: false
+            }
+        }
     }
 </script>
 ```
@@ -821,7 +877,11 @@ Allowed values:
 ```javascript
 <script>
     window.ZOOZA = {
-        ps: 'pay_as_you_go'
+        widgets: {
+            registration: {
+                ps: 'pay_as_you_go'
+            }
+        }
     }
 </script>
 ```
@@ -869,7 +929,11 @@ Allowed values:
 ```javascript
 <script>
     window.ZOOZA = {
-        f: 'yearly'
+        widgets: {
+            registration: {
+                f: 'yearly'
+            }
+        }
     }
 </script>
 ```
@@ -910,7 +974,11 @@ By default the registration form appears as a single step form, that reveals its
 ```javascript
 <script>
     window.ZOOZA = {
-        multi_step_form: true
+        widgets: {
+            registration: {
+                multi_step_form: true
+            }
+        }
     }
 </script>
 ```
@@ -961,7 +1029,11 @@ This enables you to sell your classes in different currency than defined by your
 ```javascript
 <script>
     window.ZOOZA = {
-        preferred_currency: CODE
+        widgets: {
+            registration: {
+                preferred_currency: CODE
+            }
+        }
     }
 </script>
 ```
@@ -990,7 +1062,11 @@ This will print additional debug information to the browser's console. It is esp
 ```javascript
 <script>
     window.ZOOZA = {
-        print_debug: true|false
+        widgets: {
+            registration: {
+                print_debug: true|false
+            }
+        }
     }
 </script>
 ```
@@ -1032,8 +1108,12 @@ On top of that, please bear in mind that by providing custom translations you ar
 ```javascript
 <script>
     window.ZOOZA = {
-        translations: {
-            KEY : TRANSLATION
+        widgets: {
+            registration: {
+                translations: {
+                    KEY : TRANSLATION
+                }
+            }
         }
     }
 </script>
@@ -1048,10 +1128,14 @@ Enable `print_debug` mode and open your browser's console. You will see printout
 ```javascript
 <script>
     window.ZOOZA = {
-        translations: {
-            'registration.step_select_course' : 'Select course',
-            'overview.your_discounts' : 'Your discounts',
-            'course_detail.accordion_free_events' : 'Free lessons',
+        widgets: {
+            registration: {
+                translations: {
+                    'registration.step_select_course' : 'Select course',
+                    'overview.your_discounts' : 'Your discounts',
+                    'course_detail.accordion_free_events' : 'Free lessons',
+                }
+            }
         }
     }
 </script>
@@ -1063,7 +1147,7 @@ Read the Zooza widget documentation for the translations option and how to find 
 https://docs.zooza.online/llms-full.txt
 
 Tasks:
-1. Give me a window.ZOOZA script block with a translations object.
+1. Give me a window.ZOOZA.widgets.registration script block with a translations object.
 2. Override the labels I list below with my preferred wording, using the correct translation keys.
 3. Tell me where to place this script relative to the widget embed snippet.
 
@@ -1094,7 +1178,11 @@ Example usages:
 ```javascript
 <script>
     window.ZOOZA = {
-        registration_display_mode: REGISTRATION_DISPLAY_MODE
+        widgets: {
+            registration: {
+                registration_display_mode: REGISTRATION_DISPLAY_MODE
+            }
+        }
     }
 </script>
 ```
@@ -1224,7 +1312,7 @@ You'll see these appear after key steps in the registration flow. They can be us
 :::note JavaScript only
 Callbacks take functions, so none of them can be set as a `data-zooza-*` attribute on a head/body placeholder. Register them in a `<script>` block alongside the placeholder.
 :::
-You can hook into widget lifecycle events using the `callback` property.
+You can hook into widget lifecycle events using the `callback` property of `window.ZOOZA.widgets.registration`.
 
 ### `schedule_registration_options_loaded`
 
@@ -1242,11 +1330,15 @@ The params object contains following attributes:
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        schedule_registration_options_loaded: ( params ) => {
-           console.info( 'registration options loaded', params );
-        },
-    },
+    widgets: {
+        registration: {
+            callback: {
+                schedule_registration_options_loaded: ( params ) => {
+                   console.info( 'registration options loaded', params );
+                },
+            },
+        }
+    }
 };
 ```
 
@@ -1274,12 +1366,16 @@ Unlike [`schedule_registration_options_loaded`](#schedule_registration_options_l
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        schedule_list_rendered: ( { el, schedules, course } ) => {
-            const tiles = el.querySelectorAll( '.zooza_schedules_schedule' );
-            console.info( `Rendered ${ tiles.length } schedules for course "${ course.name }"` );
-        },
-    },
+    widgets: {
+        registration: {
+            callback: {
+                schedule_list_rendered: ( { el, schedules, course } ) => {
+                    const tiles = el.querySelectorAll( '.zooza_schedules_schedule' );
+                    console.info( `Rendered ${ tiles.length } schedules for course "${ course.name }"` );
+                },
+            },
+        }
+    }
 };
 ```
 
@@ -1291,35 +1387,39 @@ The handler is idempotent: it removes any separators it injected on a previous r
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        schedule_list_rendered: ( { el, schedules } ) => {
-            // The callback fires on every render (including re-renders after a
-            // place change), so clear any separators we injected previously.
-            el.querySelectorAll( '.my-week-separator' ).forEach( ( node ) => node.remove() );
+    widgets: {
+        registration: {
+            callback: {
+                schedule_list_rendered: ( { el, schedules } ) => {
+                    // The callback fires on every render (including re-renders after a
+                    // place change), so clear any separators we injected previously.
+                    el.querySelectorAll( '.my-week-separator' ).forEach( ( node ) => node.remove() );
 
-            const tiles = el.querySelectorAll( '.zooza_schedules_schedule' );
-            let last_group = null;
+                    const tiles = el.querySelectorAll( '.zooza_schedules_schedule' );
+                    let last_group = null;
 
-            tiles.forEach( ( tile, index ) => {
-                const schedule = schedules[ index ];
-                const match = schedule.name && schedule.name.match( /^(\d+)\./ );
-                if ( ! match ) {
-                    return;
-                }
+                    tiles.forEach( ( tile, index ) => {
+                        const schedule = schedules[ index ];
+                        const match = schedule.name && schedule.name.match( /^(\d+)\./ );
+                        if ( ! match ) {
+                            return;
+                        }
 
-                const group_number = match[ 1 ];
-                if ( group_number === last_group ) {
-                    return;
-                }
-                last_group = group_number;
+                        const group_number = match[ 1 ];
+                        if ( group_number === last_group ) {
+                            return;
+                        }
+                        last_group = group_number;
 
-                const separator = document.createElement( 'div' );
-                separator.className = 'my-week-separator';
-                separator.textContent = schedule.name;
-                tile.parentNode.insertBefore( separator, tile );
-            } );
-        },
-    },
+                        const separator = document.createElement( 'div' );
+                        separator.className = 'my-week-separator';
+                        separator.textContent = schedule.name;
+                        tile.parentNode.insertBefore( separator, tile );
+                    } );
+                },
+            },
+        }
+    }
 };
 ```
 
@@ -1439,12 +1539,16 @@ The smallest thing that works. The widget auto-appends a default Select CTA at t
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        render_course_tile: ( course ) => `
-            <h3>${ course.name }</h3>
-            <p>${ ( course.description || '' ).slice( 0, 160 ) }</p>
-        `,
-    },
+    widgets: {
+        registration: {
+            callback: {
+                render_course_tile: ( course ) => `
+                    <h3>${ course.name }</h3>
+                    <p>${ ( course.description || '' ).slice( 0, 160 ) }</p>
+                `,
+            },
+        }
+    }
 };
 ```
 
@@ -1454,30 +1558,34 @@ Metadata entries on `course.metadata` are an array of `{ key, value, value_type 
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        render_course_tile: ( course ) => {
-            const get_meta = ( key ) => {
-                const entry = ( course.metadata || [] ).find( ( m ) => m.key === key );
-                return entry ? entry.value : null;
-            };
+    widgets: {
+        registration: {
+            callback: {
+                render_course_tile: ( course ) => {
+                    const get_meta = ( key ) => {
+                        const entry = ( course.metadata || [] ).find( ( m ) => m.key === key );
+                        return entry ? entry.value : null;
+                    };
 
-            const price = get_meta( 'price' );    // value_type: 'string', e.g. "from 34 EUR/month"
-            const size  = get_meta( 'size' );     // value_type: 'int', e.g. 10
+                    const price = get_meta( 'price' );    // value_type: 'string', e.g. "from 34 EUR/month"
+                    const size  = get_meta( 'size' );     // value_type: 'int', e.g. 10
 
-            const price_badge = price !== null
-                ? `<span class="my-badge my-badge-price">${ price }</span>`
-                : '';
-            const size_badge  = size !== null
-                ? `<span class="my-badge my-badge-size">Group size: ${ size }</span>`
-                : '';
+                    const price_badge = price !== null
+                        ? `<span class="my-badge my-badge-price">${ price }</span>`
+                        : '';
+                    const size_badge  = size !== null
+                        ? `<span class="my-badge my-badge-size">Group size: ${ size }</span>`
+                        : '';
 
-            return `
-                <h3>${ course.name }</h3>
-                <div class="my-meta-row">${ price_badge }${ size_badge }</div>
-                <p>${ ( course.description || '' ).slice( 0, 160 ) }</p>
-            `;
-        },
-    },
+                    return `
+                        <h3>${ course.name }</h3>
+                        <div class="my-meta-row">${ price_badge }${ size_badge }</div>
+                        <p>${ ( course.description || '' ).slice( 0, 160 ) }</p>
+                    `;
+                },
+            },
+        }
+    }
 };
 ```
 
@@ -1489,15 +1597,19 @@ If you want the Select CTA inline (different copy, different position, different
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        render_course_tile: ( course ) => `
-            <header>
-                <h3>${ course.name }</h3>
-                <button type="button" class="zooza_courses_course_select">Reserve this course</button>
-            </header>
-            <p class="my-course-summary">${ ( course.description || '' ).slice( 0, 200 ) }</p>
-        `,
-    },
+    widgets: {
+        registration: {
+            callback: {
+                render_course_tile: ( course ) => `
+                    <header>
+                        <h3>${ course.name }</h3>
+                        <button type="button" class="zooza_courses_course_select">Reserve this course</button>
+                    </header>
+                    <p class="my-course-summary">${ ( course.description || '' ).slice( 0, 200 ) }</p>
+                `,
+            },
+        }
+    }
 };
 ```
 
@@ -1541,12 +1653,16 @@ A `string`, DOM `Node`, or jQuery object — same as [`render_course_tile`](#ren
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        render_schedule_tile: ( schedule, course ) => `
-            <strong>${ schedule.get_date_formatted() }</strong>
-            <span>${ schedule.get_price() }</span>
-        `,
-    },
+    widgets: {
+        registration: {
+            callback: {
+                render_schedule_tile: ( schedule, course ) => `
+                    <strong>${ schedule.get_date_formatted() }</strong>
+                    <span>${ schedule.get_price() }</span>
+                `,
+            },
+        }
+    }
 };
 ```
 
@@ -1556,15 +1672,19 @@ Same pattern as courses: include `class="zooza_schedules_schedule_select"` on an
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        render_schedule_tile: ( schedule, course ) => `
-            <div class="my-schedule-info">
-                <strong>${ schedule.get_date_formatted() }</strong>
-                <span>${ schedule.get_capacity_formatted() }</span>
-            </div>
-            <button type="button" class="zooza_schedules_schedule_select">Reserve this date</button>
-        `,
-    },
+    widgets: {
+        registration: {
+            callback: {
+                render_schedule_tile: ( schedule, course ) => `
+                    <div class="my-schedule-info">
+                        <strong>${ schedule.get_date_formatted() }</strong>
+                        <span>${ schedule.get_capacity_formatted() }</span>
+                    </div>
+                    <button type="button" class="zooza_schedules_schedule_select">Reserve this date</button>
+                `,
+            },
+        }
+    }
 };
 ```
 
@@ -1641,11 +1761,15 @@ Most common/useful model methods:
 
 ```javascript
 window.ZOOZA = {
-    course_ids: [948], // Array of course IDs to filter or preselect
-    multi_step_form: true, // Use a single-step or multi-step registration form
-    translations: {
-        'registration.step_select_course': 'Select a program',
-    },
+    widgets: {
+        registration: {
+            course_ids: [948], // Array of course IDs to filter or preselect
+            multi_step_form: true, // Use a single-step or multi-step registration form
+            translations: {
+                'registration.step_select_course': 'Select a program',
+            },
+        }
+    }
 };
 ```
 

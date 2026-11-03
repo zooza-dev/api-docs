@@ -61,12 +61,13 @@ need the widget API key shown in the Zooza admin under Team & Settings > Publish
 - [Registration Widget](https://docs.zooza.online/widgets/registration-widget/): Booking and class registration form — settings, filters, analytics events, callbacks.
 - [Buyer-Only Extra Fields](https://docs.zooza.online/widgets/registration-widget-buyer-fields/): Registration form fields collected once per buyer instead of per attendee.
 - [Calendar Widget](https://docs.zooza.online/widgets/calendar-widget/): Real-time class schedule and availability views — settings, custom sessions import.
-- [Map Widget](https://docs.zooza.online/widgets/map-widget/): Location-based venue and class search with map view.
+- [Map Widget](https://docs.zooza.online/widgets/map-widget/): Venues as map pins with nearby classes listed by travel time; opening view and class list set via window.ZOOZA.widgets.map.
+- [Map Widget v2 (deprecated)](https://docs.zooza.online/widgets/deprecated/map-widget-v2/): Legacy v2 map, kept for existing embeds.
 - [Profile Widget](https://docs.zooza.online/widgets/profile-widget/): Customer portal — booking history, payment management, make-up session booking.
 - [Event Documents](https://docs.zooza.online/widgets/event-documents/): Session-attached documents and galleries shown to participants in the profile widget.
 - [Video Widget](https://docs.zooza.online/widgets/video-widget/): Secure video content embedding for logged-in users.
 - [Checkout Widget](https://docs.zooza.online/widgets/checkout-widget/): Sells products, including entry passes with a payment plan; product chosen via ?product= in the page URL.
-- [Checkout Widget v2 (deprecated)](https://docs.zooza.online/widgets/checkout-widget-v2/): Legacy v2 checkout, kept for existing embeds.
+- [Checkout Widget v2 (deprecated)](https://docs.zooza.online/widgets/deprecated/checkout-widget-v2/): Legacy v2 checkout, kept for existing embeds.
 - [Contact Widget](https://docs.zooza.online/widgets/contact-widget/): Contact form that turns website enquiries into Zooza contacts — form configurations, hidden fields, campaign attribution, spam protection, styling, analytics events.
 
 ## Reference
