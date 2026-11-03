@@ -1446,29 +1446,33 @@ The callback receives a single object argument with the following attributes:
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        segment_list_rendered: ( { el, segments } ) => {
-            // Idempotent: clear headings injected by a previous render
-            el.querySelectorAll( '.my-block-heading' ).forEach( ( node ) => node.remove() );
+    widgets: {
+        registration: {
+            callback: {
+                segment_list_rendered: ( { el, segments } ) => {
+                    // Idempotent: clear headings injected by a previous render
+                    el.querySelectorAll( '.my-block-heading' ).forEach( ( node ) => node.remove() );
 
-            const tiles = el.querySelectorAll( '.zooza_segments_segment' );
-            let last_group = null;
+                    const tiles = el.querySelectorAll( '.zooza_segments_segment' );
+                    let last_group = null;
 
-            tiles.forEach( ( tile, index ) => {
-                // e.g. "Technique 1", "Technique 2", "Choreography 1" → group by first word
-                const group = ( segments[ index ].name || '' ).split( ' ' )[ 0 ];
-                if ( group === last_group ) {
-                    return;
-                }
-                last_group = group;
+                    tiles.forEach( ( tile, index ) => {
+                        // e.g. "Technique 1", "Technique 2", "Choreography 1" → group by first word
+                        const group = ( segments[ index ].name || '' ).split( ' ' )[ 0 ];
+                        if ( group === last_group ) {
+                            return;
+                        }
+                        last_group = group;
 
-                const heading = document.createElement( 'h4' );
-                heading.className = 'my-block-heading';
-                heading.textContent = group;
-                tile.parentNode.insertBefore( heading, tile );
-            } );
-        },
-    },
+                        const heading = document.createElement( 'h4' );
+                        heading.className = 'my-block-heading';
+                        heading.textContent = group;
+                        tile.parentNode.insertBefore( heading, tile );
+                    } );
+                },
+            },
+        }
+    }
 };
 ```
 
@@ -1487,12 +1491,16 @@ Read the full current selection from the DOM with `document.querySelectorAll( '.
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        on_segment_selected: ( { wrapper } ) => {
-            const selected = document.querySelectorAll( '.zooza_segments_segment.selected' );
-            console.info( `Block ${ wrapper.data( 'id' ) } toggled, ${ selected.length } selected` );
-        },
-    },
+    widgets: {
+        registration: {
+            callback: {
+                on_segment_selected: ( { wrapper } ) => {
+                    const selected = document.querySelectorAll( '.zooza_segments_segment.selected' );
+                    console.info( `Block ${ wrapper.data( 'id' ) } toggled, ${ selected.length } selected` );
+                },
+            },
+        }
+    }
 };
 ```
 
@@ -1724,14 +1732,18 @@ A `string`, DOM `Node`, or jQuery object, the same as the other renderers.
 
 ```javascript
 window.ZOOZA = {
-    callback: {
-        render_segment_tile: ( { segment, course } ) => `
-            <div class="my-block">
-                <strong>${ segment.name }</strong>
-                <span>${ segment.capacity_left } places left</span>
-            </div>
-        `,
-    },
+    widgets: {
+        registration: {
+            callback: {
+                render_segment_tile: ( { segment, course } ) => `
+                    <div class="my-block">
+                        <strong>${ segment.name }</strong>
+                        <span>${ segment.capacity_left } places left</span>
+                    </div>
+                `,
+            },
+        }
+    }
 };
 ```
 
