@@ -156,12 +156,14 @@ Little Movers stores two pieces of public [metadata](../widgets/registration-wid
     }
 
     window.ZOOZA = window.ZOOZA || {};
-    window.ZOOZA.callback = window.ZOOZA.callback || {};
-    window.ZOOZA.callback.render_course_tile = render_course_tile;
-    window.ZOOZA.callback.render_schedule_tile = render_schedule_tile;
+    window.ZOOZA.widgets = window.ZOOZA.widgets || {};
+    var reg = window.ZOOZA.widgets.registration = window.ZOOZA.widgets.registration || {};
+    reg.callback = reg.callback || {};
+    reg.callback.render_course_tile = render_course_tile;
+    reg.callback.render_schedule_tile = render_schedule_tile;
 
-    window.ZOOZA.course_list_columns = 3;
-    window.ZOOZA.translations = Object.assign( window.ZOOZA.translations || {}, {
+    reg.course_list_columns = 3;
+    reg.translations = Object.assign( reg.translations || {}, {
       'registration.step_select_course': 'Pick an age group',
     } );
   } )();
@@ -186,7 +188,7 @@ Little Movers stores two pieces of public [metadata](../widgets/registration-wid
 - **The buttons carry the widget's class hooks** (`zooza_courses_course_select`, `zooza_schedules_schedule_select`). The widget handles the click, so you write no event listeners. Without them, the widget appends its own default button.
 - **Only stable fields are used**: `name`, `description`, `metadata` on the course and the `get_*_formatted()` getters on the schedule. Anything else is internal and may change.
 - **Data is escaped** before it goes into HTML. Programme names and descriptions are written by staff in the Zooza admin, and the page should not trust them as markup.
-- **Callbacks are registered on `window.ZOOZA` before the loader runs.** Merging into existing objects (`window.ZOOZA.callback || {}`) keeps other scripts' settings intact, for example a WordPress plugin's.
+- **Callbacks are registered on `window.ZOOZA.widgets.registration` before the loader runs**, so they reach the registration widget only, even with other Zooza widgets on the page. Merging into existing objects (`reg.callback || {}`) keeps other scripts' settings intact, for example a WordPress plugin's.
 - Registering `render_course_tile` switches the course list to grid mode automatically.
 
 ## Variations
