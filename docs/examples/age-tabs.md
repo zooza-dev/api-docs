@@ -47,17 +47,19 @@ Give each programme a public [metadata](../widgets/registration-widget.md#metada
     }
 
     window.ZOOZA = window.ZOOZA || {};
-    window.ZOOZA.callback = window.ZOOZA.callback || {};
+    window.ZOOZA.widgets = window.ZOOZA.widgets || {};
+    var reg = window.ZOOZA.widgets.registration = window.ZOOZA.widgets.registration || {};
+    reg.callback = reg.callback || {};
 
     // Optional: only the age-band programmes, in age order
-    window.ZOOZA.course_ids = [ 201, 202, 203, 204, 205 ];
+    reg.course_ids = [ 201, 202, 203, 204, 205 ];
 
     // Keep every tab visible after a choice; the chosen one gets .selected
-    window.ZOOZA.course_list_collapse_on_select = false;
-    window.ZOOZA.course_list_columns = 4;
+    reg.course_list_collapse_on_select = false;
+    reg.course_list_columns = 4;
 
     // Each programme renders as a tab. The class hook makes it the select control.
-    window.ZOOZA.callback.render_course_tile = function ( course ) {
+    reg.callback.render_course_tile = function ( course ) {
       var age = meta( course, 'age' ) || course.name;
       return '<button type="button" class="zooza_courses_course_select lm-tab">' +
                '<span class="lm-tab__age">' + esc( age ) + '</span>' +
@@ -66,7 +68,7 @@ Give each programme a public [metadata](../widgets/registration-widget.md#metada
     };
 
     // Class tiles: just the date range and the select button
-    window.ZOOZA.callback.render_schedule_tile = function ( schedule ) {
+    reg.callback.render_schedule_tile = function ( schedule ) {
       return '<p class="lm-dates">' + esc( schedule.get_date_formatted() ) + '</p>' +
              '<p class="lm-cap">' + esc( schedule.get_capacity_formatted() ) + '</p>' +
              '<button type="button" class="zooza_schedules_schedule_select">Choose</button>';

@@ -25,7 +25,7 @@ The Zooza map widget covers all of this from the venues and classes you already 
 
 ![Location map with postcode search, radius filter, venue pins and a venue panel listing its classes](/img/examples/location-map.png)
 
-Little Movers' "Find a class" page has a short intro, then a full-width map with a pin for each venue. A search field accepts a postcode or address, and a slider narrows the radius. Selecting a pin shows the venue's address and a **Navigate** button, and lists the classes running there. Each class links to the booking form.
+Little Movers' "Find a class" page has a short intro, then a full-width map with a pin for each venue. A search field accepts a postcode or address, and a slider narrows the radius. Below the map, the classes at the venues in view are listed by venue, nearest first. Selecting a pin highlights that venue and opens a bubble with its address, a booking link and a **Get directions** button. Each class links to the booking form.
 
 ## The code
 
@@ -41,24 +41,7 @@ Little Movers' "Find a class" page has a short intro, then a full-width map with
   </div>
 </section>
 
-<script async src="https://uk.api.zooza.app/widgets/v2/loader.js"></script>
-
-<script>
-  // Hide the skeleton as soon as the widget has rendered something.
-  ( function () {
-    var host = document.querySelector( '.lm-map-host [data-zooza-widget="map"]' );
-    var skeleton = document.querySelector( '.lm-map-skeleton' );
-    if ( ! host || ! skeleton ) return;
-
-    var observer = new MutationObserver( function () {
-      if ( host.children.length > 0 ) {
-        skeleton.hidden = true;
-        observer.disconnect();
-      }
-    } );
-    observer.observe( host, { childList: true } );
-  } )();
-</script>
+<script async src="https://uk.api.zooza.app/widgets/v1/loader.js"></script>
 ```
 
 ```css
@@ -78,9 +61,21 @@ Little Movers' "Find a class" page has a short intro, then a full-width map with
   font-weight: 700;
   background: repeating-linear-gradient( 135deg, #f3eef8 0 24px, #ece4f4 24px 48px );
 }
+/* Hide the skeleton once the map has finished loading (or failed) */
+.lm-map-host:has( .zooza-map-widget:not( [data-status="loading"] ) ) .lm-map-skeleton {
+  display: none;
+}
+
+/* Brand the map through its theme variables */
+.lm-map-host .zooza-map-widget {
+  --zooza-accent: #5b2a86;
+  --zooza-pin-color: #ff7a59;
+  --zooza-radius: 14px;
+  --zooza-max-width: none;
+}
 ```
 
-The map widget uses the **v2** loader (`/widgets/v2/loader.js`), while the registration widget uses v1. Little Movers operates in the UK, so the loader comes from `https://uk.api.zooza.app`. Use your own region's URL.
+The map widget uses the same v1 loader (`/widgets/v1/loader.js`) as the registration widget. Little Movers operates in the UK, so the loader comes from `https://uk.api.zooza.app`, and the map shows distances in miles automatically. Use your own region's URL.
 
 ### Settings in the Zooza admin
 
@@ -100,14 +95,24 @@ Clicking a class takes the parent to the [registration widget](../widgets/regist
 ### Why it's built this way
 
 - **Reserved height and a skeleton** keep the page from jumping when the map appears. That helps both parents and Core Web Vitals (CLS).
-- **The skeleton sits outside the placeholder**, so the widget never has to deal with your markup. The observer only watches for the widget's first render.
+- **The skeleton sits outside the placeholder**, so the widget never has to deal with your markup. It is hidden by the widget's documented [`data-status`](../widgets/map-widget.md#class-names) attribute, with no script.
+- **Branding goes through [theme variables](../widgets/map-widget.md#theme-variables)** on `.zooza-map-widget`, so it survives widget updates without overriding internal rules.
 - **Venues come from Zooza**, so opening a new venue or closing one updates the map without touching the website.
 
 ## Variations
 
 - **Venue landing pages for SEO:** create one page per town ("Kids' dance classes in Bristol") with local copy and a registration widget filtered by [`place_ids`](../widgets/registration-widget.md#place_ids). Link them from the map page.
 - **Franchise networks:** each franchisee keeps their own Zooza company, and the network site shows all venues together.
-- **Styling:** download the default map CSS as described in [Use CSS](../widgets/map-widget.md#use-css) and override it, scoped to `.lm-map-host`.
+- **Regional pages:** open the map on one region instead of fitting every pin, with [`map_view`](../widgets/map-widget.md#map_view):
+  ```html
+  <script>
+    window.ZOOZA = window.ZOOZA || {};
+    window.ZOOZA.widgets = window.ZOOZA.widgets || {};
+    window.ZOOZA.widgets.map = { map_view: { center: { lat: 51.4545, lng: -2.5879 }, zoom: 11 } };
+  </script>
+  ```
+- **Venue overview without the class list:** add `data-zooza-show-schedules="false"` to the placeholder ([`show_schedules`](../widgets/map-widget.md#show_schedules)) to show only the pins and their bubbles.
+- **Deeper styling:** when the variables are not enough, target the [`zooza-map-*` classes](../widgets/map-widget.md#class-names), scoped to `.lm-map-host`.
 
 <AiPrompt task="Add a location map to my site">{`I want a "Find your nearest class" page with the Zooza map widget.
 
@@ -115,7 +120,8 @@ Read the Zooza docs first: https://docs.zooza.online/llms-full.txt
 Use this example as the pattern: https://docs.zooza.online/examples/location-map/
 
 Tasks:
-1. Build the page with an intro, a reserved-height map container with a skeleton, and the map widget embed (v2 loader).
+1. Build the page with an intro, a reserved-height map container with a CSS-only skeleton, and the map widget embed (v1 loader).
 2. Ask me for my widget key and region (Europe / UK / UAE).
 3. List which map settings I should enable in Publish > Widget > Map for my use case.
-4. Optionally scaffold one landing page per town with a registration widget filtered by place_ids.`}</AiPrompt>
+4. Brand the map with --zooza-* theme variables on .zooza-map-widget.
+5. Optionally scaffold one landing page per town with a registration widget filtered by place_ids, or open the map on a region with window.ZOOZA.widgets.map.map_view.`}</AiPrompt>
