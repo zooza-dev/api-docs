@@ -268,7 +268,11 @@ The id of the contact form configuration to show. When it is not set, the widget
 ```javascript
 <script>
     window.ZOOZA = {
-        config_id: CONFIG_ID
+        widgets: {
+            contact: {
+                config_id: CONFIG_ID
+            }
+        }
     }
 </script>
 ```
@@ -326,7 +330,7 @@ https://sample-site.com/contact?lang=LANGUAGE_CODE
 The widget's language is determined in this order:
 
 1. URL Query `lang` parameter
-2. `lang` option, set on the placeholder or in `window.ZOOZA`
+2. `lang` option, set on the placeholder or in `window.ZOOZA.widgets.contact`
 3. `lang` attribute of `html` tag
 4. language set in the Zooza
 :::
@@ -364,9 +368,13 @@ Replaces the widget's own texts: buttons, standard field labels and validation m
 ```javascript
 <script>
     window.ZOOZA = {
-        translations: {
-            'contact.submit' : 'Send enquiry',
-            'global.note' : 'How can we help?',
+        widgets: {
+            contact: {
+                translations: {
+                    'contact.submit' : 'Send enquiry',
+                    'global.note' : 'How can we help?',
+                }
+            }
         }
     }
 </script>
@@ -397,7 +405,11 @@ Prints additional debug information to the browser's console. It is especially u
 ```javascript
 <script>
     window.ZOOZA = {
-        print_debug: true|false
+        widgets: {
+            contact: {
+                print_debug: true|false
+            }
+        }
     }
 </script>
 ```

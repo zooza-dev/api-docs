@@ -242,6 +242,10 @@ You can download the default css from this URL:
 
 Due to legacy reasons, some of the parameters are defined into `document.zooza` and some into `window.ZOOZA`. It is always shown along each property which way to use. However the concept stays the same: insert the script tag before the embed code.
 
+:::note Flat `window.ZOOZA` only
+The calendar is a v2 widget, so it reads options set directly on `window.ZOOZA`, as shown below. The per-widget [`window.ZOOZA.widgets`](./embed-methods.md#setting-options-from-javascript) form used by the v1 widgets does not apply to it.
+:::
+
 ### `filter_courses`
 
 _Type: Array, String_

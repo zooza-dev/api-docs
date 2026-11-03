@@ -15,14 +15,14 @@ import AiPrompt from '@site/src/components/AiPrompt';
 Which product the widget sells is decided by the URL of the page it is on, so one checkout page can sell every product: link to it with [`?product=`](#product) and the widget shows that product. The [profile widget](./profile-widget.md) links into the checkout this way.
 
 :::info Replaces the v2 checkout
-This widget is loaded from `/widgets/v1/` and replaces the [legacy v2 checkout widget](./checkout-widget-v2.md). Existing v2 embeds keep working, but are no longer developed. See [Migrating from the v2 checkout](#migrating-from-the-v2-checkout).
+This widget is loaded from `/widgets/v1/` and replaces the [legacy v2 checkout widget](./deprecated/checkout-widget-v2.md). Existing v2 embeds keep working, but are no longer developed. See [Migrating from the v2 checkout](#migrating-from-the-v2-checkout).
 :::
 
 ## Installation
 
 ### WordPress
 
-The WordPress plugin's checkout page setting and the `[zooza type="checkout"]` shortcode still embed the [legacy v2 checkout](./checkout-widget-v2.md). To use this widget on WordPress, paste the [embed code](#embed-code) into a **Custom HTML** block on the page instead.
+The WordPress plugin's checkout page setting and the `[zooza type="checkout"]` shortcode still embed the [legacy v2 checkout](./deprecated/checkout-widget-v2.md). To use this widget on WordPress, paste the [embed code](#embed-code) into a **Custom HTML** block on the page instead.
 
 ### Embed code
 
@@ -205,13 +205,17 @@ https://sample-site.com/checkout?product=123&lang=en
 
 ### `translations`
 
-Overrides individual texts of the widget. Set it in `window.ZOOZA` before the loader runs:
+Overrides individual texts of the widget. Set it in `window.ZOOZA.widgets.checkout` before the loader runs:
 
 ```html
 <script>
 window.ZOOZA = {
-    translations: {
-        'checkout.your_order': 'Your pass'
+    widgets: {
+        checkout: {
+            translations: {
+                'checkout.your_order': 'Your pass'
+            }
+        }
     }
 };
 </script>
@@ -223,7 +227,7 @@ window.ZOOZA = {
 
 ## Migrating from the v2 checkout
 
-To move a page from the [legacy v2 checkout](./checkout-widget-v2.md) to this widget:
+To move a page from the [legacy v2 checkout](./deprecated/checkout-widget-v2.md) to this widget:
 
 1. Replace the embed code on the page with the [v1 embed code](#embed-code). If you already use the placeholder embed, it is enough to change `/widgets/v2/loader.js` to `/widgets/v1/loader.js`.
 2. Keep your links — `?product=` and `?currency=` work the same way. You can now add [`return_url`](#return_url).

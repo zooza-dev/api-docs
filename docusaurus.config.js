@@ -95,6 +95,7 @@ const config = {
       {
         redirects: [
           { from: '/api/endpoints', to: '/api/reference' },
+          { from: '/widgets/checkout-widget-v2', to: '/widgets/deprecated/checkout-widget-v2' },
         ],
       },
     ],
