@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 import AiPrompt from '@site/src/components/AiPrompt';
 
 :::warning Deprecated
-This page describes the **legacy v2 checkout widget**, loaded from `/widgets/v2/`. It keeps working on existing websites, but it is no longer developed. For new embeds, use the [checkout widget](./checkout-widget.md) loaded from `/widgets/v1/`. See [Migrating from the v2 checkout](./checkout-widget.md#migrating-from-the-v2-checkout).
+This page describes the **legacy v2 checkout widget**, loaded from `/widgets/v2/`. It keeps working on existing websites, but it is no longer developed. For new embeds, use the [checkout widget](../checkout-widget.md) loaded from `/widgets/v1/`. See [Migrating from the v2 checkout](../checkout-widget.md#migrating-from-the-v2-checkout).
 :::
 
 # Checkout widget (v2, deprecated)
@@ -37,7 +37,7 @@ In Wix editor, click on Zooza widget. In the `Settings` panel, enter the api key
 
 ### Embed code
 
-Embed this widget with a placeholder element and the Zooza loader. The loader can sit in the `<body>` right after the placeholder, or in the `<head>` so the widget starts loading earlier. See [Choosing an embed method](./embed-methods.md) if you are not sure which one to use.
+Embed this widget with a placeholder element and the Zooza loader. The loader can sit in the `<body>` right after the placeholder, or in the `<head>` so the widget starts loading earlier. See [Choosing an embed method](../embed-methods.md) if you are not sure which one to use.
 
 | Placeholder | Description | Example Value |
 |---|---|---|
@@ -54,7 +54,7 @@ Place the placeholder and the loader in the `<body>` of your page, where you wan
 <script async src='ZOOZA_API_URL/widgets/v2/loader.js'></script>
 ```
 
-Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](../embed-methods.md#configuring-a-widget-on-the-placeholder).
 
   </TabItem>
   <TabItem value="head-body" label="Head + body">
@@ -71,13 +71,13 @@ Then place the placeholder in the `<body>`, where you want the widget to appear:
 <div data-zooza-widget='checkout' data-zooza-id='YOUR_API_KEY'></div>
 ```
 
-Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder).
+Initialisation options can be set directly on the placeholder as [`data-zooza-*` attributes](../embed-methods.md#configuring-a-widget-on-the-placeholder).
 
   </TabItem>
   <TabItem value="legacy" label="Legacy script">
 
 :::note Legacy embed
-This is the original embed snippet. It remains fully supported and existing embeds keep working, but it is no longer maintained or developed. New capabilities, such as [`data-zooza-*` attributes](./embed-methods.md#configuring-a-widget-on-the-placeholder), are only available with the placeholder embed.
+This is the original embed snippet. It remains fully supported and existing embeds keep working, but it is no longer maintained or developed. New capabilities, such as [`data-zooza-*` attributes](../embed-methods.md#configuring-a-widget-on-the-placeholder), are only available with the placeholder embed.
 :::
 
 Place the following snippet directly into the `<body>` of your page, where you want the widget to appear.
@@ -141,7 +141,7 @@ These settings are managed within the Zooza's main application `Publish > Widget
 
 ### URL
 
-This will let Zooza know where your widget resides so that it can [redirect your customers](index.md#importance-of-a-url) to it when necessary.
+This will let Zooza know where your widget resides so that it can [redirect your customers](../index.md#importance-of-a-url) to it when necessary.
 
 ### Use CSS
 

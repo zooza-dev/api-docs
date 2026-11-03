@@ -27,7 +27,7 @@ A small plugin with one shortcode:
 
 1. **The shortcode outputs only the placeholder `<div>`.** That's plain HTML, which no filter strips.
 2. **It records the shortcode's settings** in PHP and doesn't print a script inside the content.
-3. **In the footer (`wp_footer`) the plugin prints one `<script>`** that sets `window.ZOOZA` and registers your callbacks, followed by the Zooza loader. Footer output isn't filtered by page builders, and because the settings and callbacks are printed before the loader, they're registered before the widget starts.
+3. **In the footer (`wp_footer`) the plugin prints one `<script>`** that sets `window.ZOOZA.widgets.registration` and registers your callbacks, followed by the Zooza loader. Footer output isn't filtered by page builders, and because the settings and callbacks are printed before the loader, they're registered before the widget starts.
 4. **Your JavaScript and CSS live in the plugin as files**, enqueued normally and cached by the browser.
 
 ## The code
@@ -88,7 +88,8 @@ add_action( 'wp_footer', function () {
 
     // 1. Settings for the widget, before any script that reads them
     printf(
-        "<script>window.ZOOZA = Object.assign( window.ZOOZA || {}, %s );</script>\n",
+        "<script>window.ZOOZA = window.ZOOZA || {}; window.ZOOZA.widgets = window.ZOOZA.widgets || {}; "
+        . "window.ZOOZA.widgets.registration = Object.assign( window.ZOOZA.widgets.registration || {}, %s );</script>\n",
         wp_json_encode( array_filter( $config, fn( $v ) => $v !== [] ) )
     );
 
@@ -100,14 +101,16 @@ add_action( 'wp_footer', function () {
 } );
 ```
 
-`assets/booking.js` is any of the callback scripts from the other examples, for example [branded tiles](./branded-booking-tiles.md) or [age tabs](./age-tabs.md). Make it **merge** into `window.ZOOZA.callback` instead of replacing it:
+`assets/booking.js` is any of the callback scripts from the other examples, for example [branded tiles](./branded-booking-tiles.md) or [age tabs](./age-tabs.md). Make it **merge** into `window.ZOOZA.widgets.registration.callback` instead of replacing it:
 
 ```javascript
 ( function () {
     window.ZOOZA = window.ZOOZA || {};
-    window.ZOOZA.callback = window.ZOOZA.callback || {};
-    if ( ! window.ZOOZA.callback.render_course_tile ) {
-        window.ZOOZA.callback.render_course_tile = function ( course ) { /* … */ };
+    window.ZOOZA.widgets = window.ZOOZA.widgets || {};
+    var reg = window.ZOOZA.widgets.registration = window.ZOOZA.widgets.registration || {};
+    reg.callback = reg.callback || {};
+    if ( ! reg.callback.render_course_tile ) {
+        reg.callback.render_course_tile = function ( course ) { /* … */ };
     }
 } )();
 ```
@@ -136,5 +139,5 @@ Read: https://docs.zooza.online/examples/wordpress-plugin/ and https://docs.zooz
 Tasks:
 1. Ask me for my widget key, region, and which shortcode attributes editors need.
 2. Create the plugin: shortcode outputs only the placeholder div; settings and scripts are printed in wp_footer (settings → my callbacks → Zooza loader).
-3. Move my JS/CSS into versioned asset files; make the JS merge into window.ZOOZA.callback.
+3. Move my JS/CSS into versioned asset files; make the JS merge into window.ZOOZA.widgets.registration.callback.
 4. Escape all attributes and JSON-encode settings.`}</AiPrompt>

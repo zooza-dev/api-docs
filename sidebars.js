@@ -51,8 +51,16 @@ const sidebars = {
         'widgets/profile-widget',
         'widgets/video-widget',
         'widgets/checkout-widget',
-        'widgets/checkout-widget-v2',
         'widgets/contact-widget',
+        {
+          type: 'category',
+          label: 'Deprecated',
+          collapsed: true,
+          items: [
+            'widgets/deprecated/checkout-widget-v2',
+            'widgets/deprecated/map-widget-v2',
+          ],
+        },
       ],
     },
     {

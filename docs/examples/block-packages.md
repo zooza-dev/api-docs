@@ -106,9 +106,11 @@ Above the list sits a package switch: **Starter · Plus · Pro**. Below it, bloc
     }
 
     window.ZOOZA = window.ZOOZA || {};
-    window.ZOOZA.callback = window.ZOOZA.callback || {};
+    window.ZOOZA.widgets = window.ZOOZA.widgets || {};
+    var reg = window.ZOOZA.widgets.registration = window.ZOOZA.widgets.registration || {};
+    reg.callback = reg.callback || {};
 
-    window.ZOOZA.callback.segment_list_rendered = function ( params ) {
+    reg.callback.segment_list_rendered = function ( params ) {
       var el = params.el;
       state.el = el;
 
@@ -133,8 +135,8 @@ Above the list sits a package switch: **Starter · Plus · Pro**. Below it, bloc
       apply_caps();
     };
 
-    var previous = window.ZOOZA.callback.on_segment_selected;
-    window.ZOOZA.callback.on_segment_selected = function ( params ) {
+    var previous = reg.callback.on_segment_selected;
+    reg.callback.on_segment_selected = function ( params ) {
       if ( typeof previous === 'function' ) previous( params );
       apply_caps();
     };

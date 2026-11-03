@@ -195,7 +195,21 @@ This option takes an object of custom strings. It cannot be set as a `data-zooza
 :::
 
 
-If you want to replace any of the text used in the booking form, you can do that by providing your own custom translations. [See this reference](./registration-widget.md#translations) for more details.
+If you want to replace any of the text used in the profile, you can do that by providing your own custom translations under `window.ZOOZA.widgets.profile`. [See this reference](./registration-widget.md#translations) for how translation keys work.
+
+```javascript
+<script>
+    window.ZOOZA = {
+        widgets: {
+            profile: {
+                translations: {
+                    'TRANSLATION_KEY': 'Your text'
+                }
+            }
+        }
+    }
+</script>
+```
 
 <AiPrompt task="Customise the profile widget's text labels">{`I want to customise the text labels shown in my Zooza profile widget using the translations option.
 
@@ -203,7 +217,7 @@ Read the Zooza widget documentation for the translations option and how to find 
 https://docs.zooza.online/llms-full.txt
 
 Tasks:
-1. Give me a window.ZOOZA script block with a translations object.
+1. Give me a window.ZOOZA.widgets.profile script block with a translations object.
 2. Override the labels I list below with my preferred wording, using the correct translation keys.
 3. Tell me where to place this script relative to the widget embed snippet.
 

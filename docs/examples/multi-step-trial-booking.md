@@ -54,25 +54,29 @@ After a parent selects an age group, the available trial sessions for it appear 
 
 <script>
   window.ZOOZA = window.ZOOZA || {};
+  window.ZOOZA.widgets = window.ZOOZA.widgets || {};
 
-  // One step per screen: class → details → payment → review → done
-  window.ZOOZA.multi_step_form = true;
+  // Settings for the registration widget only
+  window.ZOOZA.widgets.registration = Object.assign( window.ZOOZA.widgets.registration || {}, {
+    // One step per screen: class → details → payment → review → done
+    multi_step_form: true,
 
-  // Only trial registrations on this page (full-term sign-up lives elsewhere)
-  window.ZOOZA.registration_display_mode = 'trials_only';
+    // Only trial registrations on this page (full-term sign-up lives elsewhere)
+    registration_display_mode: 'trials_only',
 
-  // Age groups as tiles, two per row
-  window.ZOOZA.course_list_display = 'grid';
-  window.ZOOZA.course_list_columns = 2;
+    // Age groups as tiles, two per row
+    course_list_display: 'grid',
+    course_list_columns: 2,
 
-  // Keep every tile visible after a choice so parents can compare
-  window.ZOOZA.course_list_collapse_on_select = false;
-  window.ZOOZA.schedule_list_collapse_on_select = false;
+    // Keep every tile visible after a choice so parents can compare
+    course_list_collapse_on_select: false,
+    schedule_list_collapse_on_select: false,
 
-  // Speak the parent's language on the first step
-  window.ZOOZA.translations = {
-    'registration.step_select_course': 'Choose your age group',
-  };
+    // Speak the parent's language on the first step
+    translations: {
+      'registration.step_select_course': 'Choose your age group',
+    },
+  } );
 </script>
 <script async src="https://api.zooza.app/widgets/v1/loader.js"></script>
 ```
@@ -91,7 +95,7 @@ Replace `YOUR_API_KEY` with the widget key from **Team & Settings > Publish**, a
 
 ## Variations
 
-- **Only some programmes on this page:** add [`course_ids`](../widgets/registration-widget.md#course_ids), for example `window.ZOOZA.course_ids = [101, 102];`.
+- **Only some programmes on this page:** add [`course_ids`](../widgets/registration-widget.md#course_ids), for example `course_ids: [ 101, 102 ]` in the same object. Use the `widgets.registration` form or the `data-zooza-course-ids` attribute: with the placeholder embed, a flat `window.ZOOZA.course_ids` is ignored.
 - **One page per city:** add [`place_ids`](../widgets/registration-widget.md#place_ids), so each landing page shows only the venues in that city.
 - **No custom script at all:** every setting above except `translations` also works as a `data-zooza-*` attribute on the placeholder. See [embed methods](../widgets/embed-methods.md#configuring-a-widget-on-the-placeholder).
 
