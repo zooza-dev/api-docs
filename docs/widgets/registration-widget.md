@@ -1251,28 +1251,64 @@ If you have multilingual website and you are using a content management system (
 
 ## Analytics
 
-Registration widget will trigger following events for Google Tag Manager's DataLayer and Meta's Pixel:
+The registration widget sends the events below to every analytics tool it finds on the page. Nothing needs to be set up in Zooza — each event goes to whichever of these is already installed:
+
+- **Google Tag Manager** — pushed to `dataLayer` with the event name in `event`
+- **Google Analytics 4** (`gtag`) — sent as `gtag('event', <event name>, <event data>)`
+- **Meta Pixel** (`fbq`) — sent as a custom event: `fbq('trackCustom', <event name>, <event data>)`
+
+The same event names and event data are used for all of them.
 
 | Event | Description | Event data |
 |---|---|---|
 | `zooza_event_form_loaded` | Triggered when the registration form is displayed to the user | `zooza_form_loaded`: true |
 | `zooza_event_form_submit_start` | Triggered immediately after the submit button is clicked, before the request is sent | `zooza_total_price`: Total value of the booking (including future payments); `zooza_currency`: Currency; `zooza_pay_now`: Amount to pay now |
-| `zooza_event_form_submit_done` | Triggered after the response is received from the server | `zooza_event_form_submit_done`: true |
-| `zooza_event_form_error` | Triggered if the response contains any errors | |
-| `zooza_event_form_submit_thank_you` | Triggered if registration is successful and no further steps are needed | `zooza_form_submit_thank_you`: true |
+| `zooza_event_form_submit_done` | Triggered after a successful response is received from the server | `zooza_form_submit_done`: true |
+| `zooza_event_form_submit_error` | Triggered when the server rejects the submitted form (e.g. the booking failed) | `zooza_form_submit_error`: true |
+| `zooza_event_form_submit_thank_you` | Triggered if registration is successful and no payment step follows | `zooza_form_submit_thank_you`: true |
 | `zooza_event_form_submit_go_to_payment` | Triggered if the user is taken to the payment step | `zooza_form_submit_go_to_payment`: true |
-| `zooza_event_payment_response` | Triggered when the user returns from the payment gateway | `zooza_payment_response` (string) `ok` or `fail` |
+| `zooza_event_payment_response` | Triggered when the user returns from the payment gateway | `zooza_payment_response`: `true` if the payment succeeded, otherwise `false` |
 | `zooza_event_confirm_registration` | Triggered when the user clicks the confirmation link in the email | `zooza_registration_id` (int) |
-| `zooza_event_enroll_started` | Triggered when the user proceeds after a trial lesson | `zooza_enroll_started`: true |
-| `zooza_event_reenroll_started` | Triggered when the user proceeds after a trial lesson | `zooza_reenroll_started`: true |
+| `zooza_event_enroll_started` | Triggered when the user opens the enrolment link from an email (e.g. after a trial lesson) | `zooza_enroll_started`: true |
+| `zooza_event_reenroll_started` | Triggered when the user opens the re-enrolment link from an email | `zooza_reenroll_started`: true |
 | `zooza_event_accept_waitlist` | Triggered when a user accepts a spot from a waitlist notification (for make-up lessons) | `zooza_accept_waitlist`: true |
 | `zooza_event_turn_off_notifications` | Triggered when the user disables notifications in Full courses | `zooza_turn_off_notifications`: true |
 | `zooza_event_turn_off_upcoming_events_notifications` | Triggered when the user disables reminders in Open courses | `zooza_turn_off_upcoming_events_notifications`: true |
 | `zooza_event_cancel_event` | Triggered when the user cancels a session via the email link | `zooza_cancel_event`: true |
-| `zooza_event_form_submit_error` | Triggered when form on submit returns an error (e.g. booking failed due to an error) | `zooza_event_form_submit_error` (bool) |
-| `zooza_event_share_link_opened` | Triggered when Share link is used | `zooza_share_link_opened` (bool) |
+| `zooza_event_share_link_opened` | Triggered when a Share link is opened | `zooza_share_link_opened`: true |
+| `zooza_event_verify_identity_opened` | Triggered when the user opens an identity verification link from an email | `zooza_verify_identity_opened`: true |
+| `zooza_event_verify_identity_confirmed` | Triggered when the user completes identity verification | `zooza_verify_identity_confirmed`: true |
 
-Each event will also pass event data, which is an object with one or multiple properties. The one that will likely interest you most is the `zooza_event_form_submit_start` event, which also sends the value of the order to analytics.
+Each event passes event data, an object with one or more properties. The one that will likely interest you most is `zooza_event_form_submit_start`, which also sends the value of the order.
+
+### Meta Pixel events
+
+If Meta Pixel is installed on the page, every event in the table above arrives in Meta as a **custom event** with the same name — for example `zooza_event_form_submit_thank_you` — and the event data as its parameters. The widget does not send Meta's standard events (`Lead`, `CompleteRegistration`, `Purchase`).
+
+To use them in Meta Ads:
+
+1. Open **Events Manager**, select your Pixel and use **Test events** to check that the `zooza_event_*` events arrive while you go through a registration.
+2. Create a **Custom conversion** based on the custom event you want to optimise for. Common choices:
+   - `zooza_event_form_submit_thank_you` — registration completed without online payment
+   - `zooza_event_form_submit_go_to_payment` — registration completed, user sent to pay
+   - `zooza_event_payment_response` with `zooza_payment_response` equal to `true` — payment succeeded
+3. Use that custom conversion as the optimisation goal of your campaigns.
+
+The order value is sent as `zooza_total_price` and `zooza_currency`, not as Meta's standard `value` and `currency` parameters. If you need a standard `Purchase` or `Lead` event with a value, fire it yourself from Google Tag Manager using a Custom Event trigger on the Zooza event.
+
+If no Pixel is on the page, the widget logs `Meta Pixel not initialized.` to the browser console. This is harmless and can be ignored.
+
+<AiPrompt task="Track registrations as conversions">{`I want to track registrations made through the Zooza registration widget on my website as conversions.
+
+Read the Zooza widget documentation for the registration widget's analytics events:
+https://docs.zooza.online/llms-full.txt
+
+My setup: [Google Tag Manager / GA4 via gtag / Meta Pixel — describe what is on your site].
+
+Tasks:
+1. Tell me which zooza_event_* events mark a completed registration and a successful payment in my setup.
+2. For GTM: show me the Custom Event triggers and the tags that use them, including passing zooza_total_price and zooza_currency as the conversion value.
+3. If I use Meta Pixel, explain how to turn the Zooza custom events into custom conversions, or into a standard Purchase/Lead event with a value.`}</AiPrompt>
 
 ### Guides
 
