@@ -43,17 +43,17 @@ Build pipeline (via `npm run build`):
   merge itself — promoting to production means triggering the workflow, nothing more.
 
 ## Deployment
-SFTP deployment via GitHub Actions (both jobs run the full `npm run build`):
-- **Staging** (`deploy-staging.yml`) — on push to `test` (path-filtered to `docs/`,
-  `src/`, `static/`, `scripts/`, `docusaurus.config.js`, `sidebars.js`,
-  `package.json`, `package-lock.json`), or manual dispatch.
-  Deploys `dist/` → `/zooza.online/sub/staging-docs/`
-- **Production** (`deploy-production.yml`) — `workflow_dispatch` only. Checks out
-  `main`, runs `git merge origin/test` and pushes `main`, then builds and deploys
-  `dist/` → `/zooza.online/sub/docs/`
-
-Note: changes outside the staging path filter (e.g. `CLAUDE.md`, `handoffs/`,
-`specs/`) do not trigger a staging deploy.
+Cloudflare Pages project `api-docs` (Git integration with `zooza-dev/api-docs`)
+builds and hosts the site. Cloudflare runs `npm run build` (output `dist`,
+`NODE_VERSION=20`) on every push it watches — no build or upload happens in
+GitHub Actions.
+- **Production** — Pages production branch `main` → `https://docs.zooza.online`
+  (CNAME `docs` → `api-docs-200.pages.dev` at Websupport, the DNS host for
+  `zooza.online`). To release, trigger `deploy-production.yml`
+  (`workflow_dispatch`): it only runs `git merge origin/test` on `main` and
+  pushes; Cloudflare builds the pushed `main`.
+- **Staging** — Pages preview build of the `test` branch →
+  `https://test.api-docs-200.pages.dev`.
 
 ## Key Directories
 - `docs/` — Markdown source files

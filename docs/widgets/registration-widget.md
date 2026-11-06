@@ -1262,11 +1262,11 @@ The same event names and event data are used for all of them.
 | Event | Description | Event data |
 |---|---|---|
 | `zooza_event_form_loaded` | Triggered when the registration form is displayed to the user | `zooza_form_loaded`: true |
-| `zooza_event_form_submit_start` | Triggered immediately after the submit button is clicked, before the request is sent | `zooza_total_price`: Total value of the booking (including future payments); `zooza_currency`: Currency; `zooza_pay_now`: Amount to pay now |
-| `zooza_event_form_submit_done` | Triggered after a successful response is received from the server | `zooza_form_submit_done`: true |
+| `zooza_event_form_submit_start` | Triggered when the user clicks submit and the form passes validation, **before** the booking is accepted. Not a conversion: the booking can still fail after it | value keys (see below) |
+| `zooza_event_form_submit_done` | Triggered when the registration has been accepted. Fires once per successful registration. **Recommended conversion event** | `zooza_form_submit_done`: true + value keys (see below) |
 | `zooza_event_form_submit_error` | Triggered when the server rejects the submitted form (e.g. the booking failed) | `zooza_form_submit_error`: true |
-| `zooza_event_form_submit_thank_you` | Triggered if registration is successful and no payment step follows | `zooza_form_submit_thank_you`: true |
-| `zooza_event_form_submit_go_to_payment` | Triggered if the user is taken to the payment step | `zooza_form_submit_go_to_payment`: true |
+| `zooza_event_form_submit_thank_you` | Triggered after `form_submit_done` when the user lands on the confirmation and no payment step follows | `zooza_form_submit_thank_you`: true + value keys (see below) |
+| `zooza_event_form_submit_go_to_payment` | Triggered after `form_submit_done` when the user is sent to pay | `zooza_form_submit_go_to_payment`: true + value keys (see below) |
 | `zooza_event_payment_response` | Triggered when the user returns from the payment gateway | `zooza_payment_response`: `true` if the payment succeeded, otherwise `false` |
 | `zooza_event_confirm_registration` | Triggered when the user clicks the confirmation link in the email | `zooza_registration_id` (int) |
 | `zooza_event_enroll_started` | Triggered when the user opens the enrolment link from an email (e.g. after a trial lesson) | `zooza_enroll_started`: true |
@@ -1279,26 +1279,46 @@ The same event names and event data are used for all of them.
 | `zooza_event_verify_identity_opened` | Triggered when the user opens an identity verification link from an email | `zooza_verify_identity_opened`: true |
 | `zooza_event_verify_identity_confirmed` | Triggered when the user completes identity verification | `zooza_verify_identity_confirmed`: true |
 
-Each event passes event data, an object with one or more properties. The one that will likely interest you most is `zooza_event_form_submit_start`, which also sends the value of the order.
+For a single registration, `zooza_event_form_submit_go_to_payment` and `zooza_event_form_submit_thank_you` never both fire. It is always one or the other.
+
+### Order value
+
+The order value is sent on `zooza_event_form_submit_start`, `zooza_event_form_submit_done`, `zooza_event_form_submit_go_to_payment` and `zooza_event_form_submit_thank_you`. The amounts match the price summary the user sees in the widget, in the same currency.
+
+| Key | Meaning |
+|---|---|
+| `zooza_total_price` | Whole order value: what is paid now plus what is paid later (instalments or the rest after a down payment). Includes add-on products and discounts. |
+| `zooza_pay_now` | The part due right away. Equal to `zooza_total_price` unless the order is split into instalments or a down payment. |
+| `zooza_currency` | ISO currency code, e.g. `EUR`. |
+
+Both amounts are numbers rounded to 2 decimals. A free or trial registration sends `0`.
+
+`zooza_event_payment_response` carries no value. It fires on a new page load after the user returns from the payment gateway, when the order value is no longer available. Use the value recorded at `form_submit_done` or `form_submit_go_to_payment` instead.
+
+In Google Tag Manager, use a **Custom Event** trigger on `zooza_event_form_submit_done` for your conversion tag. Read `zooza_total_price` and `zooza_currency` with **Data Layer Variables** and pass them as the conversion value and currency.
 
 ### Meta Pixel events
 
-If Meta Pixel is installed on the page, every event in the table above arrives in Meta as a **custom event** with the same name — for example `zooza_event_form_submit_thank_you` — and the event data as its parameters. The widget does not send Meta's standard events (`Lead`, `CompleteRegistration`, `Purchase`).
+If Meta Pixel is installed on the page, every event in the table above arrives in Meta as a **custom event** with the same name, for example `zooza_event_form_submit_done`, with the event data as its parameters.
 
-To use them in Meta Ads:
+The widget also sends two Meta **standard events** alongside them, with Meta's own `value` and `currency` parameters, so value-based optimisation works without any setup:
 
-1. Open **Events Manager**, select your Pixel and use **Test events** to check that the `zooza_event_*` events arrive while you go through a registration.
-2. Create a **Custom conversion** based on the custom event you want to optimise for. Common choices:
-   - `zooza_event_form_submit_thank_you` — registration completed without online payment
-   - `zooza_event_form_submit_go_to_payment` — registration completed, user sent to pay
-   - `zooza_event_payment_response` with `zooza_payment_response` equal to `true` — payment succeeded
-3. Use that custom conversion as the optimisation goal of your campaigns.
+| Standard event | Sent together with | Parameters |
+|---|---|---|
+| `CompleteRegistration` | `zooza_event_form_submit_done` | `value`: `zooza_total_price`; `currency` |
+| `InitiateCheckout` | `zooza_event_form_submit_go_to_payment` | `value`: `zooza_pay_now`; `currency` |
 
-The order value is sent as `zooza_total_price` and `zooza_currency`, not as Meta's standard `value` and `currency` parameters. If you need a standard `Purchase` or `Lead` event with a value, fire it yourself from Google Tag Manager using a Custom Event trigger on the Zooza event.
+The widget does not send `Purchase`. The value is recorded when the registration is accepted, not after the payment.
+
+:::warning Avoid double counting
+Use **either** the standard `CompleteRegistration` event **or** a custom conversion built on `zooza_event_form_submit_done` / `zooza_event_form_submit_thank_you` as your conversion, never both. Both fire for the same registration, so optimising on both counts every registration twice. If you already have custom conversions built on the `zooza_event_*` events, either keep them and ignore `CompleteRegistration`, or switch your campaigns to `CompleteRegistration` and retire the custom conversions.
+:::
+
+To check your setup, open **Events Manager**, select your Pixel and use **Test events** while you go through a registration. You should see the `zooza_event_*` custom events and `CompleteRegistration` (plus `InitiateCheckout` for paid registrations).
 
 If no Pixel is on the page, the widget logs `Meta Pixel not initialized.` to the browser console. This is harmless and can be ignored.
 
-<AiPrompt task="Track registrations as conversions">{`I want to track registrations made through the Zooza registration widget on my website as conversions.
+<AiPrompt task="Track registrations as conversions">{`I want to track registrations made through the Zooza registration widget on my website as conversions, including the order value.
 
 Read the Zooza widget documentation for the registration widget's analytics events:
 https://docs.zooza.online/llms-full.txt
@@ -1306,9 +1326,9 @@ https://docs.zooza.online/llms-full.txt
 My setup: [Google Tag Manager / GA4 via gtag / Meta Pixel — describe what is on your site].
 
 Tasks:
-1. Tell me which zooza_event_* events mark a completed registration and a successful payment in my setup.
-2. For GTM: show me the Custom Event triggers and the tags that use them, including passing zooza_total_price and zooza_currency as the conversion value.
-3. If I use Meta Pixel, explain how to turn the Zooza custom events into custom conversions, or into a standard Purchase/Lead event with a value.`}</AiPrompt>
+1. Use zooza_event_form_submit_done as the conversion event, with zooza_total_price and zooza_currency as the conversion value.
+2. For GTM: show me the Custom Event trigger, the Data Layer Variables for the value and currency, and the conversion tags that use them.
+3. If I use Meta Pixel, explain whether to optimise on the standard CompleteRegistration event or a custom conversion, and make sure I don't count registrations twice.`}</AiPrompt>
 
 ### Guides
 
