@@ -1279,7 +1279,11 @@ The same event names and event data are used for all of them.
 | `zooza_event_verify_identity_opened` | Triggered when the user opens an identity verification link from an email | `zooza_verify_identity_opened`: true |
 | `zooza_event_verify_identity_confirmed` | Triggered when the user completes identity verification | `zooza_verify_identity_confirmed`: true |
 
-Each event passes event data, an object with one or more properties. The one that will likely interest you most is `zooza_event_form_submit_start`, which also sends the value of the order.
+Each event passes event data, an object with one or more properties. The one that will likely interest you most is `zooza_event_form_submit_start`, which is meant to send the value of the order.
+
+:::warning Order value currently sent as 0
+`zooza_event_form_submit_start` currently sends `zooza_total_price` and `zooza_pay_now` as `0`. `zooza_currency` is correct. A fix is being worked on and this page will be updated when it is released. Until then, don't base conversion-value reporting on these properties.
+:::
 
 ### Meta Pixel events
 
@@ -1294,7 +1298,7 @@ To use them in Meta Ads:
    - `zooza_event_payment_response` with `zooza_payment_response` equal to `true` — payment succeeded
 3. Use that custom conversion as the optimisation goal of your campaigns.
 
-The order value is sent as `zooza_total_price` and `zooza_currency`, not as Meta's standard `value` and `currency` parameters. If you need a standard `Purchase` or `Lead` event with a value, fire it yourself from Google Tag Manager using a Custom Event trigger on the Zooza event.
+The order value is sent only on `zooza_event_form_submit_start` (see the note above about it currently being `0`), as `zooza_total_price` and `zooza_currency`, not as Meta's standard `value` and `currency` parameters. The conversion events themselves carry no value. If you need a standard `Purchase` or `Lead` event with a value, fire it yourself from Google Tag Manager using a Custom Event trigger on the Zooza event.
 
 If no Pixel is on the page, the widget logs `Meta Pixel not initialized.` to the browser console. This is harmless and can be ignored.
 
@@ -1307,7 +1311,7 @@ My setup: [Google Tag Manager / GA4 via gtag / Meta Pixel — describe what is o
 
 Tasks:
 1. Tell me which zooza_event_* events mark a completed registration and a successful payment in my setup.
-2. For GTM: show me the Custom Event triggers and the tags that use them, including passing zooza_total_price and zooza_currency as the conversion value.
+2. For GTM: show me the Custom Event triggers and the tags that use them. Check the docs for the current status of the order value (zooza_total_price) before using it as a conversion value.
 3. If I use Meta Pixel, explain how to turn the Zooza custom events into custom conversions, or into a standard Purchase/Lead event with a value.`}</AiPrompt>
 
 ### Guides
