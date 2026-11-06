@@ -1,11 +1,17 @@
 name: Deploy to Production
 
+# Promotes test to production by merging it into main.
+# Cloudflare Pages (project "api-docs", Git integration) builds and deploys
+# main to docs.zooza.online on its own when main is pushed.
+
 on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  promote:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,29 +25,3 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git merge origin/test
           git push origin main
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build site
-        run: npm run build
-
-      - name: Install lftp
-        run: sudo apt-get install -y lftp
-
-      - name: Deploy via SFTP
-        timeout-minutes: 15
-        env:
-          SFTP_USER: ${{ secrets.SFTP_USER }}
-          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
-          SFTP_HOST: ${{ secrets.SFTP_HOST }}
-        run: |
-          lftp -u "$SFTP_USER,$SFTP_PASSWORD" \
-            -e "set ssl:verify-certificate no; set net:timeout 30; set net:max-retries 2; mirror --reverse --delete --verbose ./dist/ /zooza.online/sub/docs/; quit" \
-            ftp://$SFTP_HOST
