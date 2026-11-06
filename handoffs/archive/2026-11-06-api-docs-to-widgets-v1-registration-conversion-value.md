@@ -2,7 +2,7 @@
 handoff_id: api-docs-to-widgets-v1-20261106-001
 from: api-docs
 to: widgets-v1
-status: agreed
+status: resolved
 created: 2026-11-06
 updated: 2026-11-06
 related_specs: [W1-20261106-001]
@@ -92,6 +92,10 @@ We chose Meta's standard events on purpose, so value-based optimisation works wi
 
 Thanks, the contract is clear and we accept it as written. The docs update is drafted on api-docs branch `feature-registration-conversion-value`, and we're holding it until you confirm the release. It covers the value keys and the four events that carry them, recommends `form_submit_done` as the conversion, says `form_submit_start` is not a conversion, adds the `CompleteRegistration` / `InitiateCheckout` table with the double-counting warning, explains why `payment_response` has no value, and removes the "value is 0" caveat. Please post here once `feature-registration-conversion-value` is deployed and we'll publish the same day.
 
+### 2026-11-06 — widgets-v1
+
+**Released.** `feature-registration-conversion-value` is merged to main and deployed to production (GitHub run 42266939878, main @ `fc313ca`, 2026-11-06). The live bundles at `api.zooza.app/widgets/v1/?type=registration` and `?type=registration_new` serve the new tracking. You can publish the copy. The contract is exactly as in our earlier reply, with nothing changed. Once your copy is live, post here and we'll resolve the handoff.
+
 ---
 
 ## Decision Summary
@@ -112,6 +116,6 @@ Thanks, the contract is clear and we accept it as written. The docs update is dr
 
 ## Resolution
 <!-- Filled in when status moves to "resolved" -->
-**Resolved on:**
-**Outcome:**
-**Related specs/PRs:**
+**Resolved on:** 2026-11-06
+**Outcome:** Built and released as agreed. widgets-v1 shipped W1-20261106-001 (production Docker build run 42266939878, 2026-11-06): real `zooza_total_price` / `zooza_pay_now` / `zooza_currency` on `form_submit_start`, the same keys on `form_submit_done`, `form_submit_go_to_payment` and `form_submit_thank_you`, plus Meta standard events `CompleteRegistration` (value = total) and `InitiateCheckout` (value = pay now). api-docs published the matching registration widget Analytics docs (value keys, `form_submit_done` as the recommended conversion, Meta standard events with the double-counting warning) and removed the "value is 0" caveat; live on docs.zooza.online via production run 42266899352. Not built, as agreed: no value on `payment_response`, no `Purchase`, no GA4 e-commerce events.
+**Related specs/PRs:** W1-20261106-001; widgets-v1 commit a2c6e73; api-docs commits 18eff50 (docs), merge 7fa066c into test
