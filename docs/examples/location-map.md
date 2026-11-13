@@ -99,6 +99,24 @@ Clicking a class takes the parent to the [registration widget](../widgets/regist
 - **Branding goes through [theme variables](../widgets/map-widget.md#theme-variables)** on `.zooza-map-widget`, so it survives widget updates without overriding internal rules.
 - **Venues come from Zooza**, so opening a new venue or closing one updates the map without touching the website.
 
+## Design variants
+
+The same map widget fits very different sites. The widget draws the map and, after a venue is selected, its details and classes below the map. The page around it is yours.
+
+![Little Movers: rounded map with a pill-shaped postcode search floating over it, and venue cards with distance below](/img/examples/map-stacked-movers.png)
+
+**Stacked (Little Movers).** Rounded map with the search on top. Below it, your own three "nearest venue" cards with links to venue landing pages.
+
+![Studio Nord: square-cornered monochrome map on the left and a hairline list of three studios with their instruments on the right](/img/examples/map-split-nord.png)
+
+**Split (Studio Nord).** Map on the left, and on the right your own list of studios (from your CMS or the [places API](/api/reference/get-places-that-belong-to-a-company)) with what is taught at each. Muted colours and no rounded corners.
+
+![Splash Academy on a phone: map on the top part of the screen with Near me search and age chips, and the selected pool's details, lessons and a Navigate button below](/img/examples/map-mobile-splash.png)
+
+**Mobile (Splash Academy).** On phones the map takes the top of the screen. Turn on **Show use current location** and **Show navigate button** so the nearest pool and directions are one tap away.
+
+Style the widget's own parts by downloading the default stylesheet ([Use CSS](../widgets/map-widget.md#use-css)) and overriding colours, corners and fonts, scoped to your container.
+
 ## Variations
 
 - **Venue landing pages for SEO:** create one page per town ("Kids' dance classes in Bristol") with local copy and a registration widget filtered by [`place_ids`](../widgets/registration-widget.md#place_ids). Link them from the map page.

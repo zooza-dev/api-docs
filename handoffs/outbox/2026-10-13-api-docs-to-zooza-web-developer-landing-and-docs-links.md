@@ -127,6 +127,39 @@ authoritative infrastructure facts, put them in this thread and we will use thos
 
 Status moved to `agreed`. Tracked on our side as spec `WEB-20261013-001`.
 
+### 2026-10-14 — zooza-web
+
+Infrastructure claims confirmed by the owner, so the landing page is unblocked and built. Nothing
+needed from api-docs on this.
+
+Two answers shaped the copy, and both are worth knowing because they contradict what a reader might
+assume from the docs:
+
+- **There is no sandbox.** No separate test environment exists, so `/developers/` says so plainly
+  and points at a free account as the thing to build against. If the docs imply a sandbox anywhere,
+  that should be corrected on your side too.
+- **REST API keys are issued by hand on purpose.** We have framed this as a reviewed decision about
+  write access to a live business rather than as a missing self-serve feature, which matches your
+  "request a REST API key from support" constraint.
+
+A public status page exists at https://status.zooza.app/ and is linked from the page.
+
+Shipped on our side, pending a final review pass and a push (pushing to `main` deploys):
+
+- `/developers/` rebuilt in all six locales, at localized slugs — `/sk/pre-vyvojarov/`,
+  `/cs/pro-vyvojare/`, `/de/fuer-entwickler/`, `/pl/dla-programistow/`, `/ro/pentru-dezvoltatori/`.
+  All 12 docs URLs from your table are linked, plus the registration-widget analytics anchor you
+  proposed.
+- Contextual docs bands on `/features/api-integrations/`, `/features/make-up-sessions/`,
+  `/features/trial-booking/` and `/mcp/` — all six locales each, English docs links throughout.
+- The build-vs-buy article, edited from your draft. We added external sources and removed the
+  "5–10% of the final system" figure; every docs link you placed in it survived.
+- A "For developers" section in https://www.zooza.online/llms.txt pointing at docs.zooza.online,
+  your llms.txt included.
+
+One ask back: tell us in this thread before any of the 12 URLs moves. They are now linked from
+roughly 30 pages rather than one.
+
 ---
 
 ## Decision Summary

@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .tools { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .filters { display: flex; gap: 8px; }
+  .sel { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--pill); padding: 7px 14px; font-size: 13px; }
+  .week { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .day h4 { font-size: 14px; color: var(--brand); margin-bottom: 8px; }
+  .t { background: var(--card); border: 1.5px solid var(--line); border-left: 5px solid var(--accent); border-radius: 12px; padding: 9px 10px; font-size: 12px; margin-bottom: 8px; }
+  .t.b { border-left-color: var(--brand); } .t.c { border-left-color: var(--hi); }
+  .t b { display: block; font-size: 13px; color: var(--ink); }
+  .t .tm { font-weight: 800; color: var(--brand); }
+  .t .av { color: #2f8f6b; font-weight: 700; margin-top: 3px; }
+  .t .av.last { color: #c2410c; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/timetable/"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Book a trial</div></div>
+  <div class="page">
+    <div class="eyebrow">Timetable</div><h1 class="title">Every class, every week</h1>
+    <div class="tools"><div class="filters"><span class="sel">All venues ▾</span><span class="sel">All programmes ▾</span><span class="sel">All instructors ▾</span></div><span class="btn">Filter</span></div>
+    <div class="week">
+      <div class="day"><h4>Monday</h4><div class="t"><span class="tm">16:00</span><b>Tiny Movers</b>Riverside Hall · Ellie<div class="av">Spots available</div></div><div class="t b"><span class="tm">17:00</span><b>Big Movers</b>Riverside Hall<div class="av last">Last spot available</div></div></div>
+      <div class="day"><h4>Tuesday</h4><div class="t c"><span class="tm">10:00</span><b>Baby Movers</b>Oak Lane Studio<div class="av">Spots available</div></div></div>
+      <div class="day"><h4>Wednesday</h4><div class="t"><span class="tm">10:00</span><b>Mini Movers</b>Riverside Hall · Priya<div class="av">Spots available</div></div><div class="t b"><span class="tm">16:30</span><b>Big Movers</b>Mill Lane<div class="av">Spots available</div></div></div>
+      <div class="day"><h4>Thursday</h4><div class="t"><span class="tm">16:30</span><b>Mini Movers</b>Mill Lane<div class="av last">Last spot available</div></div></div>
+      <div class="day"><h4>Friday</h4><div class="t c"><span class="tm">09:30</span><b>Baby Movers</b>Oak Lane Studio<div class="av">Spots available</div></div></div>
+      <div class="day"><h4>Saturday</h4><div class="t"><span class="tm">09:30</span><b>Mini Movers</b>Riverside Hall<div class="av">Spots available</div></div><div class="t b"><span class="tm">10:30</span><b>Big Movers</b>Riverside Hall<div class="av">Spots available</div></div><div class="t c"><span class="tm">11:30</span><b>Family Dance</b>Riverside Hall<div class="av">Spots available</div></div></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--hi)"></i>Babies</span><span><i style="background:var(--accent)"></i>Toddlers</span><span><i style="background:var(--brand)"></i>Ages 4–6</span></div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

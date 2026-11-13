@@ -12,6 +12,10 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 **Sell your products directly on your website. The checkout widget shows a product with its options — for example an entry pass with a choice of pack size and payment plan — collects the buyer's details, consents and payment method, creates the order and takes the buyer through payment.**
 
+:::tip See it in practice
+- [Selling passes and vouchers](/examples/checkout-passes)
+:::
+
 Which product the widget sells is decided by the URL of the page it is on, so one checkout page can sell every product: link to it with [`?product=`](#product) and the widget shows that product. The [profile widget](./profile-widget.md) links into the checkout this way.
 
 :::info Replaces the v2 checkout

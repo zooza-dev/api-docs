@@ -17,6 +17,7 @@ This widget is loaded from `/widgets/v1/` and replaces the [legacy v2 map widget
 :::
 
 :::tip See it in practice
+- [Map design variants](/examples/location-map#design-variants)
 - [Branch and franchise location map](/examples/location-map)
 :::
 

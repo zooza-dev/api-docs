@@ -35,6 +35,10 @@ const EXAMPLES = [
   { title: 'Branded booking tiles', to: '/examples/branded-booking-tiles' },
   { title: 'Age-group tabs', to: '/examples/age-tabs' },
   { title: 'Block packages with limits', to: '/examples/block-packages' },
+  { title: 'Parent zone designs', to: '/examples/parent-zone' },
+  { title: 'Contact & lead forms', to: '/examples/contact-lead-forms' },
+  { title: 'Selling passes & vouchers', to: '/examples/checkout-passes' },
+  { title: 'Calendar designs', to: '/examples/calendar-designs' },
   { title: 'Branch & franchise map', to: '/examples/location-map' },
   { title: 'Filtered weekly timetable', to: '/examples/filtered-timetable' },
   { title: 'Custom course catalogue', to: '/examples/custom-catalogue' },
@@ -118,6 +122,7 @@ export default function Home() {
             ))}
           </ul>
           <p className={styles.sectionMore}>
+            <Link to="/examples/design-gallery">Design gallery</Link> ·{' '}
             <Link to="/examples">All examples</Link>
           </p>
         </section>

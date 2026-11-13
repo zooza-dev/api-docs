@@ -1,0 +1,43 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .split { display: grid; grid-template-columns: 1fr 460px; gap: 48px; align-items: start; }
+  .points { list-style: none; padding: 0; margin: 18px 0 0; }
+  .points li { display: flex; gap: 12px; margin-bottom: 14px; font-size: 15px; }
+  .points li span { width: 30px; height: 30px; border-radius: 50%; background: var(--tint); color: var(--brand); display: grid; place-items: center; font-weight: 800; flex: none; }
+  .form { padding: 24px 26px; }
+  .form h3 { font-size: 20px; color: var(--brand); margin-bottom: 14px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .area { height: 70px; }
+  .hint { font-size: 12px; color: var(--accent); margin-top: 4px; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/trial/?utm_source=instagram"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Book a trial</div></div>
+  <div class="page">
+    <div class="split">
+      <div>
+        <div class="eyebrow">Not sure which class?</div>
+        <h1 class="title" style="font-size:40px">Tell us about your child and we'll suggest the right group</h1>
+        <p class="lead">Leave your details and a coach will call you within one working day. No commitment.</p>
+        <ul class="points">
+          <li><span>1</span>We match your child's age and experience to a class.</li>
+          <li><span>2</span>You get a free trial session at a venue near you.</li>
+          <li><span>3</span>Book the full term only if your child loves it.</li>
+        </ul>
+      </div>
+      <div class="card form">
+        <h3>Ask about a class</h3>
+        <div class="two"><div class="field"><label>First name *</label><div class="input">Anna</div></div><div class="field"><label>Last name *</label><div class="input">Example</div></div></div>
+        <div class="field"><label>Email *</label><div class="input">anna@gmial.com</div><div class="hint">Did you mean anna@gmail.com?</div></div>
+        <div class="field"><label>Phone</label><div class="input">+44 7700 900123</div></div>
+        <div class="field"><label>Child's age</label><div class="input">2–3 years ▾</div></div>
+        <div class="field"><label>Message</label><div class="input area">We'd like a weekend class near Riverton.</div></div>
+        <div class="check"><i class="on"></i>I agree to the processing of my personal data. *</div>
+        <div class="check"><i></i>Send me news about holiday camps.</div>
+        <div style="margin-top:12px"><span class="btn accent block">Send enquiry</span></div>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand, people and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

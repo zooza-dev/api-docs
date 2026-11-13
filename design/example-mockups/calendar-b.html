@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 18px; }
+  .head h1 { font-size: 40px; }
+  .navm { font-size: 14px; color: var(--muted); }
+  .navm b { color: var(--ink); font-size: 18px; margin: 0 14px; font-family: var(--head); font-weight: 400; }
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .cal > div { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 92px; padding: 6px 7px; font-size: 11.5px; background: var(--card); }
+  .cal > .dh { min-height: 0; background: transparent; text-transform: uppercase; letter-spacing: .1em; font-size: 11px; color: var(--muted); padding: 8px 7px; }
+  .cal .n { font-size: 12px; color: var(--muted); margin-bottom: 4px; border: 0; min-height: 0; padding: 0; background: none; }
+  .cal > .out { background: transparent; }
+  .ev { display: block; border-left: 2px solid var(--accent); padding: 2px 5px; margin-bottom: 3px; background: var(--tint); }
+  .ev.d { border-left-color: var(--hi); }
+  .ev.x { text-decoration: line-through; color: var(--muted); border-left-color: var(--line); background: transparent; }
+  .today .n { color: #fff; background: var(--ink); display: inline-block; padding: 0 6px; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/schedule/"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Book a lesson</div></div>
+  <div class="page">
+    <div class="head"><h1>Schedule</h1><div class="navm">‹ <b>November 2026</b> ›</div></div>
+    <div class="cal">
+      <div class="dh">Mon</div><div class="dh">Tue</div><div class="dh">Wed</div><div class="dh">Thu</div><div class="dh">Fri</div><div class="dh">Sat</div><div class="dh">Sun</div>
+      <div class="out"><div class="n">26</div></div><div class="out"><div class="n">27</div></div><div class="out"><div class="n">28</div></div><div class="out"><div class="n">29</div></div><div class="out"><div class="n">30</div></div><div class="out"><div class="n">31</div></div>
+      <div><div class="n">1</div></div>
+      <div><div class="n">2</div><span class="ev d">17:00 Ballet I</span></div><div><div class="n">3</div><span class="ev">16:15 Piano F.</span></div><div><div class="n">4</div><span class="ev">15:00 Violin</span></div><div><div class="n">5</div><span class="ev">16:15 Piano F.</span><span class="ev d">18:00 Jazz</span></div><div><div class="n">6</div></div><div><div class="n">7</div><span class="ev d">10:00 Ballet II</span></div><div><div class="n">8</div></div>
+      <div><div class="n">9</div><span class="ev d">17:00 Ballet I</span></div><div><div class="n">10</div><span class="ev">16:15 Piano F.</span></div><div><div class="n">11</div><span class="ev x">15:00 Violin</span></div><div><div class="n">12</div><span class="ev">16:15 Piano F.</span><span class="ev d">18:00 Jazz</span></div><div class="today"><div class="n">13</div><span class="ev">17:30 Voice</span></div><div><div class="n">14</div><span class="ev d">10:00 Ballet II</span></div><div><div class="n">15</div></div>
+      <div><div class="n">16</div><span class="ev d">17:00 Ballet I</span></div><div><div class="n">17</div><span class="ev">16:15 Piano F.</span></div><div><div class="n">18</div><span class="ev">15:00 Violin</span></div><div><div class="n">19</div><span class="ev">16:15 Piano F.</span></div><div><div class="n">20</div><span class="ev">17:30 Voice</span></div><div><div class="n">21</div><span class="ev d">10:00 Ballet II</span></div><div><div class="n">22</div></div>
+    </div>
+    <div class="note">Illustration · fictional brand and data · crossed out = cancelled session</div>
+  </div>
+</div><script src="theme.js"></script></body></html>
