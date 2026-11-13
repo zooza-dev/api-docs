@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .map { position: relative; height: 380px; border-radius: 28px; overflow: hidden; background: #e9e2f2; }
+  .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .search { position: absolute; left: 50%; top: 22px; transform: translateX(-50%); display: flex; gap: 8px; background: #fff; border-radius: 999px; padding: 6px; box-shadow: var(--shadow); width: 560px; }
+  .search span { flex: 1; padding: 8px 14px; color: var(--muted); font-size: 14px; }
+  .list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .v h3 { font-size: 17px; color: var(--brand); }
+  .v p { margin: 4px 0 10px; font-size: 13px; color: var(--muted); }
+  .dist { float: right; font-size: 12px; font-weight: 800; color: var(--accent); }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/locations/"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Book a trial</div></div>
+  <div class="page">
+    <div style="text-align:center"><div class="eyebrow">12 towns · 18 venues</div><h1 class="title">Find a class near you</h1></div>
+    <div class="map">
+      <svg viewBox="0 0 1160 380" preserveAspectRatio="xMidYMid slice">
+        <path d="M0 260 C 200 210, 380 300, 600 250 S 980 190, 1160 230 L 1160 380 L 0 380 Z" fill="#dcd1ea"/>
+        <path d="M120 0 C 200 120, 260 220, 230 380" stroke="#fff" stroke-width="8" fill="none" opacity=".8"/>
+        <path d="M0 150 C 300 170, 700 120, 1160 160" stroke="#fff" stroke-width="6" fill="none" opacity=".8"/>
+        <g fill="#ff8a6b" stroke="#fff" stroke-width="3">
+          <path d="M300 180 c0-16 26-16 26 0 c0 14-13 26-13 26 s-13-12-13-26z"/><path d="M470 120 c0-16 26-16 26 0 c0 14-13 26-13 26 s-13-12-13-26z"/>
+          <path d="M760 210 c0-16 26-16 26 0 c0 14-13 26-13 26 s-13-12-13-26z"/><path d="M880 120 c0-16 26-16 26 0 c0 14-13 26-13 26 s-13-12-13-26z"/>
+        </g>
+        <path d="M580 170 c0-22 38-22 38 0 c0 20-19 36-19 36 s-19-16-19-36z" fill="#5b2a86" stroke="#fff" stroke-width="3"/>
+      </svg>
+      <div class="search"><span>Postcode or town…  RV4 2LM</span><span class="btn solid">Search</span></div>
+    </div>
+    <div class="list">
+      <div class="card v"><span class="dist">0.4 mi</span><h3>Riverside Hall</h3><p>12 Mill Road, Riverton · 6 classes</p><span class="btn">See classes</span></div>
+      <div class="card v"><span class="dist">2.1 mi</span><h3>Oak Lane Studio</h3><p>3 Oak Lane, Riverton · 4 classes</p><span class="btn">See classes</span></div>
+      <div class="card v"><span class="dist">5.8 mi</span><h3>Mill Lane Centre</h3><p>Mill Lane, Oakbridge · 3 classes</p><span class="btn">See classes</span></div>
+    </div>
+    <div class="note">Illustration · fictional brand, map and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

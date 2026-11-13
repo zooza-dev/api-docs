@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .ty { max-width: 640px; margin: 10px auto 0; text-align: center; padding: 36px 40px; border: 0; background: linear-gradient(180deg, var(--tint), var(--card)); }
+  .badge { width: 74px; height: 74px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 38px; display: grid; place-items: center; margin: 0 auto 16px; font-weight: 900; box-shadow: 0 0 0 10px rgba(25,181,216,.15); }
+  .ty h1 { color: var(--brand); font-size: 32px; }
+  .ty p { color: var(--muted); }
+  .summary { background: var(--card); border-radius: var(--radius); text-align: left; padding: 14px 18px; margin: 18px 0; font-size: 14px; }
+  .summary div { display: flex; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--line); }
+  .summary div:first-child { border-top: 0; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: left; margin-bottom: 20px; }
+  .steps div { background: var(--card); border-radius: var(--radius); padding: 12px; font-size: 13px; }
+  .steps b { display: block; color: var(--accent); font-size: 18px; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/checkout/?product=6-swim-pass"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">My account</div></div>
+  <div class="page">
+    <div class="card ty">
+      <div class="badge">✓</div>
+      <h1>You're all set, Sara!</h1>
+      <p>Your 6-swim pass is ready. We've sent the receipt to sara@example.com.</p>
+      <div class="summary"><div><span>6-swim pass</span><b>£54.00</b></div><div><span>Paid by card</span><span class="muted">13 Nov 2026</span></div></div>
+      <div class="steps"><div><b>1</b>Open My account</div><div><b>2</b>Pick a free session</div><div><b>3</b>See you at the pool!</div></div>
+      <span class="btn accent">Continue to My account</span>
+    </div>
+    <div class="note">Illustration · fictional brand, people and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

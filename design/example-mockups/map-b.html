@@ -1,0 +1,37 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .split { display: grid; grid-template-columns: 1.5fr 1fr; border: 1px solid var(--line); height: 470px; }
+  .map { position: relative; background: #e4e2db; }
+  .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .list { background: var(--card); overflow: hidden; border-left: 1px solid var(--line); }
+  .list .s { padding: 14px 20px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .v { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .v.on { background: var(--tint); box-shadow: inset 3px 0 0 var(--accent); }
+  .v h3 { font-size: 19px; }
+  .v p { margin: 4px 0 8px; font-size: 13px; color: var(--muted); }
+  .v .k { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); }
+  .v .k a { color: var(--ink); }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/studios/"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Book a lesson</div></div>
+  <div class="page">
+    <h1 class="title" style="font-size:40px;margin-bottom:18px">Studios</h1>
+    <div class="split">
+      <div class="map"><svg viewBox="0 0 700 470" preserveAspectRatio="xMidYMid slice">
+        <path d="M0 320 C 150 280, 300 360, 450 310 S 650 260, 700 290 L 700 470 L 0 470 Z" fill="#d6d3c9"/>
+        <path d="M200 0 L 230 470" stroke="#fff" stroke-width="5"/><path d="M0 180 L 700 210" stroke="#fff" stroke-width="5"/><path d="M420 0 L 380 470" stroke="#fff" stroke-width="3"/>
+        <g fill="#1d1d1b"><circle cx="300" cy="150" r="9"/><circle cx="520" cy="250" r="9"/></g>
+        <circle cx="300" cy="150" r="18" fill="none" stroke="#2f6f5e" stroke-width="3"/>
+      </svg></div>
+      <div class="list">
+        <div class="s">Use my location · 3 studios</div>
+        <div class="v on"><h3>Harbour Studio</h3><p>4 Quay Lane, Northvale</p><div class="k">Piano · Violin · Voice · <a>Directions</a></div></div>
+        <div class="v"><h3>Elm Street Hall</h3><p>22 Elm Street, Northvale</p><div class="k">Ballet · Jazz · Contemporary</div></div>
+        <div class="v"><h3>Old Mill Rooms</h3><p>Mill Road, Easterby</p><div class="k">Guitar · Drums</div></div>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand, map and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

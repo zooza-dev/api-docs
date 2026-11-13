@@ -1,0 +1,31 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+  .plan { text-align: center; padding: 26px 22px; position: relative; }
+  .plan.best { border: 2px solid var(--brand); transform: translateY(-8px); }
+  .ribbon { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--hi); color: var(--ink); border-radius: var(--pill); padding: 4px 12px; font-size: 12px; font-weight: 800; }
+  .plan h3 { color: var(--brand); font-size: 20px; }
+  .price { font-size: 38px; font-weight: 900; color: var(--ink); margin: 10px 0 2px; }
+  .per { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+  .plan ul { list-style: none; padding: 0; margin: 0 0 18px; text-align: left; font-size: 14px; }
+  .plan li { padding: 6px 0; border-top: 1px solid var(--line); }
+  .plan li:before { content: "✓ "; color: var(--accent); font-weight: 900; }
+  .code { margin-top: 20px; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted); text-align: center; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/passes/"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Book a trial</div></div>
+  <div class="page" style="text-align:center">
+    <div class="eyebrow">Drop-in classes</div>
+    <h1 class="title">Come when it suits you</h1>
+    <p class="lead" style="margin-left:auto;margin-right:auto">Buy a class pass and book any drop-in session from your parent zone. Passes are valid for 6 months.</p>
+    <div class="plans" style="text-align:left">
+      <div class="card plan"><h3>Single class</h3><div class="price">£12</div><div class="per">one session</div><ul><li>Any drop-in class</li><li>Valid 1 month</li></ul><span class="btn block">Buy</span></div>
+      <div class="card plan best"><span class="ribbon">Most popular</span><h3>10-class pass</h3><div class="price">£99</div><div class="per">or 3 × £33 monthly</div><ul><li>Save £21</li><li>Valid 6 months</li><li>Pay in 3 monthly instalments</li></ul><span class="btn solid block">Buy</span></div>
+      <div class="card plan"><h3>Holiday voucher</h3><div class="price">£50</div><div class="per">gift credit</div><ul><li>Any class or camp</li><li>Printable gift card</li></ul><span class="btn block">Buy</span></div>
+    </div>
+    <div class="code">Buy → /checkout/?product=PASS_ID&amp;return_url=https%3A%2F%2Flittlemovers.example%2Fparent-zone%2F</div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

@@ -1,0 +1,59 @@
+/* Three fictional brands used for design-variant illustrations.
+   Deliberately unrelated to Zooza's and any client's branding.
+   Select with ?theme=movers|nord|splash (see theme.js). */
+:root, body.t-movers {
+  --brand: #5b2a86; --brand-ink: #fff; --accent: #ff8a6b; --hi: #ffc83d;
+  --bg: #fffaf2; --card: #ffffff; --ink: #2d2338; --muted: #6a5f74; --line: #e6dcef;
+  --tint: #f5eefb; --radius: 18px; --pill: 999px; --shadow: 0 8px 24px rgba(91,42,134,.10);
+  --font: "Avenir Next", "Segoe UI", system-ui, sans-serif; --head: var(--font); --head-weight: 800;
+  --frame: #d9d3e0;
+}
+body.t-nord {
+  --brand: #1d1d1b; --brand-ink: #fff; --accent: #2f6f5e; --hi: #c9b27c;
+  --bg: #f6f5f1; --card: #ffffff; --ink: #1d1d1b; --muted: #6b6a64; --line: #dcd9cf;
+  --tint: #eceae3; --radius: 2px; --pill: 2px; --shadow: none;
+  --font: "Helvetica Neue", Helvetica, Arial, sans-serif; --head: Georgia, "Times New Roman", serif; --head-weight: 400;
+  --frame: #cfccc2;
+}
+body.t-splash {
+  --brand: #0b2e59; --brand-ink: #fff; --accent: #19b5d8; --hi: #ffd23f;
+  --bg: #eef8fc; --card: #ffffff; --ink: #0b2e59; --muted: #4c6a85; --line: #cfe6f1;
+  --tint: #dff2fa; --radius: 12px; --pill: 12px; --shadow: 0 6px 18px rgba(11,46,89,.10);
+  --font: "Avenir Next", "Segoe UI", system-ui, sans-serif; --head: var(--font); --head-weight: 900;
+  --frame: #bcd9e8;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; padding: 28px; background: var(--frame); font-family: var(--font); color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--head); font-weight: var(--head-weight); letter-spacing: -.01em; margin: 0; }
+.browser { background: var(--bg); border-radius: 14px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.16); }
+.bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,.6); border-bottom: 1px solid var(--line); }
+.bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); display: inline-block; }
+.url { margin-left: 12px; flex: 1; background: #fff; border-radius: 8px; padding: 5px 12px; font-size: 13px; color: var(--muted); }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; background: var(--card); border-bottom: 1px solid var(--line); }
+.logo { font-family: var(--head); font-weight: var(--head-weight); font-size: 22px; color: var(--brand); }
+.logo b { color: var(--accent); font-weight: inherit; }
+.links { display: flex; gap: 26px; font-size: 15px; color: var(--muted); }
+.cta { background: var(--accent); color: #fff; border-radius: var(--pill); padding: 9px 18px; font-weight: 700; font-size: 14px; }
+body.t-nord .cta { background: var(--brand); }
+.page { padding: 34px 56px 44px; }
+.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 800; color: var(--accent); }
+.title { font-size: 34px; color: var(--brand); margin: 6px 0 8px; }
+.lead { color: var(--muted); font-size: 16px; margin: 0 0 22px; max-width: 620px; line-height: 1.5; }
+.card { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); }
+.btn { display: inline-block; border-radius: var(--pill); padding: 9px 18px; font-weight: 700; font-size: 14px; border: 2px solid var(--brand); color: var(--brand); background: transparent; }
+.btn.solid { background: var(--brand); color: var(--brand-ink); }
+.btn.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.block { display: block; text-align: center; }
+.muted { color: var(--muted); }
+.tag { display: inline-block; background: var(--tint); color: var(--brand); border-radius: var(--pill); padding: 4px 11px; font-size: 12px; font-weight: 700; }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.input { border: 1.5px solid var(--line); background: #fff; border-radius: calc(var(--radius) * .6); padding: 10px 12px; font-size: 14px; color: var(--muted); }
+body.t-nord .input { border-width: 0 0 1.5px; border-radius: 0; padding-left: 0; background: transparent; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--muted); margin: 6px 0; }
+.check i { width: 15px; height: 15px; border: 1.5px solid var(--accent); border-radius: 4px; flex: none; margin-top: 1px; }
+.check i.on { background: var(--accent); }
+.note { font-size: 12px; color: var(--muted); text-align: right; margin-top: 12px; opacity: .8; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
