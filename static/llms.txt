@@ -41,6 +41,11 @@ need the widget API key shown in the Zooza admin under Team & Settings > Publish
 - [Age-group tabs](https://docs.zooza.online/examples/age-tabs/): Programmes rendered as age tabs (from metadata) with render_course_tile and course_list_collapse_on_select false.
 - [Block packages](https://docs.zooza.online/examples/block-packages/): Blocks grouped by category with package-based selection limits, using segment_list_rendered and on_segment_selected.
 - [WordPress plugin](https://docs.zooza.online/examples/wordpress-plugin/): Ship widget customisations as a WordPress plugin with a shortcode; settings and callbacks printed in wp_footer before the loader.
+- [Design gallery](https://docs.zooza.online/examples/design-gallery/): Every widget in three design styles (playful, minimal, bold) for three fictional businesses, linked to code.
+- [Parent zone designs](https://docs.zooza.online/examples/parent-zone/): Profile widget styled with --z2-* theme variables in three layouts; header login menu via zooza_user_logged_in / zooza_user_force_logout.
+- [Contact and lead forms](https://docs.zooza.online/examples/contact-lead-forms/): Contact widget designs (landing page, footer, per-venue with hidden fields) using --zooza-* theme variables; lead conversion tracking.
+- [Passes and checkout](https://docs.zooza.online/examples/checkout-passes/): Selling passes and vouchers with the checkout widget: pricing page with ?product= links, embedded checkout, thank-you screen styling.
+- [Calendar designs](https://docs.zooza.online/examples/calendar-designs/): No-code timetables with the calendar widget: week view, classic month calendar, single venue with event_tile_render badges.
 - [Location map](https://docs.zooza.online/examples/location-map/): Branch and franchise map with postcode search, radius filter and classes per venue, using the map widget.
 - [Filtered timetable](https://docs.zooza.online/examples/filtered-timetable/): Server-rendered weekly timetable from the REST API (schedules, courses, places) with filters and deep links into booking.
 - [Custom catalogue](https://docs.zooza.online/examples/custom-catalogue/): Custom programme catalogue and class picker; CMS owns content, Zooza owns classes, availability, waiting lists and booking.

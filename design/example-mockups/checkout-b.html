@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .layout { display: grid; grid-template-columns: 1fr 560px; gap: 56px; }
+  .about h1 { font-size: 40px; margin: 8px 0 12px; }
+  .about p { color: var(--muted); line-height: 1.6; }
+  .about dl { display: grid; grid-template-columns: 120px 1fr; gap: 10px 14px; font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; margin-top: 18px; }
+  .about dt { color: var(--muted); }
+  .co { background: var(--card); border: 1px solid var(--line); padding: 26px 28px; }
+  .co h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; font-family: var(--font); font-weight: 700; color: var(--muted); margin: 18px 0 10px; }
+  .co h3:first-child { margin-top: 0; }
+  .opt { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); padding: 12px 14px; margin-bottom: 8px; font-size: 14px; }
+  .opt.on { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+  .opt small { display: block; color: var(--muted); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tot { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; font-size: 14px; }
+  .tot div { display: flex; justify-content: space-between; padding: 3px 0; }
+  .tot .big { font-size: 18px; font-weight: 700; }
+  .pay { display: flex; gap: 8px; }
+  .pay span { flex: 1; text-align: center; border: 1px solid var(--line); padding: 10px; font-size: 13px; }
+  .pay span.on { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+  .go { display: block; text-align: center; background: var(--accent); color: #fff; padding: 13px; margin-top: 16px; font-weight: 700; letter-spacing: .04em; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/checkout/?product=8-lesson-card"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Book a lesson</div></div>
+  <div class="page">
+    <div class="layout">
+      <div class="about"><div class="eyebrow">Lesson card</div><h1>8-lesson card</h1><p>Flexible private lessons in piano, violin or voice. Book each lesson in your account when it suits you.</p>
+        <dl><dt>Valid</dt><dd style="margin:0">6 months from purchase</dd><dt>Length</dt><dd style="margin:0">30 minutes per lesson</dd><dt>Teachers</dt><dd style="margin:0">Any Studio Nord teacher</dd></dl></div>
+      <div class="co">
+        <h3>Choose an option</h3>
+        <div class="opt on"><span>8 lessons<small>Pay in 2 instalments</small></span><b>2 × €128</b></div>
+        <div class="opt"><span>8 lessons<small>Pay now</small></span><b>€248</b></div>
+        <h3>Your details</h3>
+        <div class="two"><div class="field"><div class="input">Freja</div></div><div class="field"><div class="input">Example</div></div></div>
+        <div class="two"><div class="field"><div class="input">freja@example.com</div></div><div class="field"><div class="input">+45 20 12 34 56</div></div></div>
+        <div class="tot"><div><span>Due today</span><span class="big">€128.00</span></div><div class="muted"><span>Then on 13 Dec</span><span>€128.00</span></div></div>
+        <h3>Payment</h3>
+        <div class="pay"><span class="on">Card</span><span>Bank transfer</span></div>
+        <div class="check" style="margin-top:12px"><i class="on"></i>I accept the terms and conditions.</div>
+        <span class="go">Pay €128.00</span>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand, people and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

@@ -12,6 +12,10 @@ import AiPrompt from '@site/src/components/AiPrompt';
 
 **Replace the generic contact form on your website with a Zooza contact form. Every enquiry becomes a contact in Zooza, together with the page it was sent from and the campaign that brought the visitor, so your team can follow it up.**
 
+:::tip See it in practice
+- [Contact and lead form designs](/examples/contact-lead-forms)
+:::
+
 What the form contains — its fields, consents and what happens after it is sent — is set up in the Zooza app, in a **contact form configuration**. The embed code only decides where the form appears and, optionally, which configuration it shows. Changes you make to a configuration show up on your website straight away, without touching the embed code.
 
 ## Installation

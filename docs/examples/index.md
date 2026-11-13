@@ -8,7 +8,11 @@ sidebar_label: Overview
 
 Each example below is a pattern that Zooza customers run on their own websites today. The brand, data and code are fictional, so you can copy them as a starting point. Every setting and callback they use is documented in the widget and API reference, and linked from each page.
 
-All examples use the same made-up business, **Little Movers**, which runs weekly movement classes for babies and children up to 6 years old in several towns.
+Most examples use the made-up business **Little Movers**, which runs weekly movement classes for babies and children up to 6 years old in several towns. The design examples also use **Studio Nord** (a minimal music and dance school) and **Splash Academy** (a swim school).
+
+:::tip Design gallery
+Want to see the range first? The [design gallery](./design-gallery.md) shows every widget in three styles (playful, minimal and bold) for three fictional businesses.
+:::
 
 ## Booking & trials
 
@@ -17,7 +21,15 @@ All examples use the same made-up business, **Little Movers**, which runs weekly
 - [Age-group tabs](./age-tabs.md): parents pick their child's age first. Programmes are shown as a row of age tabs read from metadata.
 - [Block packages with selection limits](./block-packages.md): blocks grouped by category, with Starter / Plus / Pro packages that cap how many blocks of each category can be chosen.
 
+## Parent zone, enquiries & sales
+
+- [Parent zone designs](./parent-zone.md): the customer profile as a playful dashboard, a minimal account area with a header login menu, or mobile first, styled with theme variables.
+- [Contact and lead form designs](./contact-lead-forms.md): a split landing page for trial enquiries, a minimal footer form, and per-venue forms with hidden fields, tracked as lead conversions.
+- [Selling passes and vouchers](./checkout-passes.md): a pricing page with Buy links, an embedded product checkout and a branded thank-you screen.
+
 ## Listings, timetables & maps
+
+- [Calendar and timetable designs](./calendar-designs.md): a no-code week view with filters, a classic month calendar, and a single-venue timetable with level badges.
 
 - [Branch and franchise location map](./location-map.md): every venue on a map with postcode search, radius filter and the classes at each venue.
 - [Weekly timetable with filters](./filtered-timetable.md): a server-rendered, SEO-friendly week view from the REST API, with filters and deep links into booking.

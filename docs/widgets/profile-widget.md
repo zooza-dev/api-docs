@@ -13,6 +13,7 @@ import AiPrompt from '@site/src/components/AiPrompt';
 **This is essentially a members only area, or a customer portal. It displays order/booking history as well as allows management of all bookings and payments.**
 
 :::tip See it in practice
+- [Parent zone designs](/examples/parent-zone)
 - [Give your AI chatbot the logged-in client](/examples/chatbot-logged-in-client)
 :::
 
@@ -183,6 +184,44 @@ You can download the default css from this URL:
 `API_URL/widgets/v1/css/?widget=YOUR_API_KEY&type=profile`
 
 See [valid options](#embed-code) for `API_URL` and `YOUR_API_KEY` above.
+
+## Styling
+
+The profile widget renders directly into your page (no iframe) and inherits your website's font. Its dashboard (the parent's overview with the child switcher, alerts, upcoming sessions, bookings and payments) reads its look from **theme variables**. Set them on `div.zooza` in your stylesheet, or in **Publish > Widget > Custom CSS**:
+
+```css
+div.zooza {
+    --z2-surface: #ffffff;
+    --z2-bg: #fffaf2;
+    --z2-text: #2d2338;
+    --z2-border: #e6dcef;
+    --z2-radius: 18px;
+    --z2-shadow: 0 8px 24px rgba(91, 42, 134, 0.10);
+}
+```
+
+| Variable | Default | Controls |
+|---|---|---|
+| `--z2-bg` | `rgba(255,255,255,0.96)` | Background of the dashboard |
+| `--z2-surface` | `#ffffff` | Cards and panels |
+| `--z2-text` | `inherit` | Text colour |
+| `--z2-border` | `rgba(0,0,0,0.12)` | Card and control borders |
+| `--z2-border-soft` | `rgba(0,0,0,0.06)` | Dividers inside cards |
+| `--z2-shadow` | `0 1px 2px rgba(0,0,0,0.06)` | Card shadow |
+| `--z2-radius` | `14px` | Corner radius of cards |
+| `--z2-radius-sheet` | `18px` | Corner radius of the "More" sheet |
+| `--z2-gap` | `10px` | Space between cards |
+| `--z2-pad` | `12px` | Padding inside cards |
+| `--z2-overlay` | `rgba(0,0,0,0.45)` | Backdrop behind the "More" sheet |
+| `--z2-badge-bg`, `--z2-badge-border` | light grey | Status badges |
+| `--z2-danger-bg`, `--z2-danger-border` | light red | Alerts that need action, e.g. an overdue payment |
+| `--z2-warn-bg`, `--z2-warn-border` | light amber | Warnings |
+| `--z2-ok-bg`, `--z2-ok-border` | light green | Positive states, e.g. a make-up available |
+| `--z2-info-bg`, `--z2-info-border` | light blue | Information |
+
+Buttons follow the widget's default button styles, which you can override as described in [Use CSS](#use-css). For everything beyond the variables, download the default stylesheet and start from its selectors. The variables are the intended way to restyle the dashboard. Rules that target the widget's internal class names may need updating when the widget changes.
+
+See [Parent zone designs](/examples/parent-zone) for three complete styling examples.
 
 ## Initialisation options
 

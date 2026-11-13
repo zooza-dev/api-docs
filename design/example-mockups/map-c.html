@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  body { display: flex; gap: 40px; align-items: center; justify-content: center; }
+  .phone { width: 360px; height: 740px; background: #111; border-radius: 46px; padding: 12px; box-shadow: 0 24px 60px rgba(0,0,0,.25); }
+  .screen { width: 100%; height: 100%; border-radius: 36px; overflow: hidden; background: #cdebf5; position: relative; }
+  .screen svg { position: absolute; left: 0; right: 0; top: 0; width: 100%; height: 58%; }
+  .search { position: absolute; top: 46px; left: 14px; right: 14px; background: #fff; border-radius: 14px; padding: 12px 14px; font-size: 14px; color: var(--muted); box-shadow: var(--shadow); }
+  .chips { position: absolute; top: 100px; left: 14px; display: flex; gap: 6px; }
+  .chips span { background: #fff; border-radius: 10px; padding: 6px 10px; font-size: 12px; font-weight: 700; color: var(--brand); box-shadow: var(--shadow); }
+  .chips span.on { background: var(--brand); color: #fff; }
+  .sheet { position: absolute; left: 0; right: 0; top: 56%; bottom: 0; background: #fff; border-radius: 0; padding: 14px 18px 22px; box-shadow: 0 -10px 30px rgba(0,0,0,.12); }
+  .grab { width: 40px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 10px; }
+  .sheet h3 { font-size: 19px; color: var(--brand); }
+  .sheet p { margin: 3px 0 10px; font-size: 13px; color: var(--muted); }
+  .cl { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-top: 1px solid var(--line); }
+  .nav2 { display: flex; gap: 8px; margin-top: 12px; }
+  .nav2 span { flex: 1; text-align: center; }
+  .side { max-width: 380px; }
+  .side h1 { font-size: 30px; color: var(--brand); }
+  .side p { color: var(--muted); line-height: 1.5; }
+</style></head>
+<body>
+  <div class="side"><div class="eyebrow">Mobile</div><h1>"Which pool is nearest?"</h1><p>On a phone the map takes the top of the screen. One tap on "Near me" finds the closest pool, the venue's details and lessons appear under the map, and "Navigate" opens the parent's maps app.</p><div class="note" style="text-align:left">Illustration · fictional brand, map and data</div></div>
+  <div class="phone"><div class="screen">
+    <svg viewBox="0 0 336 716" preserveAspectRatio="xMidYMid slice"><path d="M0 420 C 80 380, 160 450, 240 410 S 320 380, 336 400 L 336 716 L 0 716 Z" fill="#e8f3df"/><path d="M110 0 C 130 200, 150 400, 120 716" stroke="#fff" stroke-width="7" fill="none"/>
+      <g fill="#0b2e59" stroke="#fff" stroke-width="3"><path d="M60 300 c0-14 24-14 24 0 c0 12-12 24-12 24 s-12-10-12-24z"/><path d="M250 250 c0-14 24-14 24 0 c0 12-12 24-12 24 s-12-10-12-24z"/></g>
+      <path d="M180 330 c0-20 34-20 34 0 c0 18-17 32-17 32 s-17-14-17-32z" fill="#19b5d8" stroke="#fff" stroke-width="3"/><circle cx="160" cy="380" r="8" fill="#0b2e59" stroke="#fff" stroke-width="3"/></svg>
+    <div class="search">🔍 Near me · within 5 miles</div>
+    <div class="chips"><span class="on">All ages</span><span>Babies</span><span>Kids</span><span>Adults</span></div>
+    <div class="sheet"><h3>Bayside Pool</h3><p>Harbour Road, Port Ellis · 0.8 miles</p>
+      <div class="cl"><span>Stage 1 · Starfish</span><b>Tue 17:00</b></div><div class="cl"><span>Stage 3 · Dolphins</span><b>Tue 16:30</b></div>
+      <div class="nav2"><span class="btn accent">Navigate</span><span class="btn">See lessons</span></div></div>
+  </div></div>
+<script src="theme.js"></script></body></html>

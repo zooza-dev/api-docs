@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .menu { position: relative; }
+  .drop { position: absolute; right: 40px; top: 66px; width: 230px; background: var(--card); border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(0,0,0,.08); padding: 14px 16px; font-size: 14px; z-index: 2; }
+  .drop b { display: block; }
+  .drop small { color: var(--muted); display: block; margin-bottom: 10px; }
+  .drop div { padding: 7px 0; border-top: 1px solid var(--line); }
+  .layout { display: grid; grid-template-columns: 220px 1fr; gap: 34px; }
+  .side div { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--muted); }
+  .side div.on { color: var(--ink); font-weight: 700; border-bottom: 2px solid var(--ink); }
+  h3 { font-size: 22px; margin: 0 0 14px; }
+  .line { display: grid; grid-template-columns: 120px 1fr auto; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); font-size: 14px; align-items: center; }
+  .line .k { color: var(--muted); }
+  .pill { font-size: 12px; border: 1px solid var(--accent); color: var(--accent); padding: 3px 8px; }
+  .callout { border-left: 3px solid var(--accent); background: var(--card); padding: 14px 18px; margin-bottom: 22px; font-size: 14px; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/account/"></div></div>
+  <div class="nav menu"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div style="font-size:14px;font-weight:700"><span data-brand="parent"></span> Example ▾</div>
+    <div class="drop"><b><span data-brand="parent"></span> Example</b><small>freja@example.com</small><div>My account</div><div>Payments</div><div style="color:var(--accent);font-weight:700">Log out</div></div>
+  </div>
+  <div class="page">
+    <h1 class="title" style="font-size:40px">Account</h1>
+    <p class="lead">Lessons, payments and documents for your family.</p>
+    <div class="layout">
+      <div class="side"><div class="on">Overview</div><div>Lessons</div><div>Payments</div><div>Make-ups</div><div>Documents</div></div>
+      <div>
+        <div class="callout"><b>Next lesson:</b> <span data-brand="kid"></span> · <span data-brand="programme"></span> · Thursday 16:15 · <span data-brand="place"></span></div>
+        <h3>Lessons</h3>
+        <div class="line"><span class="k"><span data-brand="kid"></span></span><span><b data-brand="programme"></b><br><span class="muted">Thursdays 16:15 · 30 min · until 18 Jun</span></span><span class="pill">Active</span></div>
+        <div class="line"><span class="k"><span data-brand="kid2"></span></span><span><b data-brand="programme2"></b><br><span class="muted">Mondays 17:00 · 45 min · until 15 Jun</span></span><span class="pill">Active</span></div>
+        <h3 style="margin-top:26px">Payments</h3>
+        <div class="line"><span class="k">1 Dec</span><span>Monthly instalment · <span data-brand="programme"></span></span><span><span data-brand="money"></span>64.00</span></div>
+        <div class="line"><span class="k">1 Nov</span><span>Monthly instalment · <span data-brand="programme"></span></span><span class="muted">Paid</span></div>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand, people and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>

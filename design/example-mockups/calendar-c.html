@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="themes.css">
+<style>
+  .wrap { display: grid; grid-template-columns: 280px 1fr; gap: 26px; }
+  .side .card { padding: 16px; margin-bottom: 12px; }
+  .side h4 { font-size: 14px; margin-bottom: 8px; }
+  .opt { font-size: 13px; padding: 5px 0; display: flex; gap: 8px; align-items: center; }
+  .opt i { width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid var(--accent); }
+  .opt i.on { background: var(--accent); }
+  .daybar { font-weight: 900; color: var(--brand); margin: 4px 0 8px; font-size: 15px; }
+  .slot { display: grid; grid-template-columns: 70px 1fr auto; gap: 14px; align-items: center; background: var(--card); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 8px; box-shadow: var(--shadow); font-size: 14px; }
+  .slot .tm { font-size: 18px; font-weight: 900; color: var(--accent); }
+  .slot b { display: block; }
+  .slot small { color: var(--muted); }
+  .lvl { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: var(--tint); color: var(--brand); margin-left: 6px; }
+  .full { color: #c2410c; font-weight: 700; font-size: 13px; }
+</style></head>
+<body><div class="browser">
+  <div class="bar"><i></i><i></i><i></i><div class="url" data-url="/timetable/?place_id=bayside"></div></div>
+  <div class="nav"><div class="logo" data-brand-html="logo"></div><div class="links"></div><div class="cta">Find lessons</div></div>
+  <div class="page">
+    <div class="eyebrow">Bayside Pool</div><h1 class="title">This week's lessons</h1>
+    <div class="wrap">
+      <div class="side">
+        <div class="card"><h4>Stage</h4><div class="opt"><i class="on"></i>Starfish (Stage 1)</div><div class="opt"><i></i>Seahorse (Stage 2)</div><div class="opt"><i class="on"></i>Dolphins (Stage 3)</div><div class="opt"><i></i>Sharks (Stage 4)</div></div>
+        <div class="card"><h4>Instructor</h4><div class="opt"><i class="on"></i>Any instructor</div></div>
+      </div>
+      <div>
+        <div class="daybar">Tuesday</div>
+        <div class="slot"><span class="tm">16:30</span><span><b>Dolphins <span class="lvl">Stage 3</span></b><small>30 min · lane 2 · Coach Tom</small></span><span class="btn accent">Book</span></div>
+        <div class="slot"><span class="tm">17:00</span><span><b>Starfish <span class="lvl">Stage 1</span></b><small>30 min · teaching pool</small></span><span class="full">Full · join waitlist</span></div>
+        <div class="daybar">Wednesday</div>
+        <div class="slot"><span class="tm">16:00</span><span><b>Starfish <span class="lvl">Stage 1</span></b><small>30 min · teaching pool · Coach Amy</small></span><span class="btn accent">Book</span></div>
+        <div class="slot"><span class="tm">17:15</span><span><b>Dolphins <span class="lvl">Stage 3</span></b><small>30 min · lane 3</small></span><span class="btn accent">Book</span></div>
+      </div>
+    </div>
+    <div class="note">Illustration · fictional brand and data</div>
+  </div>
+</div><script src="theme.js"></script></body></html>
