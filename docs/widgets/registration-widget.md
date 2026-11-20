@@ -1249,6 +1249,181 @@ Although the widget's language is mainly determined by language set in your acco
 If you have multilingual website and you are using a content management system (such as WordPress) then you don't need to set up anything as these systems will typically set current page's language `html` attribute and the widget will automatically use this prior selecting the language defined in your account _(as described in box above)_.
 :::
 
+## Campaign attribution (UTM)
+
+Every booking made through the registration widget can record the campaign that brought the customer in. Zooza stores the campaign on the registration, and you can read it back through the API, for example to attribute each confirmed booking to a campaign in your own reporting.
+
+### What a booking records
+
+| Value | Meaning |
+|---|---|
+| `utm_source` | Where the traffic came from, e.g. `google`, `newsletter` |
+| `utm_medium` | The channel, e.g. `cpc`, `email` |
+| `utm_campaign` | The campaign name |
+| `utm_term` | The paid keyword |
+| `utm_content` | The ad or link variant |
+
+Only these five values are recorded on bookings. Click IDs (`gclid`, `fbclid`), the page URL and the referrer are not. (The [contact widget](./contact-widget.md#attribution) records those on enquiries.)
+
+Each value is trimmed, cut to 255 characters, and left out when empty. If none of the five has a value, the booking records no campaign.
+
+The values are returned as `utm_source` … `utm_content` on the registration in [`GET /registrations`](/api/reference/registrations) and [`GET /registrations/{ID}`](/api/reference/get-single-registration). They are `null` when the booking carried no value.
+
+### Where the values come from
+
+For **each value separately**, the widget uses the first source that has one:
+
+1. **Your site** — values your page hands to the widget ([see below](#handing-over-your-own-utm-values)).
+2. **First-touch memory** — values the widget remembered from an earlier visit, only if you [turned it on](#remembering-the-first-campaign).
+3. **The page URL** — `?utm_source=…&utm_campaign=…` on the page where the widget runs.
+
+Because each value is resolved on its own, a site that hands over only `utm_source` still gets `utm_campaign` from the URL, if it is there.
+
+The values are read when the customer submits the booking, so values you hand over after the page has loaded still count.
+
+### Why your site needs to keep the UTM values
+
+UTM parameters exist only in the address of the page the visitor landed on. Google and Meta do not store them or hand them back, and the browser has no shared place that keeps them. Once the visitor clicks to another page, the UTMs are gone unless code on your site saved them.
+
+So without any work on your side, a booking records a campaign only when the ad links straight to the page with the widget and the visitor books in that same visit. To cover the common journeys:
+
+- **The visitor browses before booking, or comes back later.** Save the UTMs when they land, then hand them to the widget. On the same domain, [first-touch memory](#remembering-the-first-campaign) can do this for you without code.
+- **The visitor lands on one domain and books on another** (for example, a landing page on `my-campaign.com`, with the booking form on `my-school.com`). Only your own code can carry the values across. Browser storage is per domain, so the widget cannot do it.
+
+### Handing over your own UTM values
+
+There are two ways to hand over UTMs to the widget. They do the same thing.
+
+**As a setting**, when the values are known before the widget loads:
+
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        widgets: {
+            registration: {
+                attribution: {
+                    utm_source: 'newsletter',
+                    utm_campaign: 'spring_sale'
+                }
+            }
+        }
+    }
+</script>
+```
+
+  </TabItem>
+</Tabs>
+
+The flat form `window.ZOOZA.attribution` is still supported, but prefer the `widgets.registration` form for new pages. See [Setting options from JavaScript](./embed-methods.md#setting-options-from-javascript).
+
+**By calling `window.ZOOZA.set_attribution()`**, once the widget has loaded, for example after your code has read a cookie:
+
+```javascript
+window.ZOOZA.set_attribution({
+    utm_source: 'newsletter',
+    utm_campaign: 'spring_sale'
+});
+```
+
+- The method is available only after the registration widget has loaded. Before that, use the setting.
+- Each call replaces the values handed over before. Values left out of a call fall back to first-touch memory or the URL.
+- Only the five `utm_*` keys are used. Other keys and values that are not strings are ignored.
+
+#### Example: capture on landing, hand over at booking
+
+This snippet does both steps. Add it to **every page** of your site, before the Zooza loader. On a page with UTMs in the address, it saves them in a first-party cookie for 30 days. On the page with the booking form, it hands the saved values to the widget.
+
+```html
+<script>
+(function () {
+    var KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    var COOKIE = 'site_utm';
+    var DAYS = 30;
+
+    // 1. On landing: save the UTMs from the address, if there are any.
+    var params = new URLSearchParams(window.location.search);
+    var found = {};
+    KEYS.forEach(function (key) {
+        var value = params.get(key);
+        if (value) { found[key] = value; }
+    });
+    if (Object.keys(found).length) {
+        document.cookie = COOKIE + '=' + encodeURIComponent(JSON.stringify(found)) +
+            '; max-age=' + (DAYS * 86400) + '; path=/; SameSite=Lax';
+        // To share the cookie across subdomains, add: '; domain=.your-site.com'
+    }
+
+    // 2. Hand the saved UTMs to the registration widget.
+    var match = document.cookie.match(new RegExp('(?:^|; )' + COOKIE + '=([^;]*)'));
+    if (match) {
+        try {
+            window.ZOOZA = window.ZOOZA || {};
+            window.ZOOZA.widgets = window.ZOOZA.widgets || {};
+            window.ZOOZA.widgets.registration = window.ZOOZA.widgets.registration || {};
+            window.ZOOZA.widgets.registration.attribution = JSON.parse(decodeURIComponent(match[1]));
+        } catch (e) { /* ignore a malformed cookie */ }
+    }
+})();
+</script>
+```
+
+Adjust it to your needs:
+
+- **Last touch instead of first touch.** As written, every visit that has UTMs overwrites the cookie, so the latest campaign wins. To keep the first campaign, save only when the cookie isn't set yet.
+- **Cross-domain journeys.** A cookie can't be read on another domain. Carry the values over in the link to the booking domain, for example `https://my-school.com/book?utm_source=…`. The widget picks them up from the URL, or this snippet saves them on that domain.
+- **Other options already on the page.** The snippet adds to `window.ZOOZA` without replacing it. If another `<script>` later assigns `window.ZOOZA = {...}`, put this snippet after it.
+
+:::warning Consent
+Saving campaign parameters in the visitor's browser is generally treated as marketing tracking. Do it only if your website has the visitor's consent, for example through your cookie consent manager.
+:::
+
+### Remembering the first campaign
+
+For return visits on the **same domain**, the widget can remember campaigns itself, with no code on your side. Turn it on with `attribution_first_touch`:
+
+- The first time the widget loads with UTMs in the URL, it saves them in the visitor's `localStorage` under the key `zooza_registration_first_touch`. Only the five UTM values are saved.
+- Later visits without UTMs book with the saved values. Later visits with different UTMs do not overwrite them, so the first campaign wins until the saved values expire.
+- `attribution_max_age_days` sets how long they are kept: from 1 to 90 days, 30 by default.
+- It is off by default. Nothing is saved unless you turn it on.
+
+Values are saved only on pages where the registration widget is embedded, and only for the domain of that page. First-touch memory does not cover cross-domain journeys. For those, [hand over your own values](#handing-over-your-own-utm-values). They take priority over the remembered ones.
+
+<Tabs groupId="config-surface">
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+<script>
+    window.ZOOZA = {
+        widgets: {
+            registration: {
+                attribution_first_touch: true,
+                attribution_max_age_days: 60
+            }
+        }
+    }
+</script>
+```
+
+  </TabItem>
+  <TabItem value="data" label="Data attribute">
+
+```html
+<div data-zooza-widget='registration'
+     data-zooza-id='YOUR_API_KEY'
+     data-zooza-attribution-first-touch='true'
+     data-zooza-attribution-max-age-days='60'></div>
+```
+
+  </TabItem>
+</Tabs>
+
+:::warning Consent
+As with your own snippet, turn this on only if your website has the visitor's consent to campaign tracking.
+:::
+
 ## Analytics
 
 The registration widget sends the events below to every analytics tool it finds on the page. Nothing needs to be set up in Zooza — each event goes to whichever of these is already installed:
@@ -1359,7 +1534,7 @@ You'll see these appear after key steps in the registration flow. They can be us
 
 - **Dynamic URLs**: Zooza registration links often include query parameters like `?course_id=123&place_id=456`. Always match using `URL contains #YOUR_HASHTAG`.
 - **Use Regex for Flexibility**: For more robust tracking across locations or courses, use regular expressions in your rules.
-- **Tracking per Location**: Hashtags don't carry location data. If you need to track conversions per branch or subpage, combine hashtags with UTM parameters or URL path logic.
+- **Tracking per Location**: Hashtags don't carry location data. If you need to track conversions per branch or subpage, combine hashtags with UTM parameters or URL path logic. To see the campaign on each booking itself, see [Campaign attribution (UTM)](#campaign-attribution-utm).
 - **Thank You Page Tip**: `#confirm_registration_thank_you` only appears when the registration is fully completed. This helps distinguish between users who just clicked the email vs. those who reached the final step.
 
 ## Events and callbacks
