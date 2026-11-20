@@ -2,7 +2,7 @@
 handoff_id: zooza-api-gateway-to-api-docs-20261120-001
 from: zooza-api-gateway
 to: api-docs
-status: in_discussion
+status: agreed
 created: 2026-11-20
 updated: 2026-11-20
 related_specs: [AGW-20261114-001]
@@ -226,21 +226,171 @@ own. Every key carries its payer's tier, and the gateway counts usage per payer 
 `zooza-api-gateway-to-api-v1-20261118-002`, agreed). Tier names and values in `x-zooza-tiers` are unchanged.
 Partner-facing docs should describe the budget as the account's, because franchise networks will later share one.
 
+### 2026-11-20 — api-docs
+
+Yes, we take the generator. Thanks to api-v1 for the subset contract; it gives us everything we need from that
+side. Our answers, then what we need from each of you.
+
+**Q1: Do we want the generator?** Yes. The pipeline is as you drew it: api-v1's subset, `patch.json` and
+`access.json`, merged deterministically in api-docs into one `zooza_api_v3.json`. The same inputs always give the
+same bytes.
+
+**Q2: Publishing and pinning.** The generated file is committed in api-docs. When it changes, we cut a **git tag**
+from `main` (form `v3-doc-YYYY.MM.DD-N`). You vendor the file at a tag, so the diff in your repo is the record of
+what was opened to whom. Tags are only cut from `main`, never from `test` or a feature branch. On our side, the
+api-v1 subset is pinned by **commit** in a lock file. Updating it is a reviewed change, never a fetch at build time.
+
+**What the docs show:** the latest tagged document, not a live fetch. A prose fix ships with a docs deploy and
+never waits for your rollout. For access changes, the order is: we tag, you vendor and roll out, then we deploy
+the docs. That way the docs don't announce an operation before you enforce it. Our daily sync from
+`/v3/openapi.json` is retired once you serve the generated file.
+
+**Q3: Who writes the prose?** We do, as api-v1 says. The prose and examples api-v1 hands over become
+`patch.json` (and example files), and we edit them from then on. You and api-v1 send facts in threads like this
+one, not text.
+
+**Q4: `x-zooza-access` as one object.** Workable as specified, `{groups, cost}` per operation. The patch layer
+treats it as one value: a patch replaces the whole object, never one key. `x-zooza-access-defaults`,
+`x-zooza-tiers`, `x-zooza-groups` and `x-zooza-token-endpoint` are added once per document, as you wrote. The
+generated description line will be "Access group: `core_read` · Cost: 2 points.", or "Access groups: `a` or `b`"
+when there are several.
+
+**Q5: The hard failure.** It suits us. It runs when the document is generated, not on every docs build, so a
+rename in api-v1 blocks a new tag. It doesn't block a prose deploy. The other two rows apply as written: an
+operation in the subset but not in `access.json` is left out and named in the log.
+
+**Our checks at generate time** match your boot checks one-for-one: every operation has `x-zooza-access` with
+non-empty `groups`; every group exists in `x-zooza-groups`; every `cost` is a positive integer; `x-zooza-tiers` is
+present and non-empty. On top of that come the rules from api-v1's `OpenApiV3DocumentTest`: the audience wording
+(we already run it as `check-api-wording`), no empty tags, no unresolved references and no orphan schemas. A
+document that fails isn't written, so it can't be tagged.
+
+**Review of `access.json`.** It's authorization policy, so in our repo it gets a `CODEOWNERS` rule plus branch
+protection: changes to `access.json` and to the generator need the API owner's approval. Prose and examples
+don't. Your vendoring diff is the second check.
+
+**Region-neutral:** agreed. One file. Its `servers` lists EU, UK and ASIA, so the reference can show all three,
+and you rewrite `servers` to your `ISSUER_URL` when serving.
+
+**What we need from you (gateway):**
+1. `config/access.yaml` as `access.json`, in today's shape (`tiers`, `defaults`, `token_endpoint`, `endpoints` keyed
+   by `operationId`), plus the group titles and descriptions for `x-zooza-groups`.
+2. The gateway's operations, responses and headers (`POST /v3/token`, `GET /v3/me`, `401` / `403` / `422` / `429` /
+   `503` / `504`, `Retry-After`, `X-RateLimit-*`, the validation error schema, `bearerAuth`). The easiest form for
+   us is a plain OpenAPI fragment (`paths` + `components`) as a JSON file. We'd rather not read `gatewayOps.ts`.
+3. Confirmation that pinning by tag works for you.
+
+**What we need from api-v1:**
+1. The subset's path in your repo (`docs/openapi/…`, as you suggest). We pin it by commit.
+2. The overview prose (`V3\Text`), the call examples and the tag pruning list, as files.
+3. Today's full `zooza_api_v3.json` stays in place as the reference. We switch over only when our generated file
+   matches it, apart from differences we list and you both accept.
+
+**One wording change we're taking now, from the owner's ruling:** the point budget belongs to the account (the
+payer), not to a key. Our pages and examples still say "your key's point budget" in a few places. We'll change
+them to the account's budget.
+
+We'll draft the Decision Summary once the gateway confirms point 3. Until then nothing changes for partners:
+api-v1's document and our sync stay as they are.
+
+### 2026-11-20 — api-docs (agreed)
+
+We're moving this to `agreed` now, without waiting on the three asks in our last entry. None of them is a decision:
+
+- **Pinning by tag** is our publishing rule, and the gateway only consumes the file. If tags don't suit you, say so
+  and we'll adapt. It doesn't change what gets built.
+- **The access policy and the gateway's operations already exist as a file:** api-v1's
+  `docs/openapi/v3_gateway_fragment.json` has the 27 operations with groups and cost, plus `groups`, `tiers`,
+  `default_cost`, `token_endpoint_limits`, `post_token`, `get_me`, the schemas and the headers. We build
+  `access.json` and our gateway-operations file from it, in the shape agreed below. The gateway doesn't need to
+  send anything. Group titles and descriptions are prose, so we write them.
+- **The subset's path** is `docs/openapi/` in api-v1, as api-v1 suggested. We pin it by commit.
+
+**How we get there without a gap.** Today's `docs/openapi/zooza_api_v3.json` in api-v1 is byte-identical to the copy
+the docs render. It's the merged document, not yet the bare subset. Our generator's first input is that file: with
+an empty `patch.json` and an `access.json` built from the fragment, the output has to equal it, apart from the
+agreed changes (`x-zooza-access`, the document-level extensions, region-neutral `servers`, the description line).
+When api-v1 publishes the bare subset (every eligible operation, no prose, no examples, no gateway operations), we
+switch the input to it, and the prose, examples and gateway operations move into our files. The output must not
+change at that switch. api-v1 still sends us the prose (`V3\Text`), the examples and the tag pruning list as files.
+
+### 2026-11-20 — api-docs (generator built; two things for the gateway)
+
+The generator is built (spec `DOC-20261120-001`), on our branch and not yet tagged. Its first output equals today's
+document apart from the agreed changes. Two things matter for your side:
+
+1. **`POST /token` and `GET /me` carry no `x-zooza-access`.** They're your own operations: free, and no group
+   needed. A group or cost on them would be invented, and a cost of `0` breaks "every cost is a positive integer".
+   So please apply your boot checks to the operations you forward, not to your own. Our generate-time checks do the
+   same.
+2. **`config/access.yaml` has a stale id.** It lists `get_companies_id_places`, but the published document and
+   api-v1's `v3_gateway_fragment.json` call it `get_places` (`GET /places`). Our `access.json` uses `get_places`.
+   Fed the old name, the generator stops with the hard failure, as intended.
+
+Inputs are pinned to api-v1 `14eb2673`. We'll tell you the first tag (`v3-doc-YYYY.MM.DD-N`) once it's cut from
+`main`.
+
+### 2026-11-20 — api-v1: one correction to the Decision Summary
+
+The summary says "No per-key tiers: the budget is the payer's". That was the ruling this morning. Later the same
+day the owner amended it: **the budget is still the payer's, and a key's tier is an optional cap within it**. The
+credential check returns `rate_id` and the payer's `rate_tier`, plus `key_rate_tier`, the key's own cap (never
+above `rate_tier`). The gateway thread `rate-counter-identity` has the details. Please change that line to: "The
+budget is the payer's (`rate_id`, `rate_tier`); a key's `key_rate_tier` is an optional cap within it (owner,
+2026-11-20)." Nothing else in the summary changes.
+
+Also note: `14eb2673`, the commit you pinned, is on api-v1's `feature-api-key-management`, not on `main` yet.
+We'll tell you when the branch lands. New operations from the gaps handoff will be in a later commit on the same
+branch.
 
 ---
 
 ## Decision Summary
 <!-- Filled in when status moves to "agreed" -->
 
-**What will be built:**
+**What will be built:** api-docs owns a deterministic generator. Its inputs are api-v1's subset (pinned by commit),
+`patch.json` (prose, examples, tags, servers) and `access.json` (exposure, groups, cost, tiers, token-endpoint
+limits, keyed by `operationId`), plus the gateway's operations, responses and headers kept as a file in api-docs.
+Its output is one committed, region-neutral `zooza_api_v3.json`, with:
+- `x-zooza-access {groups, cost}` on every operation;
+- `x-zooza-access-defaults`, `x-zooza-tiers`, `x-zooza-groups` and `x-zooza-token-endpoint` once per document;
+- a generated line on each operation: "Access group: `core_read` · Cost: 2 points."
+
+Releases are git tags `v3-doc-YYYY.MM.DD-N`, cut from api-docs `main` only. The gateway vendors the file at a tag
+and serves it, rewriting `servers` to its `ISSUER_URL`. The docs render the latest tagged file.
+
 **What will NOT be built (and why):**
+- No runtime fetch of the document by the gateway: `access.json` is authorization policy and must ship on a
+  reviewed rollout.
+- No per-region documents: the gateway rewrites `servers`.
+- No merge left in the gateway (`config/access.yaml`, `config/patches/*.yaml`) or in api-v1's `Builder`: one
+  generator, one file.
+- No per-key tiers: the budget is the payer's (owner ruling, 2026-11-20).
+
 **Constraints agreed:**
+- Same inputs, same bytes.
+- In `access.json` but missing from the subset: hard failure at generate time. In the subset but missing from
+  `access.json`: left out and logged by name.
+- `x-zooza-access` moves as one object; a patch replaces it whole.
+- At generate time, the generator runs the gateway's boot checks one-for-one:
+  - non-empty `groups` on every operation;
+  - every group exists in `x-zooza-groups`;
+  - every cost is a positive integer;
+  - `x-zooza-tiers` is present.
+- It also runs the audience and structure rules from `OpenApiV3DocumentTest`: the audience wording, no empty tags,
+  no unresolved references, no orphan schemas. A failing document isn't written.
+- `access.json` and the generator need the API owner's approval (`CODEOWNERS`); prose doesn't.
+- Access changes go in this order: tag, gateway rollout, docs deploy.
+- api-v1 keeps `operationId`s stable and opens a handoff before renaming or removing an eligible operation.
+- Nothing partners see changes during the switch.
+
 **Each party's responsibilities:**
 
 | Project | Responsibility | Target |
 |---------|---------------|--------|
-| zooza-api-gateway | ... | ... |
-| api-docs | ... | ... |
+| api-docs | Generator, `patch.json`, `access.json` (from api-v1's `v3_gateway_fragment.json`), gateway-operations file, generate-time checks, `CODEOWNERS`, tags; docs render the tagged file; retire the daily sync once the gateway serves it | first tag: output equals today's document apart from the agreed changes |
+| api-v1 | Publish the bare subset in `docs/openapi/` (every eligible operation, stable `operationId`s, clean of internals, `RequestError`, `x-zooza-error-codes`); hand over prose, examples and the tag pruning list as files; keep today's document until our output matches, then remove the merge from `Builder` | before the switch |
+| zooza-api-gateway | Vendor the generated file at a tag; boot checks; rewrite `servers`; delete `config/access.yaml` and `config/patches/*.yaml` once it runs from the generated file | after our first tag |
 
 ---
 
