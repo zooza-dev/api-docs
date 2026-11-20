@@ -2567,6 +2567,31 @@ components:
                             type: string
                         extra_field_5:
                             type: string
+                utm_source:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign source (e.g. `google`, `newsletter`). Captured by the registration widget at booking; null when not provided."
+                utm_medium:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign medium (e.g. `cpc`, `email`). Captured by the registration widget at booking; null when not provided."
+                utm_campaign:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign name. Captured by the registration widget at booking; null when not provided."
+                utm_term:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign term / keyword. Captured by the registration widget at booking; null when not provided."
+                utm_content:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign content variant. Captured by the registration widget at booking; null when not provided."
                 role:
                     $ref: "#/components/schemas/User_Role"
                 linked_registrations:
@@ -2682,6 +2707,31 @@ components:
                     type: integer
                 total_events:
                     type: integer
+                utm_source:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign source (e.g. `google`, `newsletter`). Captured by the registration widget at booking; null when not provided."
+                utm_medium:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign medium (e.g. `cpc`, `email`). Captured by the registration widget at booking; null when not provided."
+                utm_campaign:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign name. Captured by the registration widget at booking; null when not provided."
+                utm_term:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign term / keyword. Captured by the registration widget at booking; null when not provided."
+                utm_content:
+                    type: string
+                    nullable: true
+                    maxLength: 255
+                    description: "Campaign content variant. Captured by the registration widget at booking; null when not provided."
         User_Role:
             type: object
             properties:
