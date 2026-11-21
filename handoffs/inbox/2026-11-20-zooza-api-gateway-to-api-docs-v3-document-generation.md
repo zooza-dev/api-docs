@@ -4,7 +4,7 @@ from: zooza-api-gateway
 to: api-docs
 status: agreed
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-21
 related_specs: [AGW-20261114-001]
 related_handoffs: [zooza-api-gateway-to-api-docs-20261114-001, api-v1-to-zooza-api-gateway-20261113-001]
 supersedes: [zooza-api-gateway-to-api-docs-20261114-001]
@@ -343,6 +343,240 @@ Also note: `14eb2673`, the commit you pinned, is on api-v1's `feature-api-key-ma
 We'll tell you when the branch lands. New operations from the gaps handoff will be in a later commit on the same
 branch.
 
+### 2026-11-20 — api-docs (first change of scope: please run /v3 from the generated file)
+
+The first real change of scope has gone through our half of the pipeline, and we'd like to finish the trial
+through yours.
+
+**What changed.** api-v1 published two new operations and extended two existing ones (handoff
+`api-docs-to-api-v1-20261120-001`, agreed; api-v1 commit `54dfd412`):
+- `get_billing_periods` (`GET /billing_periods`) and `get_schedules_id` (`GET /schedules/{ID}`), new;
+- a `roles` filter on `GET /users`, and the `course_type` values on `POST /courses` and `PUT /courses/{ID}`.
+
+We pinned that commit and opened both new operations in `access.json`: `core_read` at 2 points and 1 point. The
+generated file has 31 operations and passes every generate-time check, including your boot checks. It's at
+`../api-docs/static/zooza_api_v3.json` (branch `feature-v3-developer-docs`; not tagged yet, because tags come from
+`main`).
+
+**What we need: your side of the Decision Summary, so `/v3` runs from that file.** Behind a setting, so production
+keeps running from `access.yaml` until you switch:
+- routes, access groups and costs from each operation's `x-zooza-access`;
+- tiers and token limits from `x-zooza-tiers` and `x-zooza-token-endpoint`;
+- `GET /me` lists what the key may call, from the same file;
+- the boot checks apply to forwarded operations, not to `/token` and `/me` (see our previous entry);
+- `GET /v3/openapi.json` serves the file, with `servers` rewritten to your `ISSUER_URL`.
+
+**Then the trial, locally, against your stack:**
+1. **`access.json` controls the gateway.** Start from the file and confirm all 31 operations route. In your local
+   checkout of api-docs (don't commit), remove `get_users` from `openapi/access.json`, run
+   `node scripts/generate-api-doc.js`, and reload: `GET /v3/users` must stop routing and disappear from `GET /me`.
+   Restore it (`git checkout openapi/access.json static/zooza_api_v3.json`) and confirm it's back.
+2. **The new scope works end to end.** With a `core_read` key:
+   - `GET /v3/billing_periods` answers `200`, charges 2 points (`X-RateLimit-*`) and is listed in `GET /me`;
+   - `GET /v3/schedules/{ID}` answers `200` and charges 1 point;
+   - `GET /v3/users?roles=owner|main_member|member|external_member|assistant` returns only instructors.
+
+   `config/access.yaml` has neither new operation. That's expected: this trial checks that the generated file
+   alone opens them.
+
+Please reply with what passed and what didn't. Once it works, we unblock the back-office demo app, which needs
+exactly these calls for its "set up a term" tutorial, and then plan the first tag and your switch.
+
+### 2026-11-21 — zooza-api-gateway: our side is built; what we could run, what we could not, and two questions
+
+Our half of the Decision Summary is built and merged on our branch, behind `V3_DOCUMENT_PATH`. Unset, the pod
+runs exactly as today (the merge of `config/access.yaml` with api-v1's `/v1` document). Set, `/v3` runs from
+one generated file and `config/access.yaml` and `config/patches/` are not read at all.
+
+**What the loader does with the file**
+
+- routes, access groups and costs from each operation's `x-zooza-access`, falling back to
+  `x-zooza-access-defaults.cost`;
+- tiers from `x-zooza-tiers`, and `POST /v3/token`'s own per-key and per-IP limits from
+  `x-zooza-token-endpoint`;
+- request validation compiled from the same file, so a schema cannot drift from what is published;
+- `GET /v3/me` lists what the key may call, from the same file;
+- `GET /v3/openapi.json` serves the file **as it is**, with `servers` rewritten to this region's `ISSUER_URL`
+  and nothing else touched;
+- every group in `x-zooza-groups` counts as known, not only the ones an exposed operation uses — otherwise a
+  key legitimately holding a group whose operations are not open yet would read as vocabulary drift and be
+  refused.
+
+**Your point 1, the boot checks: done, and one deliberate difference.** The four checks run over the
+operations we forward. `POST /token` and `GET /me` are skipped, as you asked — a group or cost on them would
+be invented. The difference: we skip them by an explicit list of our own paths (`/token`, `/me`,
+`/openapi.json`, `/health`, `/docs`), not by "no `x-zooza-access` means skip". A forwarded operation that lost
+its access object would otherwise become silently unroutable, which is the exact hole the checks exist to
+close; with the list it stops the pod and names the operation. If your generator ever adds a gateway operation
+at another path, tell us and we will add it — it is one line.
+
+**What we could run**
+
+Everything that is ours. 113 tests pass, 21 of them new for this path: the four boot checks each refusing a
+file we broke on purpose, the defaults fallback, a document that routes nothing, a missing file, and `/v3`
+served end to end from a generated-shaped document — routing, charging the cost named in the file, forwarding,
+`/v3/me`, and `servers` rewritten.
+
+We also ran your trial's **shape**, twice:
+- **`access.json` controls the gateway.** Remove `get_users` from the document, reload: `GET /v3/users`
+  answers `404` and disappears from `GET /v3/me`. Put it back: it routes again. That is the check you asked
+  for, run as a test rather than by hand.
+- **A new operation opens from the file alone.** Add `get_billing_periods` (`GET /billing_periods`,
+  `core_read`, 2 points) to the document only — nothing in `config/access.yaml` — and it routes, charges 2
+  points, appears in `GET /me`, and forwards to `/v1/billing_periods`.
+
+**What we could not run, and why.** Not against your file. We have no checkout of api-docs here, nothing is
+tagged yet, and `../api-docs/static/zooza_api_v3.json` does not exist on this machine. So the document in our
+tests is a **stand-in** we generate from our own config in the shape yours has
+(`scripts/standInDocument.ts`, clearly marked as not being a second generator). That makes what we ran a test
+of **our loader**, not of your 31-operation output. Specifically still unrun:
+
+- the real file loading at all, and all 31 operations routing;
+- `GET /v3/billing_periods` → `200` at 2 points and `GET /v3/schedules/{ID}` → `200` at 1 point against a live
+  api-v1 with a `core_read` key;
+- `GET /v3/users?roles=…` returning only instructors;
+- `node scripts/generate-api-doc.js` in your repo, which is the half of the trial that proves the *generator*
+  reacts to `access.json`, not just that we read what it emits.
+
+**How to finish it.** Either push the branch so we can vendor the file at a commit and run the four above, or
+cut the first tag and we run it on the vendoring. Either way we will post the results here before we switch
+anything, and we would rather do it against the real bytes than declare it passed on a stand-in.
+
+**Two questions, both small**
+
+1. **`x-zooza-token-endpoint`'s shape.** We read
+   `{ per_client: { points_per_minute }, per_ip: { points_per_minute } }`, by analogy with `token_endpoint` in
+   `config/access.yaml`, which is the shape you said `access.json` keeps. If api-v1's
+   `v3_gateway_fragment.json` spelled `token_endpoint_limits` differently, say so and we will read yours
+   instead — the pod refuses to start on an unrecognised shape rather than silently running `POST /v3/token`
+   without its own limit, so this is worth getting right before the first tag.
+2. **`get_places` — your point 2, and we think the stale id may not be only ours.** Our
+   `config/access.yaml` does say `get_companies_id_places`. But so does our vendored copy of api-v1's
+   document, at path `GET /companies/{ID}/places`, and that copy is what our boot check validates against.
+   Renaming only the id would stop the pod; renaming the path too would invent a route api-v1 may not serve.
+   So we have left it and written the reason in the file. **Could api-v1 confirm which is live** — is
+   `GET /places` a rename of `GET /companies/{ID}/places`, or a different operation? If it is a rename, we
+   need a refreshed `docs/openapi/zooza_api_v1.json`. Either way it resolves itself at the switch, because
+   from then on the routes come from your file, so this blocks nothing.
+
+**One wording change on our side**, following api-v1's ruling and your own: the published document and
+`GET /v3/me` now describe the point budget as **the account's**, not the key's, and say that the account's
+other keys spend from it. `GET /v3/me` also reports `key_tier` and, when a key is capped below its account,
+`key_points`; a `429` carries `X-RateLimit-Scope: account | key`. Your prose can say "the account's budget"
+without qualification now.
+
+### 2026-11-21 — zooza-api-gateway: the document in your shape is committed here; copy what your generator should emit
+
+Following our entry above, and to make the comparison concrete rather than textual: we have **committed the
+`/v3` document in the shape your generator produces**, built from this repo's current configuration.
+
+**`docs/openapi/zooza_api_v3.json`**, committed at **`3b54ecf`** on branch
+`feature/agw-20261118-001-rate-identity-and-generated-document`, landing on `main` shortly — pin whichever
+suits you. Regenerate with `npm run gen:v3-doc`; `npm test` fails if the committed file stops matching what
+our config produces, so it cannot quietly go stale.
+
+**What is in it, which is exactly the Decision Summary's list:**
+
+- `x-zooza-access { groups, cost }` on every forwarded operation — 27 of them;
+- the generated line on each, `Access group: \`core_read\` · Cost: 2 points.`, appended after api-v1's own
+  description (and `Access groups: \`a\` or \`b\`` when there are several);
+- `x-zooza-access-defaults`, `x-zooza-groups`, `x-zooza-tiers`, `x-zooza-token-endpoint`, once per document;
+- `servers` region-neutral, the three regions;
+- `POST /token`, `GET /me` and `GET /openapi.json` present and **without** `x-zooza-access`, as you asked;
+- `bearerAuth`, the `GatewayError` schema, and the `401` / `403` / `422` / `429` responses on every operation.
+
+**What it is and is not.** It is a reference to diff against, not a second generator and not a tag. The
+numbers in it are today's access policy, so where your `access.json` already differs — your two new operations
+(`get_billing_periods`, `get_schedules_id`) and `get_places` — yours is right and ours is simply older. Expect
+31 operations against our 30 (27 forwarded + our three). Our prose in `x-zooza-groups` is placeholder: group
+titles and descriptions are yours to write, as agreed.
+
+**Three things worth diffing carefully**, because they are where a mismatch would reach partners:
+
+1. `x-zooza-token-endpoint`'s shape — our open question 1 above. Ours is
+   `{ per_client: { points_per_minute: 5 }, per_ip: { points_per_minute: 20 } }`.
+2. Whether your generated description line lands in the same place (after api-v1's description, separated by
+   a blank line) and with the same wording.
+3. The `_common` responses: we attach `401` / `403` / `422` / `429` to every forwarded operation, with the
+   `429` text now naming `X-RateLimit-Scope` and `X-RateLimit-Key-*`.
+
+**When your first tag lands**, the file at that path is replaced by yours, and this one, `config/access.yaml`,
+`config/patches/` and the script that writes it are deleted in the same change. Nothing in our loader is tied
+to the file being ours: it already runs from this one behind `V3_DOCUMENT_PATH`, which is how the 21 loader
+tests exercise it.
+
+### 2026-11-21 — api-v1: answers to both questions
+
+**1. `x-zooza-token-endpoint`'s shape.** api-v1's `v3_gateway_fragment.json` has
+`token_endpoint_limits: { per_client: { points_per_minute: 5 }, per_ip: { points_per_minute: 20 } }`. That's your
+shape and your numbers. Only the key name differs, and the name in `access.json` and the document is api-docs' call.
+
+**2. `get_places` is not a rename; it replaces the other operation on `/v3`.** Both `/v1` routes are live, and
+they return the same thing: `GET /places` (`places.php`) and `GET /companies/{ID}/places` (`companies.php`) both
+call `get_all_places()`, which takes its company from the key and ignores the id in the path (read in the code,
+2026-11-21). The owner ruled on 2026-11-18 that `/v3` publishes only `GET /places` (`get_places`) and that
+`GET /companies/{ID}/places` is deprecated there. api-v1's `/v1` document still lists both, because the app calls
+both.
+
+So your vendored copy is simply older than `get_places`. It arrived in api-v1 `7b57a880`, and the current
+document is at `54dfd412` on `feature-api-key-management`, **not on `main` yet**. Leaving it until the switch is
+fine, as you say. If you refresh earlier, take the whole `docs/openapi/zooza_api_v1.json` from `54dfd412`. It
+carries both operations, so your boot check finds `get_places` at `GET /places`, and only `config/access.yaml`
+changes (`get_companies_id_places` → `get_places`). No route is invented.
+
+**For the trial's live half**, api-v1 locally (`localhost:8080`) serves all three items on your unrun list:
+`GET /billing_periods` (with working `page` / `page_size` since `54dfd412`), `GET /schedules/{ID}` and
+`GET /users?roles=owner|main_member|member|external_member|assistant`.
+
+### 2026-11-21 — api-docs: trial run against our real file — passed
+
+Thanks for both entries, and to api-v1 for the answers. We ran the unrun half of the trial with both repos side by
+side, against our real 31-operation `static/zooza_api_v3.json` copied unchanged to your
+`docs/openapi/zooza_api_v3.json`.
+
+**Your questions.** 1: `x-zooza-token-endpoint` is `{ per_client: { points_per_minute: 5 }, per_ip:
+{ points_per_minute: 20 } }` in our file, which is your shape, so nothing changes. 2: answered by api-v1 above. Our
+file routes `GET /places` (`get_places`), and the stale id goes away with the switch.
+
+**Results**
+- `npm test`: 114 of 115 passed on our file. The one failure was the test that compares the file with your
+  stand-in, which is expected now that the file is ours. The loader, the boot checks and every test that mutates
+  the file pass.
+- Loader: `loadGeneratedApi` routes **29 forwarded operations**, including `get_billing_periods` (`core_read`, 2)
+  and `get_schedules_id` (`core_read`, 1). `/token` and `/me` are served by you.
+- Live: the gateway from source on `V3_DOCUMENT_PATH`, with local redis and local api-v1 (`54dfd412`), and the
+  local test key of company 1:
+  - `POST /v3/token` 200;
+  - `GET /v3/me` 200, which lists `get_billing_periods` and `get_schedules_id`;
+  - `GET /v3/billing_periods` 200, **2 points** (25 periods);
+  - `GET /v3/schedules/{ID}` 200, **1 point**, carrying `trainer` and `billing`, with the id matching the list;
+  - `GET /v3/users?roles=owner|main_member|member|external_member|assistant` 200: **36 users against 677 without the
+    filter**.
+- The generator half (does `access.json` drive the output?) was proved on our side with `--preview` and the hard
+  failure (see our entry of 2026-11-20). Your test proves the same for the loader.
+
+**What we changed in your repo, staged and not committed** (the owner commits; tell us if you'd rather do it
+differently):
+- `docs/openapi/zooza_api_v3.json` replaced with our file;
+- `scripts/make-v3-document.ts`, `scripts/standInDocument.ts` and `npm run gen:v3-doc` removed, so nothing here can
+  overwrite the vendored file;
+- the comparison test removed;
+- `README.md` and the `Dockerfile` comment now say the file is api-docs', copied unchanged.
+
+`config/access.yaml` and `config/patches/` stay, because production still runs on them.
+
+**Two things before production runs from the file**
+1. **Production isn't on the file yet.** Live `GET /v3/openapi.json` has no `x-zooza-access` and no
+   `/billing_periods`, so `V3_DOCUMENT_PATH` is unset there. Shipping the image changes nothing until it is set in
+   the cluster. That's your switch.
+2. **Don't switch production before api-v1 `54dfd412` is deployed there.** Otherwise `GET /v3/billing_periods` and
+   `GET /v3/schedules/{ID}` would forward to routes production api-v1 doesn't have yet. Worse, older api-v1 ignores
+   `roles`, so the instructor list would return every user. The `rate_id` deploy already gates you the same way.
+
+**About this copy.** It comes from our feature branch before our first tag, and it is a trial copy, which is what
+the agreed order allows (tag → gateway rollout → docs deploy). When we cut `v3-doc-YYYY.MM.DD-1`, re-vendor from the
+tag. We expect the bytes to be the same unless the subset pin moves.
+
 ---
 
 ## Decision Summary
@@ -365,7 +599,8 @@ and serves it, rewriting `servers` to its `ISSUER_URL`. The docs render the late
 - No per-region documents: the gateway rewrites `servers`.
 - No merge left in the gateway (`config/access.yaml`, `config/patches/*.yaml`) or in api-v1's `Builder`: one
   generator, one file.
-- No per-key tiers: the budget is the payer's (owner ruling, 2026-11-20).
+- The budget is the payer's (`rate_id`, `rate_tier`); a key's `key_rate_tier` is an optional cap within it
+  (owner, 2026-11-20).
 
 **Constraints agreed:**
 - Same inputs, same bytes.
@@ -390,7 +625,7 @@ and serves it, rewriting `servers` to its `ISSUER_URL`. The docs render the late
 |---------|---------------|--------|
 | api-docs | Generator, `patch.json`, `access.json` (from api-v1's `v3_gateway_fragment.json`), gateway-operations file, generate-time checks, `CODEOWNERS`, tags; docs render the tagged file; retire the daily sync once the gateway serves it | first tag: output equals today's document apart from the agreed changes |
 | api-v1 | Publish the bare subset in `docs/openapi/` (every eligible operation, stable `operationId`s, clean of internals, `RequestError`, `x-zooza-error-codes`); hand over prose, examples and the tag pruning list as files; keep today's document until our output matches, then remove the merge from `Builder` | before the switch |
-| zooza-api-gateway | Vendor the generated file at a tag; boot checks; rewrite `servers`; delete `config/access.yaml` and `config/patches/*.yaml` once it runs from the generated file | after our first tag |
+| zooza-api-gateway | Vendor the generated file at a tag; boot checks; rewrite `servers`; delete `config/access.yaml` and `config/patches/*.yaml` once it runs from the generated file | after api-docs' first tag. Loader built and tested behind `V3_DOCUMENT_PATH` (2026-11-21); the trial against the real file is still to run |
 
 ---
 
