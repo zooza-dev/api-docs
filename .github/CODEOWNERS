@@ -1,0 +1,9 @@
+# The /v3 access policy is authorization: it decides which operations partner keys may call, with which
+# access group and at what cost. Changes need the API owner's approval (spec DOC-20261120-001).
+# Enforced once branch protection on main requires code-owner review.
+/openapi/access.json            @martin-zooza
+/openapi/gateway.json           @martin-zooza
+/openapi/subset.lock.json       @martin-zooza
+/scripts/generate-api-doc.js    @martin-zooza
+/scripts/tag-api-doc.js         @martin-zooza
+/.github/CODEOWNERS             @martin-zooza

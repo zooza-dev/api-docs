@@ -1,0 +1,140 @@
+{
+  "id": "update-registration/05-check-a-cancel",
+  "operationId": "put_registrations_id",
+  "operation": "PUT /registrations/{ID}",
+  "flow": "update-registration",
+  "title": "Check a cancellation first (preflight_check)",
+  "description": "The same PUT with ?action=preflight_check tests the change and writes nothing. checks says whether it would be allowed (a not_passed check of severity error means refused); properties says what it would touch. Cancelling needs a cancellation_reason. No email or send_confirmation in the body, so the client isn't emailed.",
+  "kind": "success",
+  "reference": true,
+  "request": {
+    "method": "PUT",
+    "path": "/registrations/168321",
+    "query": {
+      "action": "preflight_check"
+    },
+    "body": {
+      "action": "change_status",
+      "status": "canceled",
+      "cancellation_reason": "personal_default"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000043",
+      "x-ratelimit-remaining": "1180",
+      "x-ratelimit-remaining-day": "99601"
+    },
+    "body": {
+      "checks": {
+        "rules_hold": {
+          "name": "rules_hold",
+          "result": "passed",
+          "severity": "error"
+        },
+        "decision_missing": {
+          "name": "decision_missing",
+          "result": "passed",
+          "severity": "error"
+        },
+        "money_moves": {
+          "name": "money_moves",
+          "result": "passed",
+          "severity": "notice"
+        },
+        "transferred_money_stays": {
+          "name": "transferred_money_stays",
+          "result": "passed",
+          "severity": "notice"
+        },
+        "currency_conversion": {
+          "name": "currency_conversion",
+          "result": "passed",
+          "severity": "notice"
+        },
+        "status_allowed": {
+          "name": "status_allowed",
+          "result": "passed",
+          "severity": "error"
+        }
+      },
+      "properties": {
+        "result": {
+          "name": "result",
+          "value": {
+            "booking": {
+              "type": "registration",
+              "id": 168321
+            },
+            "root": {
+              "type": "registration",
+              "id": 168321
+            },
+            "limits": {
+              "max_depth": 3,
+              "truncated": false
+            },
+            "members": [
+              {
+                "type": "registration",
+                "id": 168321,
+                "summary": {
+                  "name": "Ballet basics",
+                  "client_name": "Anna Novak",
+                  "course": {
+                    "id": 990,
+                    "name": "Kids gymnastics"
+                  },
+                  "schedule": {
+                    "id": 6779,
+                    "name": "Tuesday 17:00"
+                  },
+                  "product": null,
+                  "status": "registered",
+                  "trial": false,
+                  "balance": -110,
+                  "currency": "EUR"
+                },
+                "parent": null,
+                "paid_by": null,
+                "pays_for": [],
+                "previous": null,
+                "next": null
+              }
+            ],
+            "related": []
+          }
+        },
+        "transfers": {
+          "name": "transfers",
+          "value": []
+        },
+        "balances": {
+          "name": "balances",
+          "value": []
+        },
+        "refusals": {
+          "name": "refusals",
+          "value": []
+        },
+        "options": {
+          "name": "options",
+          "value": {}
+        },
+        "replacement_credits": {
+          "name": "replacement_credits",
+          "value": {
+            "available": 0,
+            "replacement": 0,
+            "replacement_transfer": 0
+          }
+        }
+      }
+    }
+  },
+  "recorded": "2026-11-21",
+  "source": "2026-11-21T14-36-41-272Z-267-PUT_registrations_168321.json",
+  "code": "src/app/registrations/[id]/page.tsx"
+}

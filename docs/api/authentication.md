@@ -1,298 +1,204 @@
 ---
 title: Authentication
-description: How to authenticate with the Zooza REST API — headers, token acquisition, and code examples.
-sidebar_position: 2
+description: Exchange a Zooza API key for an access token with POST /v3/token — request, response, lifetime, caching, limits and why a request is refused.
+sidebar_position: 3
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import AiPrompt from '@site/src/components/AiPrompt';
 
 # Authentication
 
-This page covers authentication for the **REST API** only. Widgets do not require authentication — see the [widget docs](../widgets/index.md) for embedding instructions.
-
-Zooza uses **passwordless login**. Instead of relying on a password, identity is verified via email verification, PIN code, or client secret.
-
----
-
-## Required headers
-
-Every REST API request requires these three headers:
-
-| Header | Description |
-|--------|-------------|
-| `X-ZOOZA-API-KEY` | Your REST API key |
-| `X-ZOOZA-TOKEN` | Identifies the current user |
-| `X-ZOOZA-COMPANY` | Scopes requests to a specific company |
-
----
-
-## Obtaining your REST API key
-
-1. Create a free Zooza account at [signup.zooza.online](https://signup.zooza.online) if you don't have one yet.
-2. Request a REST API key from [Zooza support](mailto:support@zooza.online), mentioning the company you created.
-
-REST API keys are different from widget API keys. A widget API key **cannot** be used for REST API calls.
-
----
-
-## Obtaining a user token
-
-There are three ways to obtain a token, depending on your use case.
-
-### Via email verification
-
-The most common approach for customer-facing applications.
-
-1. Send a POST request with the user's email.
-2. Zooza sends a verification email containing a link with a `key` query parameter.
-3. Extract the token from the URL and store it.
-
-**Example verification link:**
+The Zooza API uses the OAuth 2.0 **client credentials** flow, with one Zooza-specific field. You exchange your key's
+`client_id` and `client_secret`, plus the email of an owner of the company, for a bearer token. Then you send that
+token on every call.
 
 ```
-https://yoursite.com?key=abc123token
+POST /v3/token  →  access_token  →  Authorization: Bearer <access_token>
 ```
 
-<Tabs>
-  <TabItem value="curl" label="cURL">
+Reference: [`POST /v3/token`](/api/reference#tag/authentication/POST/token).
+
+## The token request
+
+Send the body as JSON or as `application/x-www-form-urlencoded`.
+
+| Field | Required | Value |
+|---|---|---|
+| `grant_type` | No | `client_credentials`, the only accepted value. You may leave it out. |
+| `client_id` | Yes | Your key's client id, e.g. `zk_4768b32989b7303eac7ff30e`. |
+| `client_secret` | Yes | Your key's secret. Read it from the environment; never put it in code. |
+| `email` | Yes | The email of an owner of the key's company. See [Owner email](#owner-email). |
+
+<Tabs groupId="api-lang">
+<TabItem value="curl" label="cURL" default>
 
 ```bash
-curl -X POST https://api.zooza.app/v1/login \
+curl -s -X POST https://api.zooza.app/v3/token \
   -H "Content-Type: application/json" \
-  -H "X-ZOOZA-API-KEY: your_api_key" \
-  -d '{
-    "login": "customer@example.com",
-    "verification_method": "email"
-  }'
+  -d "{\"grant_type\":\"client_credentials\",\"client_id\":\"$ZOOZA_CLIENT_ID\",\"client_secret\":\"$ZOOZA_CLIENT_SECRET\",\"email\":\"$ZOOZA_OWNER_EMAIL\"}"
 ```
 
-  </TabItem>
-  <TabItem value="js" label="JavaScript">
+</TabItem>
+<TabItem value="js" label="JavaScript">
 
-```javascript
-const response = await fetch("https://api.zooza.app/v1/login", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "X-ZOOZA-API-KEY": "your_api_key",
-  },
+```js
+const res = await fetch('https://api.zooza.app/v3/token', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    login: "customer@example.com",
-    verification_method: "email",
+    grant_type: 'client_credentials',
+    client_id: process.env.ZOOZA_CLIENT_ID,
+    client_secret: process.env.ZOOZA_CLIENT_SECRET,
+    email: process.env.ZOOZA_OWNER_EMAIL,
   }),
 });
-const data = await response.json();
 ```
 
-  </TabItem>
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+res = requests.post(
+    "https://api.zooza.app/v3/token",
+    json={
+        "grant_type": "client_credentials",
+        "client_id": os.environ["ZOOZA_CLIENT_ID"],
+        "client_secret": os.environ["ZOOZA_CLIENT_SECRET"],
+        "email": os.environ["ZOOZA_OWNER_EMAIL"],
+    },
+    timeout=10,
+)
+```
+
+</TabItem>
 </Tabs>
 
-<!-- TODO: add example — /login response body for email verification -->
-
-Store the token in a **session, cookie, or localStorage**, and include it in subsequent requests:
-
-```
-X-ZOOZA-TOKEN: <token>
-```
-
-:::note
-This is a long-term token, but it may be invalidated by Zooza at any time.
-:::
-
----
-
-### Via PIN code
-
-Instead of clicking a verification link, users can enter a **PIN code** (valid for 5 minutes) from the same email.
-
-<Tabs>
-  <TabItem value="curl" label="cURL">
+**HTTP Basic.** Instead of the body, you can send `client_id` and `client_secret` as HTTP Basic authentication
+(`Authorization: Basic base64(client_id:client_secret)`). `email` always goes in the body.
 
 ```bash
-curl -X POST https://api.zooza.app/v1/verify \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -H "X-ZOOZA-API-KEY: your_api_key" \
-  -d '{
-    "action": "validate_pin",
-    "email": "customer@example.com",
-    "pin": "123456"
-  }'
+curl -s -X POST https://api.zooza.app/v3/token \
+  -u "$ZOOZA_CLIENT_ID:$ZOOZA_CLIENT_SECRET" \
+  --data-urlencode "grant_type=client_credentials" \
+  --data-urlencode "email=$ZOOZA_OWNER_EMAIL"
 ```
 
-  </TabItem>
-  <TabItem value="js" label="JavaScript">
+**`scope`.** If your client sends a `scope`, it is ignored. The token always gets exactly the access groups the key
+has.
 
-```javascript
-const response = await fetch("https://api.zooza.app/v1/verify", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "X-ZOOZA-API-KEY": "your_api_key",
-  },
-  body: JSON.stringify({
-    action: "validate_pin",
-    email: "customer@example.com",
-    pin: "123456",
-  }),
-});
-const data = await response.json();
-// data.token contains the user token
-```
-
-  </TabItem>
-</Tabs>
-
-**Response:**
+## The response
 
 ```json
 {
-  "message": "Code accepted",
-  "token": "<token>"
+  "access_token": "eyJ…",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "scope": "core_read core_write"
 }
 ```
 
----
+| Field | Meaning |
+|---|---|
+| `access_token` | Send it as `Authorization: Bearer <access_token>`. |
+| `token_type` | Always `Bearer`. |
+| `expires_in` | Seconds until the token expires: 3600 (60 minutes). |
+| `scope` | The key's [access groups](access-and-rate-limits.md#access-groups), space-separated. |
 
-### Via client secret (server-to-server)
+## Owner email {#owner-email}
 
-For server-side or automated applications where no human interaction is possible. Use a **client secret** to authenticate directly.
+`email` must belong to a user with the **owner** role in the key's company. The token acts as that owner:
 
-<Tabs>
-  <TabItem value="curl" label="cURL">
+- every call runs with that owner's permissions, and a key can never do more than its owner may;
+- changes made through the API are attributed to that owner in Zooza, so the company's history stays meaningful.
 
-```bash
-curl -X POST https://api.zooza.app/v1/login \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -H "X-ZOOZA-API-KEY: your_api_key" \
-  -d '{
-    "login": "admin@example.com",
-    "verification_method": "client_secret",
-    "client_secret": "your_client_secret"
-  }'
+The key is not tied to one owner: any current owner of the company can be named. If the named user stops being an
+owner, calls made with their tokens stop working, and new token requests naming them are refused. In that case,
+name another owner.
+
+## Token lifetime and caching
+
+- A token lasts **60 minutes**. There is **no refresh token**.
+- Cache the token and reuse it for every call until it expires. Request a new one when it expires, or shortly before
+  (for example when fewer than 60 seconds are left, using `expires_in`).
+- Don't request a token per call. The token operation has its own limit (below), and calls with a cached token are
+  faster.
+- A `401` on a normal call means the token is missing, invalid or expired: request a new token and retry once.
+
+```js
+// Minimal token cache (Node.js)
+let cached = null; // { token, expiresAt }
+
+async function getToken() {
+  if (cached && Date.now() < cached.expiresAt - 60_000) return cached.token;
+  const res = await fetch(`${process.env.ZOOZA_BASE_URL}/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: process.env.ZOOZA_CLIENT_ID,
+      client_secret: process.env.ZOOZA_CLIENT_SECRET,
+      email: process.env.ZOOZA_OWNER_EMAIL,
+    }),
+  });
+  if (!res.ok) throw new Error(`Token request failed: ${res.status}`);
+  const { access_token, expires_in } = await res.json();
+  cached = { token: access_token, expiresAt: Date.now() + expires_in * 1000 };
+  return access_token;
+}
 ```
 
-  </TabItem>
-  <TabItem value="js" label="JavaScript">
+## Limits on the token operation
 
-```javascript
-const response = await fetch("https://api.zooza.app/v1/login", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "X-ZOOZA-API-KEY": "your_api_key",
-  },
-  body: JSON.stringify({
-    login: "admin@example.com",
-    verification_method: "client_secret",
-    client_secret: "your_client_secret",
-  }),
-});
-const data = await response.json();
-// data.token contains the user token
-```
+`POST /v3/token` doesn't cost points, but it has its own limit:
 
-  </TabItem>
-</Tabs>
+| Limit | Value |
+|---|---|
+| Tokens per key | 5 per minute |
+| Tokens per IP address | 20 per minute |
 
-<!-- TODO: add example — /login response body for client_secret -->
+Over the limit, it answers `429` with `Retry-After` (seconds to wait).
 
-:::warning Important
-- The email must belong to a **valid Zooza user** with a role in the target company.
-- Use a user with the **Owner role** for full access.
-- Responses are always scoped to the user's role (e.g. a Lecturer only sees classes where they are assigned).
-:::
+## Why a token request is refused {#invalid-client}
 
-To obtain a client secret, contact [Zooza support](mailto:support@zooza.online).
-
----
-
-## Getting the company ID
-
-Once you have a token, retrieve the company ID from the `/v1/user` endpoint.
-
-<Tabs>
-  <TabItem value="curl" label="cURL">
-
-```bash
-curl -X GET https://api.zooza.app/v1/user \
-  -H "X-ZOOZA-API-KEY: your_api_key" \
-  -H "X-ZOOZA-TOKEN: your_token"
-```
-
-  </TabItem>
-  <TabItem value="js" label="JavaScript">
-
-```javascript
-const response = await fetch("https://api.zooza.app/v1/user", {
-  headers: {
-    "X-ZOOZA-API-KEY": "your_api_key",
-    "X-ZOOZA-TOKEN": "your_token",
-  },
-});
-const data = await response.json();
-// Find your company in data.user.companies
-```
-
-  </TabItem>
-</Tabs>
-
-**Response (abbreviated):**
+Refused token requests use OAuth error bodies:
 
 ```json
-{
-  "user_valid": true,
-  "user": {
-    "id": 1,
-    "first_name": "John",
-    "last_name": "Smith",
-    "email": "john@example.com",
-    "companies": [
-      { "id": 65, "name": "Company A", "role": "member" },
-      { "id": 76, "name": "Company B", "role": "owner" }
-    ]
-  },
-  "app": {
-    "application_id": 1,
-    "company_id": 65,
-    "type": "application"
-  }
-}
+{ "error": "invalid_client", "error_description": "…" }
 ```
 
-Use the `id` from the appropriate company in the `X-ZOOZA-COMPANY` header for subsequent requests.
+| Status | `error` | Meaning |
+|---|---|---|
+| `400` | `invalid_request` | A required field is missing. |
+| `400` | `unsupported_grant_type` | `grant_type` is something other than `client_credentials`. |
+| `401` | `invalid_client` | The credentials were not accepted. |
+| `429` | — | Too many token requests; wait `Retry-After` seconds. |
+| `503` | — | The credentials couldn't be checked right now. This is not a credential problem; retry later. |
 
----
+**`invalid_client` never says why**, by design. Check each of these:
 
-## Token lifecycle
+1. **Unknown key:** the `client_id` is mistyped, or belongs to another [region](index.md#regions-and-base-urls)
+   (keys work only in their company's region).
+2. **Wrong secret:** the `client_secret` is mistyped, or the secret was rotated and you're using the old one.
+3. **Revoked key:** an owner revoked the key in the app.
+4. **Not an owner:** `email` isn't the email of an owner of the key's company, or that user is no longer an owner.
+5. **Locked key:** after **10 wrong secrets**, a key is locked for **5 minutes**. Requests during the lock are refused
+   even with the right secret. Wait, then try again with the correct secret.
 
-<!-- TODO: requires more content — token expiry, refresh, invalidation behavior -->
+## Calling the API
 
-- Tokens are **long-lived** but may be invalidated by Zooza at any time.
-- There is no explicit refresh mechanism — if a token becomes invalid, re-authenticate using one of the methods above.
-- Store tokens securely and handle `401 Unauthorized` responses by re-initiating the login flow.
+Send the token on every call:
 
-<AiPrompt task="Implement the Zooza REST API auth flow">{`Help me implement authentication against the Zooza REST API.
+```
+GET https://api.zooza.app/v3/courses
+Authorization: Bearer <access_token>
+```
 
-Read the full Zooza API documentation first — it has the exact login methods, headers, and error codes:
-https://docs.zooza.online/llms-full.txt
+You don't need to send a company header: a key always acts for its own company (see
+[Company scope](access-and-rate-limits.md#company-scope)).
 
-How Zooza auth works (passwordless):
-1. Every request needs three headers: X-ZOOZA-API-KEY, X-ZOOZA-TOKEN, X-ZOOZA-COMPANY.
-2. Obtain X-ZOOZA-TOKEN via POST /v1/login. For server-to-server use verification_method "client_secret".
-3. Get the company id from GET /v1/user (user.companies[].id) and pass it as X-ZOOZA-COMPANY.
-4. Tokens are long-lived but can be invalidated — handle 401 by re-authenticating.
+## Related
 
-Base URLs: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.
-
-Tasks:
-1. Write a reusable auth helper in [my language: Node.js / Python / PHP] that logs in, caches the token, and resolves my company id.
-2. Make it automatically re-authenticate on a 401 response.
-3. Read secrets from environment variables, never hardcode them.
-
-Ask me for my REST API key, login email, client secret, and region before writing code that runs.`}</AiPrompt>
+- [Getting started](getting-started.md): the whole flow, step by step
+- [Access and rate limits](access-and-rate-limits.md): what a token may call, and its budget
+- [Keys](keys.md): rotating and revoking keys, and how quickly each change takes effect
+- [Errors](errors.md): error bodies on normal calls

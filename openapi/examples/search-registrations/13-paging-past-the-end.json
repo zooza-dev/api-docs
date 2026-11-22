@@ -1,0 +1,39 @@
+{
+  "id": "search-registrations/13-paging-past-the-end",
+  "operationId": "get_registrations",
+  "operation": "GET /registrations",
+  "flow": "search-registrations",
+  "title": "Paging past the end",
+  "description": "A page after the last one is a 200 with results: [].",
+  "kind": "success",
+  "reference": false,
+  "request": {
+    "method": "GET",
+    "path": "/registrations",
+    "query": {
+      "advanced_search": 1,
+      "page": 67,
+      "page_size": 20
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000016",
+      "x-ratelimit-remaining": "1152",
+      "x-ratelimit-remaining-day": "99756"
+    },
+    "body": {
+      "total": 500,
+      "total_capped": true,
+      "page": null,
+      "results": [],
+      "offset": 1340
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-42-20-852Z-54-GET_registrations.json",
+  "code": "src/app/registrations/page.tsx"
+}

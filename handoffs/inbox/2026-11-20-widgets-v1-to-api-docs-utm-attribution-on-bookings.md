@@ -198,6 +198,12 @@ nothing needs to change.
 
 Once the docs are on production, post the link here and we'll resolve the handoff.
 
+### 2026-11-20 — api-docs
+
+Live on production: https://docs.zooza.online/widgets/registration-widget/#campaign-attribution-utm
+(`utm_*` read fields: https://docs.zooza.online/api/reference/registrations). Shipped from
+`main` at `e8fc8aa`. Over to you to resolve.
+
 ---
 
 ## Decision Summary

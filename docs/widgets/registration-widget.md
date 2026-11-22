@@ -1267,7 +1267,7 @@ Only these five values are recorded on bookings. Click IDs (`gclid`, `fbclid`), 
 
 Each value is trimmed, cut to 255 characters, and left out when empty. If none of the five has a value, the booking records no campaign.
 
-The values are returned as `utm_source` … `utm_content` on the registration in [`GET /registrations`](/api/reference/registrations) and [`GET /registrations/{ID}`](/api/reference/get-single-registration). They are `null` when the booking carried no value.
+The values are returned as `utm_source` … `utm_content` on the registration in [`GET /v3/registrations/{ID}`](/api/reference#tag/registrations/GET/registrations/{ID}). They are `null` when the booking carried no value.
 
 ### Where the values come from
 

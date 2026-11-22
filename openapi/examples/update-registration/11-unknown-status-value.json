@@ -1,0 +1,60 @@
+{
+  "id": "update-registration/11-unknown-status-value",
+  "operationId": "put_registrations_id",
+  "operation": "PUT /registrations/{ID}",
+  "flow": "update-registration",
+  "title": "A status the API doesn't know",
+  "description": "422 validation_failed with enum_invalid at /status: the schema check runs before the operation.",
+  "kind": "error",
+  "reference": true,
+  "request": {
+    "method": "PUT",
+    "path": "/registrations/168321",
+    "query": {
+      "action": "preflight_check"
+    },
+    "body": {
+      "action": "change_status",
+      "status": "bogus"
+    }
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "x-request-id": "00000000-0000-4000-8000-000000000049",
+      "x-ratelimit-remaining": "1182",
+      "x-ratelimit-remaining-day": "99573"
+    },
+    "body": {
+      "error": "validation_failed",
+      "message": "The request does not match the endpoint's schema.",
+      "request_id": "00000000-0000-4000-8000-000000000050",
+      "errors": [
+        {
+          "location": "body",
+          "path": "/status",
+          "code": "enum_invalid",
+          "message": "Must be one of: pre_insert, pre_registered, registered, trial_not_started, pre_trial_not_started, trial_started, pre_trial_started, trial_ended, trial_won, trial_lost, waitlist, pre_waitlist, pre_late, late, canceled, deleted, pre_guest, guest, unknown.",
+          "expected": {
+            "enum": [
+              "pre_insert",
+              "pre_registered",
+              "registered"
+            ]
+          },
+          "received": {
+            "type": "string",
+            "value": "bogus"
+          }
+        }
+      ]
+    }
+  },
+  "trimmed": {
+    "/errors/0/expected/enum": "19 items, 3 shown"
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-56-01-425Z-13-PUT_registrations_168321.json",
+  "code": "src/app/registrations/[id]/actions.ts"
+}

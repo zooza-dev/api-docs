@@ -1,0 +1,47 @@
+{
+  "id": "set-up-a-term/15-class-without-room",
+  "operationId": "post_schedules",
+  "operation": "POST /schedules",
+  "flow": "set-up-a-term",
+  "title": "A class without room_id",
+  "description": "Pitfall: the schema has no required list, so a missing room_id isn't a 422 but a 400 0068 'insert failed' that doesn't name the field.",
+  "kind": "pitfall",
+  "reference": false,
+  "request": {
+    "method": "POST",
+    "path": "/schedules",
+    "query": null,
+    "body": {
+      "course_id": 104660,
+      "name": "No room",
+      "trainer_id": 11247,
+      "capacity": 10,
+      "all_day": false,
+      "online_registration": false,
+      "time": 570,
+      "duration": 45,
+      "billing_period_id": 324,
+      "place_id": 3
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000035",
+      "x-ratelimit-remaining": "1195",
+      "x-ratelimit-remaining-day": "99360"
+    },
+    "body": {
+      "errors": [
+        {
+          "0068": "Insert failed"
+        }
+      ],
+      "request_valid": false
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T21-21-59-448Z-1-POST_schedules.json",
+  "code": "src/app/terms/new/actions.ts"
+}

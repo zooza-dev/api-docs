@@ -1,0 +1,57 @@
+{
+  "id": "set-up-a-term/08-sessions-bare-array",
+  "operationId": "post_events",
+  "operation": "POST /events",
+  "flow": "set-up-a-term",
+  "title": "Sending a bare array",
+  "description": "The body must be an object with an events key: a bare array is refused with 422 type_invalid at /.",
+  "kind": "error",
+  "reference": true,
+  "request": {
+    "method": "POST",
+    "path": "/events",
+    "query": null,
+    "body": [
+      {
+        "time_string": 570,
+        "course_id": 104660,
+        "schedule_id": 1100282,
+        "room_id": 45,
+        "date_string": "2027-01-05",
+        "trainer_id": 11247,
+        "place_id": 3
+      }
+    ]
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "x-request-id": "00000000-0000-4000-8000-000000000026",
+      "x-ratelimit-remaining": "1195",
+      "x-ratelimit-remaining-day": "99394"
+    },
+    "body": {
+      "error": "validation_failed",
+      "message": "The request does not match the endpoint's schema.",
+      "request_id": "00000000-0000-4000-8000-000000000027",
+      "errors": [
+        {
+          "location": "body",
+          "path": "/",
+          "code": "type_invalid",
+          "message": "Must be of type object.",
+          "expected": {
+            "type": "object"
+          },
+          "received": {
+            "type": "array"
+          }
+        }
+      ]
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T21-14-04-346Z-1-POST_events.json",
+  "code": "src/app/terms/new/actions.ts"
+}

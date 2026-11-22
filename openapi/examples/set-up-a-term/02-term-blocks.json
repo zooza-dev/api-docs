@@ -1,0 +1,69 @@
+{
+  "id": "set-up-a-term/02-term-blocks",
+  "operationId": "get_billing_periods",
+  "operation": "GET /billing_periods",
+  "flow": "set-up-a-term",
+  "title": "Term blocks (billing periods)",
+  "description": "Every class belongs to one. Without page_size they all come in one page. They can be listed, not created: create them in Zooza.",
+  "kind": "success",
+  "reference": true,
+  "request": {
+    "method": "GET",
+    "path": "/billing_periods",
+    "query": null,
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000020",
+      "x-ratelimit-remaining": "1183",
+      "x-ratelimit-remaining-day": "99957"
+    },
+    "body": {
+      "total": 25,
+      "page": 0,
+      "page_size": 1000,
+      "settings": [],
+      "data": [
+        {
+          "id": 310,
+          "company_id": 1,
+          "name": "2024/2025",
+          "active": true,
+          "period_start": null,
+          "period_end": null,
+          "created": "2024-10-06 19:10:21",
+          "modified": "2026-08-13 09:01:53"
+        },
+        {
+          "id": 301,
+          "company_id": 1,
+          "name": "Data report 2023",
+          "active": true,
+          "period_start": null,
+          "period_end": null,
+          "created": "2023-09-12 21:49:05",
+          "modified": "2026-08-13 09:01:53"
+        },
+        {
+          "id": 302,
+          "company_id": 1,
+          "name": "Autumn 2023",
+          "active": true,
+          "period_start": null,
+          "period_end": null,
+          "created": "2023-09-19 21:19:30",
+          "modified": "2026-05-10 18:21:39"
+        }
+      ]
+    }
+  },
+  "trimmed": {
+    "/data": "25 items, 3 shown"
+  },
+  "recorded": "2026-11-21",
+  "source": "2026-11-21T13-53-55-357Z-53-GET_billing_periods.json",
+  "code": "src/app/terms/new/page.tsx"
+}

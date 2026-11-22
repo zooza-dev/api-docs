@@ -1,0 +1,132 @@
+# Zooza agent tool catalogue (spec DOC-20261118-001)
+#
+# A small, curated set of /v3 operations described as named tools for AI agents. Each tool points at
+# exactly one real operation in static/zooza_api_v3.json. Access groups and point costs are NOT copied
+# here: read them from the operation's x-zooza-access ({groups, cost}), so this file can't drift from
+# what the API charges. `npm run build` fails if a tool points at an operation that doesn't exist.
+#
+# Fields:
+#   name     snake_case, verb first (create_x, list_x, get_x, update_x)
+#   method, path   the /v3 operation (path as written in the document, without /v3)
+#   purpose  when an agent should reach for this tool, in one or two sentences, in Zooza's vocabulary
+#   confirm  true for every write: the agent must show what it will change and get the user's yes first
+#            (keys act on live data and there is no sandbox)
+#   notes    optional pitfalls worth telling the agent
+
+tools:
+  # ── Orientation ───────────────────────────────────────────────────────────────
+  - name: get_key_details
+    method: GET
+    path: /me
+    purpose: >-
+      Call first. Shows which operations this key may call, its access groups, rate tier and the points
+      left this minute and today. Costs no points.
+    confirm: false
+
+  # ── What the company offers ───────────────────────────────────────────────────
+  - name: list_programmes
+    method: GET
+    path: /courses
+    purpose: >-
+      List the company's programmes (in the API: courses). A programme is the product, such as
+      "Baby swimming"; it holds pricing and booking settings. Use it to resolve a programme name to its id.
+    confirm: false
+
+  - name: get_programme
+    method: GET
+    path: /courses/{ID}
+    purpose: Read one programme's full settings, including pricing, online booking and make-up rules.
+    confirm: false
+
+  - name: list_classes
+    method: GET
+    path: /schedules
+    purpose: >-
+      List classes (in the API: schedules): the concrete groups of a programme, each with a venue,
+      trainer, capacity and timetable. Filter by programme, venue, trainer or billing period.
+    confirm: false
+
+  - name: list_venues
+    method: GET
+    path: /places
+    purpose: List the company's venues (places), to resolve a venue name to its id.
+    confirm: false
+
+  # ── Sessions and attendance ───────────────────────────────────────────────────
+  - name: list_sessions
+    method: GET
+    path: /events
+    purpose: >-
+      List sessions (in the API: events): the individual dated occurrences of a class. Filter by class,
+      programme, venue, trainer or a date range.
+    confirm: false
+
+  - name: get_session
+    method: GET
+    path: /events/{ID}
+    purpose: Read one session in detail.
+    confirm: false
+
+  - name: get_attendance_register
+    method: GET
+    path: /attendance
+    purpose: Read the attendance register of one session (who is booked and who attended).
+    confirm: false
+
+  - name: get_calendar
+    method: GET
+    path: /calendar
+    purpose: Get sessions laid out as a calendar for a date range, e.g. "what's on next week".
+    confirm: false
+
+  # ── Registrations ─────────────────────────────────────────────────────────────
+  - name: search_registrations
+    method: GET
+    path: /registrations
+    purpose: >-
+      Find registrations (bookings of a client into a class or programme). Filter by class, programme,
+      venue, trainer, billing period, client or e-mail.
+    confirm: false
+
+  - name: get_registration
+    method: GET
+    path: /registrations/{ID}
+    purpose: Read one registration with its linked registrations and billing state.
+    confirm: false
+
+  # ── Invoices ──────────────────────────────────────────────────────────────────
+  - name: list_customer_invoices
+    method: GET
+    path: /customer_invoices
+    purpose: List invoices issued to clients, optionally for a date range.
+    confirm: false
+
+  - name: get_customer_invoice
+    method: GET
+    path: /customer_invoices/{ID}
+    purpose: Read one client invoice.
+    confirm: false
+
+  # ── Writes (always confirm with the user first) ───────────────────────────────
+  - name: update_registration
+    method: PUT
+    path: /registrations/{ID}
+    purpose: >-
+      Change a registration, for example its attendance for a session or its class. Read it with
+      get_registration first and show the user the change before calling.
+    confirm: true
+    notes: >-
+      One endpoint serves several kinds of change, chosen by the body's `action`. Read the operation's
+      description in the reference before building the body.
+
+  - name: update_session
+    method: PUT
+    path: /events/{ID}
+    purpose: Change one session, such as its date, time, trainer or venue. Clients may be notified.
+    confirm: true
+
+  - name: create_sessions
+    method: POST
+    path: /events
+    purpose: Add sessions to an existing class, e.g. an extra date at the end of a term.
+    confirm: true
