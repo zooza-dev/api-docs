@@ -1,12 +1,12 @@
 ---
-title: Fully custom course catalogue on the REST API
-description: Build your own branded course catalogue, programme detail pages and class picker for a multi-city kids' activity business on the Zooza REST API — your CMS owns the marketing content, Zooza owns classes, availability, waiting lists and booking.
+title: Fully custom course catalogue on the API
+description: Build your own branded course catalogue, programme detail pages and class picker for a multi-city kids' activity business on the Zooza API — your CMS owns the marketing content, Zooza owns classes, availability, waiting lists and booking.
 sidebar_label: Custom catalogue
 ---
 
 import AiPrompt from '@site/src/components/AiPrompt';
 
-# Fully custom course catalogue on the REST API
+# Fully custom course catalogue on the API
 
 ## The problem
 
@@ -64,7 +64,36 @@ Filters for age and type run on CMS data, with no API call. The town filter uses
 
 ```php
 <?php
-// zooza.php — WordPress / plain PHP. Credentials come from wp-config.php or env.
+// zooza.php — WordPress / plain PHP. Credentials come from the environment (or wp-config.php),
+// never from code: ZOOZA_CLIENT_ID, ZOOZA_CLIENT_SECRET, ZOOZA_OWNER_EMAIL.
+
+const ZOOZA_API = 'https://api.zooza.app/v3'; // UK: https://uk.api.zooza.app/v3, ASIA: https://asia.api.zooza.app/v3
+
+/** An access token lasts an hour: mint one, cache it, and renew it shortly before it expires. */
+function zooza_access_token(): ?string {
+    $cached = get_transient( 'zooza_access_token' );
+    if ( $cached !== false ) {
+        return $cached;
+    }
+
+    $response = wp_remote_post( ZOOZA_API . '/token', [
+        'headers' => [ 'Content-Type' => 'application/json' ],
+        'body'    => wp_json_encode( [
+            'grant_type'    => 'client_credentials',
+            'client_id'     => getenv( 'ZOOZA_CLIENT_ID' ),
+            'client_secret' => getenv( 'ZOOZA_CLIENT_SECRET' ),
+            'email'         => getenv( 'ZOOZA_OWNER_EMAIL' ), // an owner of the key's company
+        ] ),
+        'timeout' => 10,
+    ] );
+    if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+        return null;
+    }
+
+    $body = json_decode( wp_remote_retrieve_body( $response ), true );
+    set_transient( 'zooza_access_token', $body['access_token'], max( 60, $body['expires_in'] - 60 ) );
+    return $body['access_token'];
+}
 
 function zooza_get( string $path ): array {
     $cache_key = 'zooza_' . md5( $path );
@@ -73,12 +102,12 @@ function zooza_get( string $path ): array {
         return $cached;
     }
 
-    $response = wp_remote_get( 'https://api.zooza.app/v1' . $path, [
-        'headers' => [
-            'X-ZOOZA-API-KEY' => ZOOZA_API_KEY,
-            'X-ZOOZA-TOKEN'   => zooza_server_token(), // see Authentication
-            'X-ZOOZA-COMPANY' => ZOOZA_COMPANY_ID,
-        ],
+    $token = zooza_access_token();
+    if ( ! $token ) {
+        return [];
+    }
+    $response = wp_remote_get( ZOOZA_API . $path, [
+        'headers' => [ 'Authorization' => 'Bearer ' . $token ],
         'timeout' => 10,
     ] );
     if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
@@ -92,12 +121,13 @@ function zooza_get( string $path ): array {
 
 /** Classes of one programme that are open for online booking, grouped by venue. */
 function little_movers_classes( int $course_id, string $town ): array {
-    $places = zooza_get( '/companies/' . ZOOZA_COMPANY_ID . '/places' );
+    // Both lists are paginated: { total, page, page_size, data }
+    $places = zooza_get( '/places?page_size=100' );
     $schedules = zooza_get( '/schedules?course_id=' . $course_id
         . '&online_registration=true&ended=false&load_trainers=true&page_size=100' );
 
     $venues = [];
-    foreach ( $places as $place ) {
+    foreach ( $places['data'] ?? [] as $place ) {
         if ( strcasecmp( $place['city'] ?? '', $town ) === 0 ) {
             $venues[ $place['id'] ] = [ 'place' => $place, 'classes' => [] ];
         }
@@ -121,7 +151,7 @@ function little_movers_classes( int $course_id, string $town ): array {
 }
 ```
 
-Verify the field names (`city`, `time`, `capacity`, `__calc__registered`, …) against the [schedules](/api/reference/get-list-of-schedules) and [places](/api/reference/get-places-that-belong-to-a-company) reference for your account. `time` is minutes from midnight.
+Verify the field names (`city`, `time`, `capacity`, `__calc__registered`, …) against the [classes](/api/reference#tag/classes/GET/schedules) and [venues](/api/reference#tag/company/GET/places) reference for your account. `time` is minutes from midnight.
 
 ## Step 3: the class picker template
 
@@ -179,12 +209,13 @@ Verify the field names (`city`, `time`, `capacity`, `__calc__registered`, …) a
 
 <AiPrompt task="Build a custom course catalogue on the Zooza API">{`I want a fully custom course catalogue on my website: my CMS holds programme marketing content, Zooza holds classes, availability and booking.
 
-Read the Zooza docs first: https://docs.zooza.online/llms-full.txt
+Read the setup guide for coding agents first: https://docs.zooza.online/agent-setup.md
+Full docs: https://docs.zooza.online/llms-full.txt
 Use this example as the pattern: https://docs.zooza.online/examples/custom-catalogue/
 
 Tasks:
 1. Ask me for my stack (WordPress, Next.js, …), region, and how my programmes are stored in the CMS.
 2. Add a zooza_course_id field to each programme.
-3. Build server-side helpers that read places and schedules from the Zooza REST API with caching; keep credentials in env/config.
+3. Build server-side helpers that read venues and classes from the Zooza API with caching; mint an access token with POST /v3/token and cache it for its lifetime; read ZOOZA_CLIENT_ID, ZOOZA_CLIENT_SECRET and ZOOZA_OWNER_EMAIL from the environment (never ask me to paste the secret).
 4. Build the class picker page (grouped by venue, availability, waiting-list message) linking to /book/?course_id=…&schedule_id=… with the registration widget.
-5. Verify every field against the OpenAPI spec: https://docs.zooza.online/zooza_api_v1.yaml`}</AiPrompt>
+5. Verify every field against the API reference: https://api.zooza.app/v3/openapi.json`}</AiPrompt>

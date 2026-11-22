@@ -155,8 +155,9 @@ export default function Home() {
               <span className={styles.stepNumber}>2</span>
               <h3>Get your keys</h3>
               <p>
-                Use your widget key from the admin, or{' '}
-                <Link to="/api/authentication">request a REST API key</Link>.
+                Use your widget key from the admin, or create an API key under
+                Developers → API keys and{' '}
+                <Link to="/api/getting-started">make your first API call</Link>.
               </p>
             </li>
             <li>

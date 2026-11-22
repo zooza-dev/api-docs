@@ -1,0 +1,73 @@
+{
+  "id": "set-up-a-term/14-class-validation-failed",
+  "operationId": "post_schedules",
+  "operation": "POST /schedules",
+  "flow": "set-up-a-term",
+  "title": "Two wrong types in one request",
+  "description": "422 validation_failed lists every problem at once, each with a JSON Pointer path and a code.",
+  "kind": "error",
+  "reference": true,
+  "request": {
+    "method": "POST",
+    "path": "/schedules",
+    "query": null,
+    "body": {
+      "course_id": 104660,
+      "name": "Wrong types",
+      "room_id": "45",
+      "place_id": 3,
+      "trainer_id": 11247,
+      "capacity": -1,
+      "all_day": "no",
+      "online_registration": false,
+      "time": 570,
+      "duration": 45,
+      "billing_period_id": 324
+    }
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "x-request-id": "00000000-0000-4000-8000-000000000033",
+      "x-ratelimit-remaining": "1185",
+      "x-ratelimit-remaining-day": "99350"
+    },
+    "body": {
+      "error": "validation_failed",
+      "message": "The request does not match the endpoint's schema.",
+      "request_id": "00000000-0000-4000-8000-000000000034",
+      "errors": [
+        {
+          "location": "body",
+          "path": "/room_id",
+          "code": "type_invalid",
+          "message": "Must be of type integer.",
+          "expected": {
+            "type": "integer"
+          },
+          "received": {
+            "type": "string",
+            "value": "45"
+          }
+        },
+        {
+          "location": "body",
+          "path": "/all_day",
+          "code": "type_invalid",
+          "message": "Must be of type boolean.",
+          "expected": {
+            "type": "boolean"
+          },
+          "received": {
+            "type": "string",
+            "value": "no"
+          }
+        }
+      ]
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T21-21-59-864Z-3-POST_schedules.json",
+  "code": "src/app/terms/new/actions.ts"
+}

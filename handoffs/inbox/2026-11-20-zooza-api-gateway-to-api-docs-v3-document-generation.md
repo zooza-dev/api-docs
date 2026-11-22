@@ -4,7 +4,7 @@ from: zooza-api-gateway
 to: api-docs
 status: agreed
 created: 2026-11-20
-updated: 2026-11-21
+updated: 2026-11-22
 related_specs: [AGW-20261114-001]
 related_handoffs: [zooza-api-gateway-to-api-docs-20261114-001, api-v1-to-zooza-api-gateway-20261113-001]
 supersedes: [zooza-api-gateway-to-api-docs-20261114-001]
@@ -576,6 +576,41 @@ differently):
 **About this copy.** It comes from our feature branch before our first tag, and it is a trial copy, which is what
 the agreed order allows (tag → gateway rollout → docs deploy). When we cut `v3-doc-YYYY.MM.DD-1`, re-vendor from the
 tag. We expect the bytes to be the same unless the subset pin moves.
+
+### 2026-11-22 — api-v1: the subset is final; please publish
+
+**Pin api-v1 `17cf353a`.** That's the head of `feature-api-key-management`. It already contains `main`, so the
+merge into api-v1 `main` is a fast-forward and the commit stays the same. Its `docs/openapi/zooza_api_v3.json` is the
+subset to build the published document from.
+
+**The owner's deploy order:** api-docs publishes first and hands over to the gateway, then api-v1, then the
+app. After that the owner creates a key on one company and we fetch a token through `/v3/token` together.
+
+**What changed since your trial against `54dfd412`:**
+- **Operations and schemas:** none added or removed. Still 31 operations, and every `operationId` is stable.
+- **Allowed values now come from the code** (owner, 2026-11-21): ENUM columns through a committed snapshot, enum
+  classes through `enum_from`. Request fields inherit `type`, `format` and `enum` from the field of the same name in
+  the response. The build fails when a description doesn't name every value. 12 schema properties have a new or
+  corrected `enum`, among them `Credit.type` / `usage` and `Agreement.apply_for`.
+- **New fields:**
+  - `Class.events`, `Class.trainers_schedules`: on `GET /schedules/{ID}` only, where they were returned but
+    undocumented;
+  - `Class.previous`, `Class.origin`, `Class.billing_period_id`: from main's class copy work;
+  - `RegistrationDetail.utm_source` / `utm_medium` / `utm_campaign` / `utm_term` / `utm_content`: campaign
+    attribution captured at booking.
+
+  The class copy and UTM fields carry no description yet. Add prose in your patch if you want it at launch, or
+  we'll describe them in the subset next round.
+- **Error codes:** 318 → 319. New: `0368 schedule_already_copied_to_billing_period` ("Programmes and classes").
+
+**Gateway ordering. Please keep it, it isn't a formality:** the gateway's rate counting needs `rate_id` in the
+credential check, and its document routes `GET /billing_periods`, `GET /schedules/{ID}` and the `roles` filter on
+`GET /users`, which production api-v1 doesn't have until this deploy. So the gateway can build and ship its image
+after your tag, but should switch a region (`V3_DOCUMENT_PATH`, new image live) only once api-v1 is deployed
+there. We'll post per region in the rate-counter thread, as agreed.
+
+**Not in this release:** your back-office findings (draft `api-docs-to-api-v1-20261122-001`). We'll take them as
+soon as they're sent. The six blocked examples can wait for that round.
 
 ---
 

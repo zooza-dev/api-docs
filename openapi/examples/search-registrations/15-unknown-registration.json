@@ -1,0 +1,36 @@
+{
+  "id": "search-registrations/15-unknown-registration",
+  "operationId": "get_registrations_id",
+  "operation": "GET /registrations/{ID}",
+  "flow": "search-registrations",
+  "title": "A registration id that isn't the company's",
+  "description": "Not a 404: a 400 request error, errors: [{\"0065\": \"…\"}], request_valid: false. The request id is only in the X-Request-Id header.",
+  "kind": "error",
+  "reference": true,
+  "request": {
+    "method": "GET",
+    "path": "/registrations/999999999",
+    "query": null,
+    "body": null
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000018",
+      "x-ratelimit-remaining": "1196",
+      "x-ratelimit-remaining-day": "99720"
+    },
+    "body": {
+      "errors": [
+        {
+          "0065": "Resource not found - Registration"
+        }
+      ],
+      "request_valid": false
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-45-25-286Z-4-GET_registrations_999999999.json",
+  "code": "src/app/registrations/[id]/page.tsx"
+}

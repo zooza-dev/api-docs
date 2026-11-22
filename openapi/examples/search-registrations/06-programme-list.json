@@ -1,0 +1,1366 @@
+{
+  "id": "search-registrations/06-programme-list",
+  "operationId": "get_courses",
+  "operation": "GET /courses",
+  "flow": "search-registrations",
+  "title": "The programmes, for a filter",
+  "description": "GET /courses answers every programme in one plain array (not paginated), sorted by name. Archived ones are included (archive: true). Trimmed to 3 here.",
+  "kind": "success",
+  "reference": true,
+  "request": {
+    "method": "GET",
+    "path": "/courses",
+    "query": null,
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000009",
+      "x-ratelimit-remaining": "1198",
+      "x-ratelimit-remaining-day": "99868"
+    },
+    "body": [
+      {
+        "id": 3949,
+        "company_id": 1,
+        "created": "2026-08-04 09:56:02",
+        "name": "Shared room",
+        "url": "",
+        "price": 300,
+        "registration_fee": 0,
+        "cash": false,
+        "direct_debit": false,
+        "direct_debit_provider": "go_cardless",
+        "online_card": true,
+        "online_transfer": false,
+        "fees_included_in_price": true,
+        "public": true,
+        "archive": false,
+        "online_registration": true,
+        "on_behalf": false,
+        "feedback_during_course": true,
+        "feedback_after_course": true,
+        "get_extra_fields_from": "all",
+        "get_basic_fields_from": "registrant",
+        "registration_type": "full2",
+        "course_type": "course",
+        "registration_slots_min": 1,
+        "registration_slots_max": 5,
+        "registration_open": 0,
+        "show_on_site": 0,
+        "hide_if_full": false,
+        "allow_replacements": false,
+        "allow_custom_replacements": false,
+        "auto_approve_custom_replacements": false,
+        "allow_cancel_until": 0,
+        "allow_replacements_waitlist": false,
+        "waitlist": "",
+        "auto_waitlist_notification": false,
+        "description": null,
+        "use_extra_fields": false,
+        "for_children": false,
+        "replacements_limit": 2,
+        "replacements_settings": [],
+        "theme": null,
+        "custom_email": 268,
+        "custom_email_event_notification": 0,
+        "event_notification": true,
+        "late_registrations": "auto_approve",
+        "allow_registration_after_end": false,
+        "custom_label_note": null,
+        "hide_before": 0,
+        "collect_feedback_start": null,
+        "iban": null,
+        "swift": null,
+        "custom_label_first_name": null,
+        "custom_label_last_name": null,
+        "custom_label_phone": null,
+        "custom_label_email": null,
+        "upcoming_events_notification": false,
+        "__calc__fee_cash": 30,
+        "__calc__fee_online_card": 20.7,
+        "__calc__fee_direct_debit": 0,
+        "__calc__fee_online_transfer": 15,
+        "allow_replacement_cancellation": false,
+        "admin_managed_replacements": false,
+        "allow_guest_registrations": false,
+        "color": "none",
+        "allow_replacements_from_other_companies": false,
+        "replacements_settings_other_companies": [],
+        "payment_schedule_is_mandatory": true,
+        "allow_using_replacement_credits_as_discount": false,
+        "replacements_limit_per_events": 0,
+        "flexible_replacements_limit": false,
+        "online_card_provider": "gp_webpay",
+        "online_transfer_provider": "besteron",
+        "allow_reschedule_of_replacements": true,
+        "payments_managed_by_buyer": true,
+        "billable_events": 0,
+        "replacement_time_limit": 0,
+        "replacement_time_limit_type": "after",
+        "unit_price": 10,
+        "price_type": "membership",
+        "always_use_total_price": false,
+        "__calc__price": 10,
+        "direct_debit_mandate_id_format": null,
+        "default_email_signature": 0,
+        "aliquot_settings": "automatic",
+        "track_attendance": true,
+        "custom_email_lead": 0,
+        "constant_symbol": 0,
+        "specific_symbol": 0,
+        "money_collection": "installments",
+        "trial_events_limit": 0,
+        "trial_events_capacity": "all",
+        "trial_events_limit_type": "none",
+        "trial_type": "paid_time_trial",
+        "code": null,
+        "__calc__available_currencies": [],
+        "downpayment": "none",
+        "downpayment_due_type": "before_course",
+        "downpayment_due_days": 15,
+        "downpayment_value": 0,
+        "downpayment_cap": 0,
+        "__calc__registration_url": "https://booking.example.com/test123/registration?course_id=3949",
+        "force_full_first_installment": true,
+        "retention_settings": [],
+        "retention_type": "none",
+        "retention_notify_days_before": 10,
+        "__calc__schedules_count": 5,
+        "__calc__registrations_count": 11,
+        "widgets_published": false,
+        "allow_rescheduling_of_events": false,
+        "auto_approve_rescheduled_events": false,
+        "limit_reschedule_to_once": false,
+        "__calc__min_age": 0,
+        "__calc__max_age": 0,
+        "trial_length": 20,
+        "trial_length_type": "days",
+        "automatically_add_schedules_to_trial": true,
+        "automatically_add_schedules_to_retention": true,
+        "unit_price_trial": 1,
+        "registration_display_mode": "default",
+        "target_audience": "groups",
+        "onboarding": {
+          "version": 1,
+          "price": false,
+          "trial": false,
+          "online_registration": false,
+          "replacements": false,
+          "extra_fields": false,
+          "attendance": false
+        },
+        "iban_account_holder": null,
+        "reserve_seat_for_trial_attendees": false,
+        "require_valid_entrance_voucher": false,
+        "payment_mode": "pass_first",
+        "priority": 0,
+        "retention_message": null,
+        "retention_days": 0,
+        "deleted_at": null,
+        "reviews_after_registration": false,
+        "reviews_after_first_session": false,
+        "reviews_after_class_ended": false,
+        "collect_reviews_start": null,
+        "delayed_start_max_days": 30,
+        "priority_registration": false,
+        "priority_registration_allow_multiple": true,
+        "priority_registration_offset": 100,
+        "priority_registration_public_offset": null,
+        "priority_registration_audience": {
+          "courses": [
+            3910
+          ],
+          "billing_periods": "all"
+        },
+        "allow_additional_sessions": true,
+        "additional_sessions_settings": [],
+        "additional_session_pricing_mode": "regular_unit_price",
+        "additional_session_unit_price": 0,
+        "additional_sessions_limit": 0,
+        "additional_session_payment_mode": "open",
+        "additional_session_payment_deadline_days": 7,
+        "allow_cancellation_discount": false,
+        "schedule_start_date_format": null,
+        "schedule_end_date_format": null,
+        "schedule_defaults": {
+          "state": "undecided",
+          "values": {}
+        },
+        "direct_debit_scheme": "sepa",
+        "direct_debit_mandate_id_rules": {
+          "scheme": "sepa",
+          "max_length": 35,
+          "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+          "charset_label_key": "mandate_id_charset_help__sepa",
+          "no_leading_space": false,
+          "not_all_identical": false,
+          "tokens": [
+            {
+              "token": "{C}",
+              "label_key": "mandate_id_token__company_raw"
+            },
+            {
+              "token": "{c}",
+              "label_key": "mandate_id_token__company_padded"
+            },
+            {
+              "token": "{P}",
+              "label_key": "mandate_id_token__programme_raw"
+            },
+            {
+              "token": "{p}",
+              "label_key": "mandate_id_token__programme_padded"
+            },
+            {
+              "token": "{O1}…{O10}",
+              "label_key": "mandate_id_token__order_number"
+            },
+            {
+              "token": "{I1}…{I10}",
+              "label_key": "mandate_id_token__increment"
+            }
+          ]
+        },
+        "direct_debit_mandate_id_rules_by_provider": {
+          "manual": {
+            "scheme": "sepa",
+            "max_length": 35,
+            "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+            "charset_label_key": "mandate_id_charset_help__sepa",
+            "no_leading_space": false,
+            "not_all_identical": false,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          },
+          "go_cardless": {
+            "scheme": "sepa",
+            "max_length": 35,
+            "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+            "charset_label_key": "mandate_id_charset_help__sepa",
+            "no_leading_space": false,
+            "not_all_identical": false,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          },
+          "fastpay": {
+            "scheme": "bacs",
+            "max_length": 18,
+            "charset": "A-Z0-9 &.\\-\\/",
+            "charset_label_key": "mandate_id_charset_help__bacs",
+            "no_leading_space": true,
+            "not_all_identical": true,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          }
+        },
+        "extra_fields": [
+          {
+            "id": 1,
+            "column_name": "dob",
+            "name": "Date of Birth",
+            "description": "date of birth",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          },
+          {
+            "id": 2,
+            "column_name": "full_name",
+            "name": "Full Name",
+            "description": "full name",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          },
+          {
+            "id": 3,
+            "column_name": "address",
+            "name": "Address",
+            "description": "Full address",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          }
+        ],
+        "labels": {
+          "total": 0,
+          "page": 0,
+          "page_size": 50,
+          "settings": {
+            "label": null,
+            "object_id": [
+              3949
+            ],
+            "object_type": "course"
+          },
+          "data": []
+        },
+        "started": true,
+        "schedules": [
+          {
+            "duration": 60,
+            "registration_fee": 0,
+            "price": 40,
+            "trainer_id": 1,
+            "id": 999065,
+            "course_id": 3949,
+            "all_day": false,
+            "place": "Riverside Centre - Studio 1, Old Town, Example City",
+            "place_name": "Riverside Centre",
+            "ended": true,
+            "started": true,
+            "name": "Wednesday 18:00",
+            "place_id": 16,
+            "room_id": 1,
+            "note": null,
+            "description": null,
+            "start": "2026-08-15",
+            "end": "2026-08-29",
+            "trainer": "NOVAK Kowalski",
+            "time": 300,
+            "registrations": 0,
+            "capacity": 10,
+            "total_events": 3,
+            "online_registration": true,
+            "remaining_events": 0,
+            "has_products": true,
+            "segments": 0,
+            "in_trial": true,
+            "schedule_type": "fixed_period",
+            "fees": {
+              "cash": 3,
+              "online_transfer": 1.5,
+              "online_card": 2.07,
+              "direct_debit": 0
+            },
+            "payment_schedules": []
+          },
+          {
+            "duration": 60,
+            "registration_fee": 0,
+            "price": 0,
+            "trainer_id": 1,
+            "id": 1002791,
+            "course_id": 3949,
+            "all_day": false,
+            "place": "Riverside Centre - Studio 2, Old Town, Example City",
+            "place_name": "Riverside Centre",
+            "ended": false,
+            "started": true,
+            "name": "",
+            "place_id": 16,
+            "room_id": 2,
+            "note": null,
+            "description": null,
+            "start": "2026-09-07",
+            "end": "2026-12-21",
+            "trainer": "NOVAK Kowalski",
+            "time": 561,
+            "registrations": 4,
+            "capacity": 10,
+            "total_events": 16,
+            "online_registration": true,
+            "remaining_events": 7,
+            "has_products": true,
+            "segments": 0,
+            "in_trial": true,
+            "schedule_type": "fixed_period",
+            "fees": {
+              "cash": 16,
+              "online_transfer": 8,
+              "online_card": 11.04,
+              "direct_debit": 0
+            },
+            "payment_schedules": []
+          },
+          {
+            "duration": 60,
+            "registration_fee": 0,
+            "price": 0,
+            "trainer_id": 1,
+            "id": 1029390,
+            "course_id": 3949,
+            "all_day": false,
+            "place": "Riverside Centre - Studio 2, Old Town, Example City",
+            "place_name": "Riverside Centre",
+            "ended": false,
+            "started": true,
+            "name": " (Copy)",
+            "place_id": 16,
+            "room_id": 2,
+            "note": null,
+            "description": null,
+            "start": "2026-09-07",
+            "end": "2026-12-21",
+            "trainer": "NOVAK Kowalski",
+            "time": 561,
+            "registrations": 0,
+            "capacity": 10,
+            "total_events": 16,
+            "online_registration": true,
+            "remaining_events": 5,
+            "has_products": true,
+            "segments": 0,
+            "in_trial": true,
+            "schedule_type": "fixed_period",
+            "fees": {
+              "cash": 16,
+              "online_transfer": 8,
+              "online_card": 11.04,
+              "direct_debit": 0
+            },
+            "payment_schedules": []
+          },
+          {
+            "duration": 60,
+            "registration_fee": 0,
+            "price": 0,
+            "trainer_id": 7906,
+            "id": 1029438,
+            "course_id": 3949,
+            "all_day": false,
+            "place": "Riverside Centre - Studio 1, Old Town, Example City",
+            "place_name": "Riverside Centre",
+            "ended": true,
+            "started": true,
+            "name": "",
+            "place_id": 16,
+            "room_id": 1,
+            "note": null,
+            "description": null,
+            "start": "2026-10-13",
+            "end": "2026-10-13",
+            "trainer": "Mia Mia",
+            "time": 870,
+            "registrations": 1,
+            "capacity": 10,
+            "total_events": 1,
+            "online_registration": true,
+            "remaining_events": 1,
+            "has_products": true,
+            "segments": 0,
+            "in_trial": true,
+            "schedule_type": "fixed_period",
+            "fees": {
+              "cash": 1,
+              "online_transfer": 0.5,
+              "online_card": 0.69,
+              "direct_debit": 0
+            },
+            "payment_schedules": []
+          },
+          {
+            "duration": 60,
+            "registration_fee": 0,
+            "price": 0,
+            "trainer_id": 11031,
+            "id": 1031561,
+            "course_id": 3949,
+            "all_day": false,
+            "place": "Riverside Centre - Studio 1, Old Town, Example City",
+            "place_name": "Riverside Centre",
+            "ended": true,
+            "started": true,
+            "name": "",
+            "place_id": 16,
+            "room_id": 1,
+            "note": null,
+            "description": null,
+            "start": "2026-10-14",
+            "end": "2026-11-11",
+            "trainer": "Smith Clara",
+            "time": 700,
+            "registrations": 3,
+            "capacity": 10,
+            "total_events": 5,
+            "online_registration": true,
+            "remaining_events": 0,
+            "has_products": true,
+            "segments": 0,
+            "in_trial": true,
+            "schedule_type": "fixed_period",
+            "fees": {
+              "cash": 5,
+              "online_transfer": 2.5,
+              "online_card": 3.45,
+              "direct_debit": 0
+            },
+            "payment_schedules": []
+          }
+        ]
+      },
+      {
+        "id": 39452,
+        "company_id": 1,
+        "created": "2026-10-13 13:49:04",
+        "name": "Dance for teens",
+        "url": "dance-for-teens",
+        "price": 0,
+        "registration_fee": 0,
+        "cash": true,
+        "direct_debit": false,
+        "direct_debit_provider": "manual",
+        "online_card": false,
+        "online_transfer": false,
+        "fees_included_in_price": true,
+        "public": false,
+        "archive": false,
+        "online_registration": false,
+        "on_behalf": false,
+        "feedback_during_course": true,
+        "feedback_after_course": true,
+        "get_extra_fields_from": "all",
+        "get_basic_fields_from": "all",
+        "registration_type": "full2",
+        "course_type": "course",
+        "registration_slots_min": 1,
+        "registration_slots_max": 1,
+        "registration_open": 0,
+        "show_on_site": 0,
+        "hide_if_full": true,
+        "allow_replacements": true,
+        "allow_custom_replacements": false,
+        "auto_approve_custom_replacements": false,
+        "allow_cancel_until": 0,
+        "allow_replacements_waitlist": false,
+        "waitlist": "",
+        "auto_waitlist_notification": false,
+        "description": null,
+        "use_extra_fields": false,
+        "for_children": false,
+        "replacements_limit": 0,
+        "replacements_settings": [],
+        "theme": null,
+        "custom_email": 0,
+        "custom_email_event_notification": 0,
+        "event_notification": true,
+        "late_registrations": "confirmation_required",
+        "allow_registration_after_end": false,
+        "custom_label_note": null,
+        "hide_before": 0,
+        "collect_feedback_start": null,
+        "iban": null,
+        "swift": null,
+        "custom_label_first_name": null,
+        "custom_label_last_name": null,
+        "custom_label_phone": null,
+        "custom_label_email": null,
+        "upcoming_events_notification": false,
+        "__calc__fee_cash": 0,
+        "__calc__fee_online_card": 0,
+        "__calc__fee_direct_debit": 0,
+        "__calc__fee_online_transfer": 0,
+        "allow_replacement_cancellation": false,
+        "admin_managed_replacements": false,
+        "allow_guest_registrations": false,
+        "color": null,
+        "allow_replacements_from_other_companies": false,
+        "replacements_settings_other_companies": [],
+        "payment_schedule_is_mandatory": true,
+        "allow_using_replacement_credits_as_discount": false,
+        "replacements_limit_per_events": 0,
+        "flexible_replacements_limit": false,
+        "online_card_provider": "tatra_banka",
+        "online_transfer_provider": "besteron",
+        "allow_reschedule_of_replacements": true,
+        "payments_managed_by_buyer": false,
+        "billable_events": 0,
+        "replacement_time_limit": 0,
+        "replacement_time_limit_type": "after",
+        "unit_price": 25,
+        "price_type": "course_fee",
+        "always_use_total_price": true,
+        "__calc__price": 0,
+        "direct_debit_mandate_id_format": null,
+        "default_email_signature": 0,
+        "aliquot_settings": "automatic",
+        "track_attendance": true,
+        "custom_email_lead": 0,
+        "constant_symbol": 0,
+        "specific_symbol": 0,
+        "money_collection": "one_off",
+        "trial_events_limit": 0,
+        "trial_events_capacity": "all",
+        "trial_events_limit_type": "none",
+        "trial_type": "none",
+        "code": null,
+        "__calc__available_currencies": [],
+        "downpayment": "none",
+        "downpayment_due_type": "before_course",
+        "downpayment_due_days": 15,
+        "downpayment_value": 0,
+        "downpayment_cap": 0,
+        "__calc__registration_url": "https://booking.example.com/test123/registration?course_id=39452",
+        "force_full_first_installment": true,
+        "retention_settings": [],
+        "retention_type": "none",
+        "retention_notify_days_before": 10,
+        "__calc__schedules_count": 0,
+        "__calc__registrations_count": 0,
+        "widgets_published": false,
+        "allow_rescheduling_of_events": false,
+        "auto_approve_rescheduled_events": false,
+        "limit_reschedule_to_once": false,
+        "__calc__min_age": 0,
+        "__calc__max_age": 0,
+        "trial_length": 1,
+        "trial_length_type": "days",
+        "automatically_add_schedules_to_trial": false,
+        "automatically_add_schedules_to_retention": false,
+        "unit_price_trial": 0,
+        "registration_display_mode": "default",
+        "target_audience": "groups",
+        "onboarding": {
+          "version": 1,
+          "price": false,
+          "trial": false,
+          "online_registration": false,
+          "replacements": false,
+          "extra_fields": false,
+          "attendance": false
+        },
+        "iban_account_holder": null,
+        "reserve_seat_for_trial_attendees": false,
+        "require_valid_entrance_voucher": false,
+        "payment_mode": "pass_first",
+        "priority": 0,
+        "retention_message": null,
+        "retention_days": 0,
+        "deleted_at": null,
+        "reviews_after_registration": false,
+        "reviews_after_first_session": false,
+        "reviews_after_class_ended": false,
+        "collect_reviews_start": null,
+        "delayed_start_max_days": 0,
+        "priority_registration": false,
+        "priority_registration_allow_multiple": false,
+        "priority_registration_offset": null,
+        "priority_registration_public_offset": null,
+        "priority_registration_audience": [],
+        "allow_additional_sessions": false,
+        "additional_sessions_settings": [],
+        "additional_session_pricing_mode": "regular_unit_price",
+        "additional_session_unit_price": 0,
+        "additional_sessions_limit": 0,
+        "additional_session_payment_mode": "open",
+        "additional_session_payment_deadline_days": 7,
+        "allow_cancellation_discount": false,
+        "schedule_start_date_format": null,
+        "schedule_end_date_format": null,
+        "schedule_defaults": {
+          "state": "undecided",
+          "values": {}
+        },
+        "direct_debit_scheme": "sepa",
+        "direct_debit_mandate_id_rules": {
+          "scheme": "sepa",
+          "max_length": 35,
+          "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+          "charset_label_key": "mandate_id_charset_help__sepa",
+          "no_leading_space": false,
+          "not_all_identical": false,
+          "tokens": [
+            {
+              "token": "{C}",
+              "label_key": "mandate_id_token__company_raw"
+            },
+            {
+              "token": "{c}",
+              "label_key": "mandate_id_token__company_padded"
+            },
+            {
+              "token": "{P}",
+              "label_key": "mandate_id_token__programme_raw"
+            },
+            {
+              "token": "{p}",
+              "label_key": "mandate_id_token__programme_padded"
+            },
+            {
+              "token": "{O1}…{O10}",
+              "label_key": "mandate_id_token__order_number"
+            },
+            {
+              "token": "{I1}…{I10}",
+              "label_key": "mandate_id_token__increment"
+            }
+          ]
+        },
+        "direct_debit_mandate_id_rules_by_provider": {
+          "manual": {
+            "scheme": "sepa",
+            "max_length": 35,
+            "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+            "charset_label_key": "mandate_id_charset_help__sepa",
+            "no_leading_space": false,
+            "not_all_identical": false,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          },
+          "go_cardless": {
+            "scheme": "sepa",
+            "max_length": 35,
+            "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+            "charset_label_key": "mandate_id_charset_help__sepa",
+            "no_leading_space": false,
+            "not_all_identical": false,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          },
+          "fastpay": {
+            "scheme": "bacs",
+            "max_length": 18,
+            "charset": "A-Z0-9 &.\\-\\/",
+            "charset_label_key": "mandate_id_charset_help__bacs",
+            "no_leading_space": true,
+            "not_all_identical": true,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          }
+        },
+        "extra_fields": [
+          {
+            "id": 1,
+            "column_name": "dob",
+            "name": "Date of Birth",
+            "description": "date of birth",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          },
+          {
+            "id": 2,
+            "column_name": "full_name",
+            "name": "Full Name",
+            "description": "full name",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          },
+          {
+            "id": 3,
+            "column_name": "address",
+            "name": "Address",
+            "description": "Full address",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          }
+        ],
+        "labels": {
+          "total": 0,
+          "page": 0,
+          "page_size": 50,
+          "settings": {
+            "label": null,
+            "object_id": [
+              39452
+            ],
+            "object_type": "course"
+          },
+          "data": []
+        },
+        "started": false,
+        "schedules": [
+          {
+            "duration": 60,
+            "registration_fee": 0,
+            "price": 0,
+            "trainer_id": 0,
+            "id": 1032131,
+            "course_id": 39452,
+            "all_day": false,
+            "place": null,
+            "place_name": null,
+            "ended": false,
+            "started": false,
+            "name": "",
+            "place_id": 0,
+            "room_id": 0,
+            "note": null,
+            "description": null,
+            "start": "2026-10-27",
+            "end": "2026-10-27",
+            "trainer": null,
+            "time": 600,
+            "registrations": 0,
+            "capacity": 10,
+            "total_events": 0,
+            "online_registration": false,
+            "remaining_events": 0,
+            "has_products": false,
+            "segments": 0,
+            "in_trial": false,
+            "schedule_type": "fixed_period",
+            "fees": {
+              "cash": 0,
+              "online_transfer": 0,
+              "online_card": 0,
+              "direct_debit": 0
+            },
+            "payment_schedules": []
+          }
+        ]
+      },
+      {
+        "id": 39453,
+        "company_id": 1,
+        "created": "2026-10-13 13:49:04",
+        "name": "Dance for teens",
+        "url": "dance-for-teens-2",
+        "price": 0,
+        "registration_fee": 0,
+        "cash": true,
+        "direct_debit": false,
+        "direct_debit_provider": "manual",
+        "online_card": false,
+        "online_transfer": false,
+        "fees_included_in_price": true,
+        "public": false,
+        "archive": false,
+        "online_registration": false,
+        "on_behalf": false,
+        "feedback_during_course": true,
+        "feedback_after_course": true,
+        "get_extra_fields_from": "all",
+        "get_basic_fields_from": "all",
+        "registration_type": "full2",
+        "course_type": "course",
+        "registration_slots_min": 1,
+        "registration_slots_max": 1,
+        "registration_open": 0,
+        "show_on_site": 0,
+        "hide_if_full": true,
+        "allow_replacements": true,
+        "allow_custom_replacements": false,
+        "auto_approve_custom_replacements": false,
+        "allow_cancel_until": 0,
+        "allow_replacements_waitlist": false,
+        "waitlist": "",
+        "auto_waitlist_notification": false,
+        "description": null,
+        "use_extra_fields": false,
+        "for_children": false,
+        "replacements_limit": 0,
+        "replacements_settings": [],
+        "theme": null,
+        "custom_email": 0,
+        "custom_email_event_notification": 0,
+        "event_notification": true,
+        "late_registrations": "confirmation_required",
+        "allow_registration_after_end": false,
+        "custom_label_note": null,
+        "hide_before": 0,
+        "collect_feedback_start": null,
+        "iban": null,
+        "swift": null,
+        "custom_label_first_name": null,
+        "custom_label_last_name": null,
+        "custom_label_phone": null,
+        "custom_label_email": null,
+        "upcoming_events_notification": false,
+        "__calc__fee_cash": 0,
+        "__calc__fee_online_card": 0,
+        "__calc__fee_direct_debit": 0,
+        "__calc__fee_online_transfer": 0,
+        "allow_replacement_cancellation": false,
+        "admin_managed_replacements": false,
+        "allow_guest_registrations": false,
+        "color": null,
+        "allow_replacements_from_other_companies": false,
+        "replacements_settings_other_companies": [],
+        "payment_schedule_is_mandatory": true,
+        "allow_using_replacement_credits_as_discount": false,
+        "replacements_limit_per_events": 0,
+        "flexible_replacements_limit": false,
+        "online_card_provider": "tatra_banka",
+        "online_transfer_provider": "besteron",
+        "allow_reschedule_of_replacements": true,
+        "payments_managed_by_buyer": false,
+        "billable_events": 0,
+        "replacement_time_limit": 0,
+        "replacement_time_limit_type": "after",
+        "unit_price": 25,
+        "price_type": "course_fee",
+        "always_use_total_price": true,
+        "__calc__price": 0,
+        "direct_debit_mandate_id_format": null,
+        "default_email_signature": 0,
+        "aliquot_settings": "automatic",
+        "track_attendance": true,
+        "custom_email_lead": 0,
+        "constant_symbol": 0,
+        "specific_symbol": 0,
+        "money_collection": "one_off",
+        "trial_events_limit": 0,
+        "trial_events_capacity": "all",
+        "trial_events_limit_type": "none",
+        "trial_type": "none",
+        "code": null,
+        "__calc__available_currencies": [],
+        "downpayment": "none",
+        "downpayment_due_type": "before_course",
+        "downpayment_due_days": 15,
+        "downpayment_value": 0,
+        "downpayment_cap": 0,
+        "__calc__registration_url": "https://booking.example.com/test123/registration?course_id=39453",
+        "force_full_first_installment": true,
+        "retention_settings": [],
+        "retention_type": "none",
+        "retention_notify_days_before": 10,
+        "__calc__schedules_count": 0,
+        "__calc__registrations_count": 0,
+        "widgets_published": false,
+        "allow_rescheduling_of_events": false,
+        "auto_approve_rescheduled_events": false,
+        "limit_reschedule_to_once": false,
+        "__calc__min_age": 0,
+        "__calc__max_age": 0,
+        "trial_length": 1,
+        "trial_length_type": "days",
+        "automatically_add_schedules_to_trial": false,
+        "automatically_add_schedules_to_retention": false,
+        "unit_price_trial": 0,
+        "registration_display_mode": "default",
+        "target_audience": "groups",
+        "onboarding": {
+          "version": 1,
+          "price": false,
+          "trial": false,
+          "online_registration": false,
+          "replacements": false,
+          "extra_fields": false,
+          "attendance": false
+        },
+        "iban_account_holder": null,
+        "reserve_seat_for_trial_attendees": false,
+        "require_valid_entrance_voucher": false,
+        "payment_mode": "pass_first",
+        "priority": 0,
+        "retention_message": null,
+        "retention_days": 0,
+        "deleted_at": null,
+        "reviews_after_registration": false,
+        "reviews_after_first_session": false,
+        "reviews_after_class_ended": false,
+        "collect_reviews_start": null,
+        "delayed_start_max_days": 0,
+        "priority_registration": false,
+        "priority_registration_allow_multiple": false,
+        "priority_registration_offset": null,
+        "priority_registration_public_offset": null,
+        "priority_registration_audience": [],
+        "allow_additional_sessions": false,
+        "additional_sessions_settings": [],
+        "additional_session_pricing_mode": "regular_unit_price",
+        "additional_session_unit_price": 0,
+        "additional_sessions_limit": 0,
+        "additional_session_payment_mode": "open",
+        "additional_session_payment_deadline_days": 7,
+        "allow_cancellation_discount": false,
+        "schedule_start_date_format": null,
+        "schedule_end_date_format": null,
+        "schedule_defaults": {
+          "state": "undecided",
+          "values": {}
+        },
+        "direct_debit_scheme": "sepa",
+        "direct_debit_mandate_id_rules": {
+          "scheme": "sepa",
+          "max_length": 35,
+          "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+          "charset_label_key": "mandate_id_charset_help__sepa",
+          "no_leading_space": false,
+          "not_all_identical": false,
+          "tokens": [
+            {
+              "token": "{C}",
+              "label_key": "mandate_id_token__company_raw"
+            },
+            {
+              "token": "{c}",
+              "label_key": "mandate_id_token__company_padded"
+            },
+            {
+              "token": "{P}",
+              "label_key": "mandate_id_token__programme_raw"
+            },
+            {
+              "token": "{p}",
+              "label_key": "mandate_id_token__programme_padded"
+            },
+            {
+              "token": "{O1}…{O10}",
+              "label_key": "mandate_id_token__order_number"
+            },
+            {
+              "token": "{I1}…{I10}",
+              "label_key": "mandate_id_token__increment"
+            }
+          ]
+        },
+        "direct_debit_mandate_id_rules_by_provider": {
+          "manual": {
+            "scheme": "sepa",
+            "max_length": 35,
+            "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+            "charset_label_key": "mandate_id_charset_help__sepa",
+            "no_leading_space": false,
+            "not_all_identical": false,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          },
+          "go_cardless": {
+            "scheme": "sepa",
+            "max_length": 35,
+            "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+            "charset_label_key": "mandate_id_charset_help__sepa",
+            "no_leading_space": false,
+            "not_all_identical": false,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          },
+          "fastpay": {
+            "scheme": "bacs",
+            "max_length": 18,
+            "charset": "A-Z0-9 &.\\-\\/",
+            "charset_label_key": "mandate_id_charset_help__bacs",
+            "no_leading_space": true,
+            "not_all_identical": true,
+            "tokens": [
+              {
+                "token": "{C}",
+                "label_key": "mandate_id_token__company_raw"
+              },
+              {
+                "token": "{c}",
+                "label_key": "mandate_id_token__company_padded"
+              },
+              {
+                "token": "{P}",
+                "label_key": "mandate_id_token__programme_raw"
+              },
+              {
+                "token": "{p}",
+                "label_key": "mandate_id_token__programme_padded"
+              },
+              {
+                "token": "{O1}…{O10}",
+                "label_key": "mandate_id_token__order_number"
+              },
+              {
+                "token": "{I1}…{I10}",
+                "label_key": "mandate_id_token__increment"
+              }
+            ]
+          }
+        },
+        "extra_fields": [
+          {
+            "id": 1,
+            "column_name": "dob",
+            "name": "Date of Birth",
+            "description": "date of birth",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          },
+          {
+            "id": 2,
+            "column_name": "full_name",
+            "name": "Full Name",
+            "description": "full name",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          },
+          {
+            "id": 3,
+            "column_name": "address",
+            "name": "Address",
+            "description": "Full address",
+            "custom_label": null,
+            "course_id": 0,
+            "field_order": 0,
+            "active": false,
+            "field_options": []
+          }
+        ],
+        "labels": {
+          "total": 0,
+          "page": 0,
+          "page_size": 50,
+          "settings": {
+            "label": null,
+            "object_id": [
+              39453
+            ],
+            "object_type": "course"
+          },
+          "data": []
+        },
+        "started": false,
+        "schedules": [
+          {
+            "duration": 60,
+            "registration_fee": 0,
+            "price": 0,
+            "trainer_id": 0,
+            "id": 1032132,
+            "course_id": 39453,
+            "all_day": false,
+            "place": null,
+            "place_name": null,
+            "ended": false,
+            "started": false,
+            "name": "",
+            "place_id": 0,
+            "room_id": 0,
+            "note": null,
+            "description": null,
+            "start": "2026-10-27",
+            "end": "2026-10-27",
+            "trainer": null,
+            "time": 600,
+            "registrations": 0,
+            "capacity": 10,
+            "total_events": 0,
+            "online_registration": false,
+            "remaining_events": 0,
+            "has_products": false,
+            "segments": 0,
+            "in_trial": false,
+            "schedule_type": "fixed_period",
+            "fees": {
+              "cash": 0,
+              "online_transfer": 0,
+              "online_card": 0,
+              "direct_debit": 0
+            },
+            "payment_schedules": []
+          }
+        ]
+      }
+    ]
+  },
+  "trimmed": {
+    "/": "253 items, 3 shown",
+    "/0/extra_fields": "26 items, 3 shown",
+    "/1/extra_fields": "26 items, 3 shown",
+    "/2/extra_fields": "26 items, 3 shown"
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-39-05-411Z-39-GET_courses.json",
+  "code": "src/app/registrations/page.tsx"
+}

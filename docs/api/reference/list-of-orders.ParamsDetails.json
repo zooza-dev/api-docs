@@ -1,1 +1,0 @@
-{"parameters":[{"in":"path","name":"User_ID","schema":{"type":"integer"},"required":true}]}

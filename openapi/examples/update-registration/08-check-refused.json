@@ -1,0 +1,131 @@
+{
+  "id": "update-registration/08-check-refused",
+  "operationId": "put_registrations_id",
+  "operation": "PUT /registrations/{ID}",
+  "flow": "update-registration",
+  "title": "A change the preflight check refuses",
+  "description": "Pitfall: a refused change is still a 200 here. Read checks: status_allowed is not_passed (cancelled → pre_registered).",
+  "kind": "pitfall",
+  "reference": false,
+  "request": {
+    "method": "PUT",
+    "path": "/registrations/168321",
+    "query": {
+      "action": "preflight_check"
+    },
+    "body": {
+      "action": "change_status",
+      "status": "pre_registered"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000046",
+      "x-ratelimit-remaining": "1158",
+      "x-ratelimit-remaining-day": "99549"
+    },
+    "body": {
+      "checks": {
+        "rules_hold": {
+          "name": "rules_hold",
+          "result": "passed",
+          "severity": "error"
+        },
+        "decision_missing": {
+          "name": "decision_missing",
+          "result": "passed",
+          "severity": "error"
+        },
+        "money_moves": {
+          "name": "money_moves",
+          "result": "passed",
+          "severity": "notice"
+        },
+        "transferred_money_stays": {
+          "name": "transferred_money_stays",
+          "result": "passed",
+          "severity": "notice"
+        },
+        "currency_conversion": {
+          "name": "currency_conversion",
+          "result": "passed",
+          "severity": "notice"
+        },
+        "status_allowed": {
+          "name": "status_allowed",
+          "result": "not_passed",
+          "severity": "error"
+        }
+      },
+      "properties": {
+        "result": {
+          "name": "result",
+          "value": {
+            "booking": {
+              "type": "registration",
+              "id": 168321
+            },
+            "root": {
+              "type": "registration",
+              "id": 168321
+            },
+            "limits": {
+              "max_depth": 3,
+              "truncated": false
+            },
+            "members": [
+              {
+                "type": "registration",
+                "id": 168321,
+                "summary": {
+                  "name": "Ballet basics",
+                  "client_name": "Anna Novak",
+                  "course": {
+                    "id": 990,
+                    "name": "Kids gymnastics"
+                  },
+                  "schedule": {
+                    "id": 6779,
+                    "name": "Tuesday 17:00"
+                  },
+                  "product": null,
+                  "status": "canceled",
+                  "trial": false,
+                  "balance": -110,
+                  "currency": "EUR"
+                },
+                "parent": null,
+                "paid_by": null,
+                "pays_for": [],
+                "previous": null,
+                "next": null
+              }
+            ],
+            "related": []
+          }
+        },
+        "transfers": {
+          "name": "transfers",
+          "value": []
+        },
+        "balances": {
+          "name": "balances",
+          "value": []
+        },
+        "refusals": {
+          "name": "refusals",
+          "value": []
+        },
+        "options": {
+          "name": "options",
+          "value": {}
+        }
+      }
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-56-25-086Z-21-PUT_registrations_168321.json",
+  "code": "src/app/registrations/[id]/page.tsx"
+}

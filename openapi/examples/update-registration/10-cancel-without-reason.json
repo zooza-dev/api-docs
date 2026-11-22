@@ -1,0 +1,41 @@
+{
+  "id": "update-registration/10-cancel-without-reason",
+  "operationId": "put_registrations_id",
+  "operation": "PUT /registrations/{ID}",
+  "flow": "update-registration",
+  "title": "Cancelling without a reason",
+  "description": "400 request error 0338: choose a cancellation reason.",
+  "kind": "error",
+  "reference": false,
+  "request": {
+    "method": "PUT",
+    "path": "/registrations/168321",
+    "query": {
+      "action": "preflight_check"
+    },
+    "body": {
+      "action": "change_status",
+      "status": "canceled"
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000048",
+      "x-ratelimit-remaining": "1188",
+      "x-ratelimit-remaining-day": "99579"
+    },
+    "body": {
+      "errors": [
+        {
+          "0338": "Choose a cancellation reason."
+        }
+      ],
+      "request_valid": false
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-56-01-235Z-11-PUT_registrations_168321.json",
+  "code": "src/app/registrations/[id]/actions.ts"
+}

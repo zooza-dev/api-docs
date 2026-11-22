@@ -1,6 +1,6 @@
 ---
 title: Give your AI chatbot the logged-in client
-description: Pass the parent who is logged in to Zooza on your website into your AI chatbot or support widget — greet them by name, and let the bot look up their bookings through your own backend and the Zooza REST API without exposing tokens.
+description: Pass the parent who is logged in to Zooza on your website into your AI chatbot or support widget — greet them by name, and let the bot look up their bookings through your own backend and the Zooza API without exposing tokens.
 sidebar_label: AI chatbot with logged-in client
 ---
 
@@ -107,8 +107,8 @@ Everything in Step 1 runs in the browser, so treat it as a **hint** (good enough
 Chatbot (tool call: "get_bookings")
    │  conversation id + zooza_user_id
    ▼
-Your backend ── verifies the person ── calls Zooza REST API with server credentials
-   │                                     GET /v1/registrations?user_id=…
+Your backend ── verifies the person ── calls the Zooza API with its own access token
+   │                                     GET /v3/registrations?user_id=…
    ▼
 Short, filtered answer back to the bot (next session, status, balance)
 ```
@@ -126,14 +126,8 @@ app.post( '/chatbot/tools/get-bookings', async ( req, res ) => {
   }
 
   const response = await fetch(
-    `https://api.zooza.app/v1/registrations?user_id=${ encodeURIComponent( user_id ) }`,
-    {
-      headers: {
-        'X-ZOOZA-API-KEY': process.env.ZOOZA_API_KEY,
-        'X-ZOOZA-TOKEN': await zooza_server_token(),
-        'X-ZOOZA-COMPANY': process.env.ZOOZA_COMPANY_ID,
-      },
-    }
+    `https://api.zooza.app/v3/registrations?user_id=${ encodeURIComponent( user_id ) }`,
+    { headers: { Authorization: `Bearer ${ await zooza_access_token() }` } }
   );
   const { data = [] } = await response.json();
 
@@ -146,14 +140,36 @@ app.post( '/chatbot/tools/get-bookings', async ( req, res ) => {
     } ) ),
   } );
 } );
+
+// An access token lasts an hour: mint one with your API key, reuse it, renew it shortly before it expires.
+// The secret comes from the environment (a git-ignored .env locally), never from code.
+let token = { value: null, expires_at: 0 };
+
+async function zooza_access_token() {
+  if ( token.value && Date.now() < token.expires_at - 60 * 1000 ) return token.value;
+  const response = await fetch( 'https://api.zooza.app/v3/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify( {
+      grant_type: 'client_credentials',
+      client_id: process.env.ZOOZA_CLIENT_ID,
+      client_secret: process.env.ZOOZA_CLIENT_SECRET,
+      email: process.env.ZOOZA_OWNER_EMAIL, // an owner of the key's company
+    } ),
+  } );
+  if ( ! response.ok ) throw new Error( `Zooza token: ${ response.status }` );
+  const body = await response.json();
+  token = { value: body.access_token, expires_at: Date.now() + body.expires_in * 1000 };
+  return token.value;
+}
 ```
 
-`verified_zooza_user_id()` and `zooza_server_token()` are yours to implement. See [Authentication](../api/authentication.md) for obtaining a server token (`client_secret`) and the required headers, and [`GET /registrations`](/api/reference/registrations) in the API reference for all filters and response fields.
+`verified_zooza_user_id()` is yours to implement. See [Authentication](../api/authentication.md) for access tokens, and [`GET /registrations`](/api/reference#tag/registrations/GET/registrations) in the API reference for all filters and response fields. A key with read-only access (`core_read`) is enough for this endpoint.
 
 ### Why it's built this way
 
 - **The browser only says who is probably there.** `localStorage` and DOM events can be edited by anyone, so they are fine for personalising a greeting but not for releasing data.
-- **The API key and server token stay on your server.** The chatbot vendor never sees Zooza credentials.
+- **The API key, its secret and the access token stay on your server.** The chatbot vendor never sees Zooza credentials.
 - **The bot gets a filtered answer**, not the raw API response, so it can't leak fields the parent shouldn't see.
 - **Logout clears the context**, so a shared family tablet doesn't keep the previous parent in the chat.
 
@@ -165,11 +181,12 @@ app.post( '/chatbot/tools/get-bookings', async ( req, res ) => {
 
 <AiPrompt task="Connect my website chatbot to the Zooza login">{`My website runs the Zooza profile widget (clients log in there) and an AI chatbot. I want the chatbot to know which client is logged in.
 
-Read the Zooza docs first: https://docs.zooza.online/llms-full.txt
+Read the setup guide for coding agents first: https://docs.zooza.online/agent-setup.md
+Full docs: https://docs.zooza.online/llms-full.txt
 Use this example as the pattern: https://docs.zooza.online/examples/chatbot-logged-in-client/
 
 Tasks:
 1. Ask me which chatbot vendor I use, then write the adapter (identify/reset) for it.
 2. Listen to zooza_user_logged_in / zooza_user_logged_out and read localStorage 'zooza_user' on page load.
 3. Never forward Zooza tokens or cookies to the chatbot.
-4. If I want the bot to answer booking questions, scaffold a backend tool endpoint that verifies the person and calls the Zooza REST API with server-side credentials.`}</AiPrompt>
+4. If I want the bot to answer booking questions, scaffold a backend tool endpoint that verifies the person and calls the Zooza API (GET /v3/registrations?user_id=…) with an access token from POST /v3/token, reading ZOOZA_CLIENT_ID, ZOOZA_CLIENT_SECRET and ZOOZA_OWNER_EMAIL from the environment. Never ask me to paste the secret.`}</AiPrompt>

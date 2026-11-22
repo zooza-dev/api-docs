@@ -1,0 +1,51 @@
+{
+  "id": "search-registrations/05-partial-email",
+  "operationId": "get_registrations",
+  "operation": "GET /registrations",
+  "flow": "search-registrations",
+  "title": "email takes a whole address",
+  "description": "Pitfall: email matches one whole address exactly and refuses anything that isn't a valid email with 422. For a partial match use user.",
+  "kind": "pitfall",
+  "reference": false,
+  "request": {
+    "method": "GET",
+    "path": "/registrations",
+    "query": {
+      "advanced_search": 1,
+      "email": "client2"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "x-request-id": "00000000-0000-4000-8000-000000000007",
+      "x-ratelimit-remaining": "1170",
+      "x-ratelimit-remaining-day": "99950"
+    },
+    "body": {
+      "error": "validation_failed",
+      "message": "The request does not match the endpoint's schema.",
+      "request_id": "00000000-0000-4000-8000-000000000008",
+      "errors": [
+        {
+          "location": "query",
+          "path": "email",
+          "code": "format_invalid",
+          "message": "Must be a valid email.",
+          "expected": {
+            "format": "email"
+          },
+          "received": {
+            "type": "string",
+            "value": "client2"
+          }
+        }
+      ]
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-34-51-602Z-3-GET_registrations.json",
+  "code": "src/app/registrations/page.tsx"
+}

@@ -1,0 +1,29 @@
+{
+    "about": "Which vendored examples (openapi/examples/, ids as <flow>/<file>) go into the reference, in this order. The generator adds each to its operation and checks it against the schema (spec DOC-20261122-001). 'blocked' lists picks that wait for a fix in the document; the generator ignores them.",
+    "reference": [
+        "getting-started/01-who-am-i",
+        "set-up-a-term/01-venues-and-rooms",
+        "set-up-a-term/02-term-blocks",
+        "set-up-a-term/03-instructors",
+        "set-up-a-term/07-create-sessions",
+        "set-up-a-term/08-sessions-bare-array",
+        "set-up-a-term/12-read-sessions",
+        "set-up-a-term/14-class-validation-failed",
+        "search-registrations/01-list-newest",
+        "search-registrations/02-without-advanced-search",
+        "search-registrations/14-one-registration",
+        "search-registrations/15-unknown-registration",
+        "update-registration/01-save-staff-note",
+        "update-registration/05-check-a-cancel",
+        "update-registration/06-apply-a-cancel",
+        "update-registration/11-unknown-status-value"
+    ],
+    "blocked": {
+        "set-up-a-term/04-create-programme": "ExtraField.field_options comes back as [] (handoff api-docs-to-api-v1-20261122-001, A1)",
+        "set-up-a-term/05-create-class": "Class.start/end \"0000-00-00\", priority_registration_phase null (A2, A3)",
+        "set-up-a-term/10-read-class": "Class.priority_registration_phase null (A2)",
+        "set-up-a-term/11-read-programme": "ExtraField.field_options comes back as [] (A1)",
+        "search-registrations/06-programme-list": "ExtraField.field_options comes back as [] (A1)",
+        "search-registrations/07-classes-of-a-programme": "Class.priority_registration_phase null (A2)"
+    }
+}

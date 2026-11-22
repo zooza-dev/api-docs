@@ -1,0 +1,62 @@
+{
+    "about": "Applied by scripts/update-examples.js while vendoring (spec DOC-20261122-001). The demo app replaces personal data; this table also replaces the local test company's own data (venue names and places, coordinates, Slovak names and labels, developers' test labels) and puts error messages in English, as a company whose language is English gets them. 'values' replaces a whole string; 'substrings' replaces inside strings, in this order; 'keys' sets a field to a fixed value wherever it appears. 'forbidden' fails the vendoring if any string still matches.",
+    "values": {
+        "Nesprávne parametre alebo chýbajúce parametre - Invalid status for registration [#1].": "Wrong parameters sent or parameters missing - Invalid status for registration [#1].",
+        "Zdroj nebol nájdený - Course": "Resource not found - Course",
+        "Zdroj nebol nájdený - Registration": "Resource not found - Registration",
+        "Vkladanie zlyhalo": "Insert failed",
+        "Vyberte dôvod zrušenia.": "Choose a cancellation reason.",
+        "Kurz na skusku": "Kids gymnastics",
+        "Retencia": "Tuesday 17:00",
+        "bloky Test": "Saturday blocks",
+        "Bloky": "Blocks",
+        "Celé meno dieťaťa": "Child's full name",
+        "Dátum narodenia dieťaťa": "Child's date of birth",
+        "Jemeno": "First name",
+        "Zameno": "Last name",
+        "Poznamka": "Note",
+        "Naavigate": "Navigate",
+        "Platca dphhhh": "VAT payer",
+        "Domi testung  jesen 23 2.7.0.": "Autumn 2023",
+        "Hugo bad types": "Wrong types",
+        "Hugo no room": "No room",
+        "[DS-TEST Clara1] Shared Room - Clients": "Shared room",
+        "[DS-TEST Clara1] curl sched": "Wednesday 18:00",
+        "[OS-TEST Clara1] course": "Dance for teens",
+        "os-test-6ace1ab060a5c": "dance-for-teens",
+        "os-test-6ace1ab08b9ab": "dance-for-teens-2",
+        "Utm E2e": "Ballet basics",
+        "TEST - Course fee": "Course fee",
+        "test (Copy)": "Yoga (Copy)",
+        "Nomin (Copy)": "Pilates (Copy)",
+        "Test": "Open studio",
+        "Bratislava": "Example City",
+        "Brno": "Example City",
+        "Zilina": "Example City",
+        "Ružinov": "Old Town"
+    },
+    "substrings": [
+        ["Centrum Rafael - Baby Balance - Testovacia miestnost", "Riverside Centre - Studio 1"],
+        ["Centrum Rafael - Baby Balance - Dolná miestnosť", "Riverside Centre - Studio 2"],
+        ["Centrum Rafael - Baby Balance", "Riverside Centre"],
+        ["Centrum Rafael", "Riverside Centre"],
+        ["DC Ihrisko", "Park Hall"],
+        ["zilina zalesie", "Hill Studio"],
+        ["Ružinov", "Old Town"],
+        ["Bratislava", "Example City"],
+        ["Zilina", "Example City"],
+        ["Brno", "Example City"]
+    ],
+    "keys": {
+        "latitude": 48.1486,
+        "longitude": 17.1077,
+        "date_of_birth": "2020-01-01"
+    },
+    "forbidden": [
+        "[áäčďéíĺľňóôŕšťúýžÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽ]",
+        "Rafael|Ihrisko|zalesie|Bratislava|Ru[zž]inov|Zilina|Brno",
+        "skusku|Retencia|Hugo|TEST|testung|dphhhh|Utm E2e|os-test-",
+        "@(?!example\\.com)[a-z0-9.-]+\\.[a-z]{2,}",
+        "localhost|127\\.0\\.0\\.1|zooza\\.(online|app|dev)"
+    ]
+}

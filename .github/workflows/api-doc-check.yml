@@ -1,0 +1,23 @@
+name: Check /v3 document
+
+# Fails a pull request when static/zooza_api_v3.json isn't exactly what the generator makes from openapi/
+# (a hand edit, or an input changed without regenerating), or when a generate-time check fails
+# (spec DOC-20261120-001).
+
+on:
+  pull_request:
+    paths:
+      - 'openapi/**'
+      - 'static/zooza_api_v3.json'
+      - 'scripts/generate-api-doc.js'
+      - 'scripts/lib/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/generate-api-doc.js --check

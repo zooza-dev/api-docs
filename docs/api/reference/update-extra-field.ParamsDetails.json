@@ -1,1 +1,0 @@
-{"parameters":[{"name":"Registration_ID","in":"path","required":true,"schema":{"type":"integer"}}]}
