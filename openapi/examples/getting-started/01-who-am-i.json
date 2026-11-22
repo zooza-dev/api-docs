@@ -1,0 +1,71 @@
+{
+  "id": "getting-started/01-who-am-i",
+  "operationId": "get_me",
+  "operation": "GET /me",
+  "flow": "getting-started",
+  "title": "What this key may call, and the account's budget",
+  "description": "GET /me, free. The console's start page reads it to show the key's access groups, tier and the points left this minute and today.",
+  "kind": "success",
+  "reference": true,
+  "request": {
+    "method": "GET",
+    "path": "/me",
+    "query": null,
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "x-request-id": "00000000-0000-4000-8000-000000000001"
+    },
+    "body": {
+      "client_id": "zk_test_write",
+      "region": "EU",
+      "groups": [
+        "core_read",
+        "core_write"
+      ],
+      "tier": "partner_xl",
+      "key_tier": "partner_xl",
+      "points": {
+        "scope": "account",
+        "shared": "Every key on this account spends from this budget.",
+        "limit_minute": 1200,
+        "remaining_minute": 1174,
+        "limit_day": 100000,
+        "remaining_day": 99595,
+        "reset_day": "2026-11-22T00:00:00.000Z"
+      },
+      "token": {
+        "expires_at": "2026-11-21T14:49:08.000Z"
+      },
+      "operations": [
+        {
+          "op": "get_agreements_id",
+          "method": "GET",
+          "path": "/agreements/{ID}",
+          "cost": 1
+        },
+        {
+          "op": "get_attendance",
+          "method": "GET",
+          "path": "/attendance",
+          "cost": 2
+        },
+        {
+          "op": "get_billing_periods",
+          "method": "GET",
+          "path": "/billing_periods",
+          "cost": 2
+        }
+      ]
+    }
+  },
+  "trimmed": {
+    "/operations": "29 items, 3 shown"
+  },
+  "recorded": "2026-11-21",
+  "source": "2026-11-21T14-36-56-109Z-270-GET_me.json",
+  "code": "src/app/page.tsx"
+}

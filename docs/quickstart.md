@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-description: Get started with Zooza — embed a widget or make your first REST API call in minutes.
+description: Get started with Zooza — embed a widget or make your first API call in minutes.
 sidebar_position: 2
 ---
 
@@ -80,153 +80,147 @@ Tasks:
 
 ---
 
-## REST API quickstart
+## API quickstart
 
 ### Make your first API call (10 min)
 
-The REST API gives you full programmatic access to Zooza data — for admin tools, custom customer journeys, data caching, and more.
+The API gives your own server programmatic access to your Zooza data, for admin tools, custom customer journeys,
+data caching, syncing with other systems and more.
 
-:::warning Different API keys
-The REST API uses a **different API key** from widgets. A widget API key cannot be used for REST API calls.
+:::warning API keys are not widget keys
+API keys are separate from widget keys, and a widget key can't call the API. API keys act on your **live data**,
+so test writes carefully.
 :::
 
 #### Prerequisites
 
-- A Zooza account with at least one programme
-- Your **REST API key** and **client secret** — contact [Zooza support](mailto:support@zooza.online) to receive both
-- cURL or Node.js installed
+- A Zooza account with at least one programme.
+- An **API key**. A company owner creates it in the Zooza app under **Developers → API keys**. You get a
+  `client_id` (e.g. `zk_4768b32989b7303eac7ff30e`) and a `client_secret`. The secret is shown only once.
+- cURL or Node.js 18+.
 
-#### Step 1: Authenticate
+Keep the secret on your server, in an environment variable or a git-ignored `.env` file:
 
-Use your client secret to obtain a token:
+```bash
+ZOOZA_CLIENT_ID=zk_…
+ZOOZA_CLIENT_SECRET=…            # shown once when the key was created
+ZOOZA_OWNER_EMAIL=owner@yourcompany.example
+```
+
+#### Step 1: Get an access token
+
+Exchange the key for a token. The `email` must belong to an owner of the key's company, and the token acts as that
+owner.
 
 <Tabs>
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X POST https://api.zooza.app/v1/login \
+curl -X POST https://api.zooza.app/v3/token \
   -H "Content-Type: application/json" \
-  -H "X-ZOOZA-API-KEY: your_api_key" \
-  -d '{
-    "login": "your_email@example.com",
-    "verification_method": "client_secret",
-    "client_secret": "your_client_secret"
-  }'
+  -d "{
+    \"grant_type\": \"client_credentials\",
+    \"client_id\": \"$ZOOZA_CLIENT_ID\",
+    \"client_secret\": \"$ZOOZA_CLIENT_SECRET\",
+    \"email\": \"$ZOOZA_OWNER_EMAIL\"
+  }"
 ```
 
   </TabItem>
   <TabItem value="js" label="JavaScript">
 
 ```javascript
-const response = await fetch("https://api.zooza.app/v1/login", {
+const response = await fetch("https://api.zooza.app/v3/token", {
   method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "X-ZOOZA-API-KEY": "your_api_key",
-  },
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    login: "your_email@example.com",
-    verification_method: "client_secret",
-    client_secret: "your_client_secret",
+    grant_type: "client_credentials",
+    client_id: process.env.ZOOZA_CLIENT_ID,
+    client_secret: process.env.ZOOZA_CLIENT_SECRET,
+    email: process.env.ZOOZA_OWNER_EMAIL,
   }),
 });
-const data = await response.json();
-console.log("Token:", data.token);
+const { access_token, expires_in } = await response.json();
 ```
 
   </TabItem>
 </Tabs>
 
-<!-- TODO: add example — confirm response shape -->
+The response holds an `access_token`, valid for `expires_in` seconds (one hour). Reuse it until it expires, and don't
+request a new token for every call.
 
-Save the `token` from the response — you'll need it for all subsequent requests.
+#### Step 2: Check what your key can do
 
-#### Step 2: Get your company ID
+`GET /v3/me` costs nothing. It shows your key's access groups, your company's remaining budget and every operation the key may call.
 
 <Tabs>
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X GET https://api.zooza.app/v1/user \
-  -H "X-ZOOZA-API-KEY: your_api_key" \
-  -H "X-ZOOZA-TOKEN: your_token"
+curl https://api.zooza.app/v3/me \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
 ```
 
   </TabItem>
   <TabItem value="js" label="JavaScript">
 
 ```javascript
-const response = await fetch("https://api.zooza.app/v1/user", {
-  headers: {
-    "X-ZOOZA-API-KEY": "your_api_key",
-    "X-ZOOZA-TOKEN": "your_token",
-  },
-});
-const data = await response.json();
-console.log("Companies:", data.user.companies);
+const me = await fetch("https://api.zooza.app/v3/me", {
+  headers: { Authorization: `Bearer ${access_token}` },
+}).then((r) => r.json());
+console.log(me.groups, me.points);
 ```
 
   </TabItem>
 </Tabs>
 
-Find your company in the `user.companies` array and note the `id`.
-
-#### Step 3: Make an authenticated request
-
-Now use all three headers to fetch your programmes:
-
-<!-- TODO: add example — pick a simple GET endpoint like /v1/courses -->
+#### Step 3: List your programmes
 
 <Tabs>
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl -X GET https://api.zooza.app/v1/courses \
-  -H "X-ZOOZA-API-KEY: your_api_key" \
-  -H "X-ZOOZA-TOKEN: your_token" \
-  -H "X-ZOOZA-COMPANY: your_company_id"
+curl https://api.zooza.app/v3/courses \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
 ```
 
   </TabItem>
   <TabItem value="js" label="JavaScript">
 
 ```javascript
-const response = await fetch("https://api.zooza.app/v1/courses", {
-  headers: {
-    "X-ZOOZA-API-KEY": "your_api_key",
-    "X-ZOOZA-TOKEN": "your_token",
-    "X-ZOOZA-COMPANY": "your_company_id",
-  },
-});
-const courses = await response.json();
-console.log("Courses:", courses);
+const courses = await fetch("https://api.zooza.app/v3/courses", {
+  headers: { Authorization: `Bearer ${access_token}` },
+}).then((r) => r.json());
+console.log(courses);
 ```
 
   </TabItem>
 </Tabs>
 
-You should see a list of your programmes (called "courses" in the API).
+You should see a list of your programmes (called "courses" in the API). Outside Europe, use your region's host:
+`https://uk.api.zooza.app/v3` or `https://asia.api.zooza.app/v3`.
 
 #### Next steps
 
-- [Authentication guide](api/authentication.md) — all login methods explained
-- [API endpoints](api/index.md) — full reference
-- [Error handling](api/errors.md) — status codes and troubleshooting
-- [Concepts and glossary](concepts.md) — understand Zooza terminology
+- [Getting started with the API](api/getting-started.md): the full walk-through, with Python too
+- [Authentication](api/authentication.md): tokens, their lifetime and what to check when a token is refused
+- [Access and rate limits](api/access-and-rate-limits.md): what your key may call, and its budget
+- [API reference](/api/reference): every operation
+- [Concepts and glossary](concepts.md): Zooza terminology
 
-<AiPrompt task="Build a Zooza REST API integration">{`Help me build an integration against the Zooza REST API.
+<AiPrompt task="Build a Zooza API integration">{`Help me build an integration against the Zooza API.
 
-Read the full Zooza API documentation first — it contains the auth flow, base URLs, endpoints, and error codes:
-https://docs.zooza.online/llms-full.txt
+Read the setup guide for coding agents first. It covers authentication, the first call, and the rules for writing data:
+https://docs.zooza.online/agent-setup.md
 
-Authentication uses three headers: X-ZOOZA-API-KEY, X-ZOOZA-TOKEN (obtained via POST /v1/login), and X-ZOOZA-COMPANY. Base URLs: Europe https://api.zooza.app, UK https://uk.api.zooza.app, UAE https://asia.api.zooza.app.
+Full documentation: https://docs.zooza.online/llms-full.txt
 
 What I want to build:
-[describe your use case — e.g. "a script that lists all my programmes and exports enrolled clients to CSV", or "sync new bookings into my CRM"]
+[describe your use case, e.g. "a script that lists all my programmes and exports enrolled clients to CSV", or "sync new bookings into my CRM"]
 
 Tasks:
-1. Write the authentication step (login -> token) in [my language: Node.js / Python / PHP / cURL].
-2. Implement the use case above using the correct endpoints from the docs.
-3. Handle errors and token expiry gracefully.
+1. Write the token step (POST /v3/token) in [my language: Node.js / Python / PHP / cURL], reading ZOOZA_CLIENT_ID, ZOOZA_CLIENT_SECRET and ZOOZA_OWNER_EMAIL from a git-ignored .env file.
+2. Implement the use case above with the operations from the reference.
+3. Cache the token until it expires, and handle 401 and 429 (Retry-After) gracefully.
 
-Ask me for my API key, client secret, and region before writing code that runs.`}</AiPrompt>
+My region is [EU / UK / ASIA]. Never ask me to paste my client secret into this chat, and ask me before writing any code that creates or changes data.`}</AiPrompt>

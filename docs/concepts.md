@@ -108,7 +108,7 @@ Zooza uses **two distinct types of API keys** that are not interchangeable:
 | Key type | Where to find it | Used for |
 |----------|-----------------|----------|
 | **Widget API key** | **Team & Settings > Publish** — displayed for each widget | Embedding widgets on your website |
-| **REST API key** | Provided by Zooza support | Programmatic access via the REST API |
+| **API key** (`client_id` + `client_secret`) | Created by a company owner in the Zooza app under **Developers → API keys**. The secret is shown once | Your server's access to the REST API, via short-lived access tokens |
 
 :::warning
 A widget API key **cannot** be used for REST API calls, and vice versa. They serve completely different purposes.
@@ -124,7 +124,7 @@ A widget API key **cannot** be used for REST API calls, and vice versa. They ser
 - Customer-facing websites that need custom UI (e.g. caching classes and courses, building custom customer journeys)
 - Automated workflows and data synchronisation
 
-The REST API requires authentication with three headers: `X-ZOOZA-API-KEY`, `X-ZOOZA-TOKEN`, `X-ZOOZA-COMPANY`. See the [authentication guide](api/authentication.md) for details.
+Your server exchanges an API key for a short-lived access token and sends it as `Authorization: Bearer <token>`. See [Authentication](api/authentication.md) for details.
 
 ### Widget group
 

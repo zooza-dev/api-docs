@@ -1,0 +1,48 @@
+{
+  "id": "set-up-a-term/09-sessions-skipped",
+  "operationId": "post_events",
+  "operation": "POST /events",
+  "flow": "set-up-a-term",
+  "title": "Incomplete sessions are skipped silently",
+  "description": "Pitfall: items missing a required value (here trainer_id, place_id) are dropped with no error; when all are dropped the answer is 200 with []. Check every item before sending, and count the sessions afterwards.",
+  "kind": "pitfall",
+  "reference": false,
+  "request": {
+    "method": "POST",
+    "path": "/events",
+    "query": null,
+    "body": {
+      "events": [
+        {
+          "time_string": 570,
+          "course_id": 104660,
+          "schedule_id": 1100282,
+          "room_id": 45,
+          "date_string": "2027-01-12",
+          "place_id": 3
+        },
+        {
+          "time_string": 570,
+          "course_id": 104660,
+          "schedule_id": 1100282,
+          "room_id": 45,
+          "date_string": "2027-01-19",
+          "trainer_id": 11247
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000028",
+      "x-ratelimit-remaining": "1190",
+      "x-ratelimit-remaining-day": "99389"
+    },
+    "body": []
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T21-14-04-401Z-2-POST_events.json",
+  "code": "src/app/terms/new/actions.ts"
+}

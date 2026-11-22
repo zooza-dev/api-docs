@@ -109,7 +109,7 @@ The same map widget fits very different sites. The widget draws the map and, aft
 
 ![Studio Nord: square-cornered monochrome map on the left and a hairline list of three studios with their instruments on the right](/img/examples/map-split-nord.png)
 
-**Split (Studio Nord).** Map on the left, and on the right your own list of studios (from your CMS or the [places API](/api/reference/get-places-that-belong-to-a-company)) with what is taught at each. Muted colours and no rounded corners.
+**Split (Studio Nord).** Map on the left, and on the right your own list of studios (from your CMS or the [venues API](/api/reference#tag/company/GET/places)) with what is taught at each. Muted colours and no rounded corners.
 
 ![Splash Academy on a phone: map on the top part of the screen with Near me search and age chips, and the selected pool's details, lessons and a Navigate button below](/img/examples/map-mobile-splash.png)
 

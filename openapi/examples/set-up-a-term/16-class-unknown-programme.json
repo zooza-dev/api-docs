@@ -1,0 +1,48 @@
+{
+  "id": "set-up-a-term/16-class-unknown-programme",
+  "operationId": "post_schedules",
+  "operation": "POST /schedules",
+  "flow": "set-up-a-term",
+  "title": "A class in a programme that doesn't exist",
+  "description": "400 request error 0065: the request was valid but Zooza refused it, so nothing was created and it is safe to correct and resend.",
+  "kind": "error",
+  "reference": false,
+  "request": {
+    "method": "POST",
+    "path": "/schedules",
+    "query": null,
+    "body": {
+      "course_id": 999999999,
+      "name": "Resume class",
+      "place_id": 16,
+      "room_id": 1,
+      "trainer_id": 11247,
+      "billing_period_id": 310,
+      "capacity": 5,
+      "all_day": false,
+      "online_registration": false,
+      "time": 600,
+      "duration": 60
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000036",
+      "x-ratelimit-remaining": "1126",
+      "x-ratelimit-remaining-day": "99665"
+    },
+    "body": {
+      "errors": [
+        {
+          "0065": "Resource not found - Course"
+        }
+      ],
+      "request_valid": false
+    }
+  },
+  "recorded": "2026-11-21",
+  "source": "2026-11-21T14-32-58-337Z-212-POST_schedules.json",
+  "code": "src/app/terms/new/actions.ts"
+}

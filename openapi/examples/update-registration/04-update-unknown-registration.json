@@ -1,0 +1,38 @@
+{
+  "id": "update-registration/04-update-unknown-registration",
+  "operationId": "put_registrations_id",
+  "operation": "PUT /registrations/{ID}",
+  "flow": "update-registration",
+  "title": "Updating a registration that isn't the company's",
+  "description": "400 request error 0065, as with GET.",
+  "kind": "error",
+  "reference": false,
+  "request": {
+    "method": "PUT",
+    "path": "/registrations/999999999",
+    "query": null,
+    "body": {
+      "company_note": "An example note."
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000042",
+      "x-ratelimit-remaining": "1187",
+      "x-ratelimit-remaining-day": "99677"
+    },
+    "body": {
+      "errors": [
+        {
+          "0065": "Resource not found - Registration"
+        }
+      ],
+      "request_valid": false
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-50-30-053Z-5-PUT_registrations_999999999.json",
+  "code": "src/app/registrations/[id]/actions.ts"
+}

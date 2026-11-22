@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "tiers": {
+        "free": { "points_per_minute": 60, "points_per_day": 1000 },
+        "standard": { "points_per_minute": 300, "points_per_day": 20000 },
+        "partner_xl": { "points_per_minute": 1200, "points_per_day": 100000 }
+    },
+    "token_endpoint": {
+        "per_client": { "points_per_minute": 5 },
+        "per_ip": { "points_per_minute": 20 }
+    },
+    "defaults": { "cost": 1 },
+    "groups": {
+        "core_read": {
+            "title": "Read core data",
+            "description": "Read programmes, classes, sessions, attendance, the calendar, registrations, invoices, venues, users and agreements."
+        },
+        "core_write": {
+            "title": "Write core data",
+            "description": "Create and change programmes, classes, sessions, registrations, extra fields and invoices."
+        }
+    },
+    "endpoints": {
+        "get_registrations": { "groups": ["core_read"], "cost": 2 },
+        "get_registrations_id": { "groups": ["core_read"] },
+        "put_registrations_id": { "groups": ["core_write"], "cost": 5 },
+
+        "get_courses": { "groups": ["core_read"], "cost": 2 },
+        "get_courses_id": { "groups": ["core_read"] },
+        "post_courses": { "groups": ["core_write"], "cost": 5 },
+        "put_courses_id": { "groups": ["core_write"], "cost": 5 },
+
+        "get_schedules": { "groups": ["core_read"], "cost": 2 },
+        "get_schedules_id": { "groups": ["core_read"] },
+        "post_schedules": { "groups": ["core_write"], "cost": 5 },
+        "put_schedules_id": { "groups": ["core_write"], "cost": 5 },
+
+        "get_events": { "groups": ["core_read"], "cost": 2 },
+        "get_events_id": { "groups": ["core_read"] },
+        "post_events": { "groups": ["core_write"], "cost": 5 },
+        "put_events": { "groups": ["core_write"], "cost": 5 },
+        "put_events_id": { "groups": ["core_write"], "cost": 5 },
+
+        "get_attendance": { "groups": ["core_read"], "cost": 2 },
+        "get_calendar": { "groups": ["core_read"], "cost": 2 },
+
+        "post_extra_fields": { "groups": ["core_write"], "cost": 5 },
+        "put_extra_fields_id": { "groups": ["core_write"], "cost": 5 },
+
+        "get_customer_invoices": { "groups": ["core_read"], "cost": 2 },
+        "get_customer_invoices_id": { "groups": ["core_read"] },
+        "get_customer_invoices_id_download": { "groups": ["core_read"], "cost": 10 },
+        "get_customer_invoices_download": { "groups": ["core_read"], "cost": 10 },
+        "post_customer_invoices": { "groups": ["core_write"], "cost": 5 },
+
+        "get_places": { "groups": ["core_read"], "cost": 2 },
+        "get_billing_periods": { "groups": ["core_read"], "cost": 2 },
+        "get_users": { "groups": ["core_read"], "cost": 2 },
+        "get_agreements_id": { "groups": ["core_read"] }
+    }
+}

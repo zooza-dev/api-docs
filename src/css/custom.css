@@ -194,3 +194,32 @@ body {
   font-size: 0.82rem;
 }
 
+
+/* ── Scalar API reference: site palette ─────────────────────────────────────
+   @scalar/docusaurus sets light background-1 to plain white on `body`, and
+   Scalar's theme re-applies its own colours on .light-mode/.dark-mode. These
+   selectors outrank both so the reference matches the rest of the site. */
+html[data-theme='light'] body,
+html[data-theme='light'] body .scalar-app,
+html[data-theme='light'] body .light-mode {
+  --scalar-background-1: #f2f5e5 !important;
+  --scalar-background-2: #ffffff !important;
+  --scalar-background-3: #e0e4cc !important;
+  --scalar-background-accent: rgba(250, 105, 0, 0.1) !important;
+  --scalar-border-color: #e0e4cc !important;
+  --scalar-color-accent: #fa6900 !important;
+}
+html[data-theme='dark'] body,
+html[data-theme='dark'] body .scalar-app,
+html[data-theme='dark'] body .dark-mode {
+  --scalar-background-1: #1e1f1c !important;
+  --scalar-background-2: #2a2c28 !important;
+  --scalar-background-3: #33352f !important;
+  --scalar-background-accent: rgba(255, 140, 66, 0.12) !important;
+  --scalar-border-color: #545550 !important;
+  --scalar-color-accent: #ff8c42 !important;
+}
+/* Scalar's shell paints the page backdrop with background-2 (our white card colour). */
+.scalar-app.references-shell {
+  --refs-shell-backdrop: var(--scalar-background-1) !important;
+}

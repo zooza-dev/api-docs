@@ -43,5 +43,5 @@ Want to see the range first? The [design gallery](./design-gallery.md) shows eve
 ## Before you start
 
 1. Create a free account at [signup.zooza.online](https://signup.zooza.online).
-2. Copy your widget key from **Team & Settings > Publish**. For REST API examples, [request a REST API key](../api/authentication.md#obtaining-your-rest-api-key).
+2. Copy your widget key from **Team & Settings > Publish**. For API examples, a company owner creates an API key in the Zooza app under **Developers → API keys**. See [Getting started with the API](../api/getting-started.md).
 3. Choose your region's API URL: Europe `https://api.zooza.app`, UK `https://uk.api.zooza.app`, UAE `https://asia.api.zooza.app`.

@@ -1,0 +1,720 @@
+{
+  "id": "set-up-a-term/07-create-sessions",
+  "operationId": "post_events",
+  "operation": "POST /events",
+  "flow": "set-up-a-term",
+  "title": "Create the weekly sessions in one request",
+  "description": "One item per week, each repeating the programme, class, instructor, venue and room. time_string is minutes after midnight, a number. New sessions are scheduled and no client is notified.",
+  "kind": "success",
+  "reference": true,
+  "request": {
+    "method": "POST",
+    "path": "/events",
+    "query": null,
+    "body": {
+      "events": [
+        {
+          "date_string": "2027-01-04",
+          "time_string": 960,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1
+        },
+        {
+          "date_string": "2027-01-11",
+          "time_string": 960,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1
+        },
+        {
+          "date_string": "2027-01-18",
+          "time_string": 960,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1
+        },
+        {
+          "date_string": "2027-01-25",
+          "time_string": 960,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1
+        },
+        {
+          "date_string": "2027-02-01",
+          "time_string": 960,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1
+        },
+        {
+          "date_string": "2027-02-08",
+          "time_string": 960,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000025",
+      "x-ratelimit-remaining": "1169",
+      "x-ratelimit-remaining-day": "99708"
+    },
+    "body": {
+      "total": 6,
+      "page": 0,
+      "page_size": 1000,
+      "settings": {
+        "ids": [
+          9170719,
+          9170720,
+          9170721,
+          9170722,
+          9170723,
+          9170724
+        ]
+      },
+      "data": [
+        {
+          "id": 9170719,
+          "company_id": 1,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1,
+          "name": null,
+          "is_custom_replacement_event": false,
+          "summary": null,
+          "summary_public": null,
+          "summary_filled_by": 0,
+          "summary_filled_at": null,
+          "summary_public_locked": false,
+          "summary_public_filled_by": 0,
+          "summary_public_unlocked_by": 0,
+          "summary_public_filled_at": null,
+          "status": "scheduled",
+          "date": "2027-01-04 16:00:00",
+          "attendance": 0,
+          "created": "2026-11-21 15:32:31",
+          "updated": "2026-11-21 15:32:31",
+          "trainer_rate_type_id": 0,
+          "trainer_payout_percentage": 1,
+          "__calc__attendance__going": 0,
+          "__calc__attendance__canceled": 0,
+          "__calc__attendance__waitlist": 0,
+          "__calc__attendance__canceled_late": 0,
+          "__calc__attendance__noshow": 0,
+          "__calc__attendance__ignore": 0,
+          "__calc__attendance__deleted": 0,
+          "__calc__attendance__hold": 0,
+          "__calc__attendance__attended": 0,
+          "duration": 0,
+          "__calc__event_number": 1,
+          "__calc__event_trainer": null,
+          "live_stream": 0,
+          "video_expires_in": 0,
+          "video_expiry": "event",
+          "billable": false,
+          "substituted": false,
+          "original_trainer_id": 0,
+          "cancellation_reasoning": null,
+          "cancellation_reasoning_public": null,
+          "canceled_by": 0,
+          "canceled_at": null,
+          "replaced_by": 0,
+          "replacement_for": 0,
+          "__schedule_segments__id": null,
+          "__schedule_segments__name": null,
+          "__calc__event_place": "Riverside Centre - Studio 1, Old Town, Example City",
+          "original_date": null,
+          "rescheduled_by": 0,
+          "deleted_at": null,
+          "deleted_by_user_id": 0,
+          "status_before_delete": null,
+          "__calc__glue_key": null,
+          "__calc__effective_capacity": 10,
+          "course": {
+            "direct_debit_scheme": "sepa",
+            "direct_debit_mandate_id_rules": {
+              "scheme": "sepa",
+              "max_length": 35,
+              "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+              "charset_label_key": "mandate_id_charset_help__sepa",
+              "no_leading_space": false,
+              "not_all_identical": false,
+              "tokens": [
+                {
+                  "token": "{C}",
+                  "label_key": "mandate_id_token__company_raw"
+                },
+                {
+                  "token": "{c}",
+                  "label_key": "mandate_id_token__company_padded"
+                },
+                {
+                  "token": "{P}",
+                  "label_key": "mandate_id_token__programme_raw"
+                },
+                {
+                  "token": "{p}",
+                  "label_key": "mandate_id_token__programme_padded"
+                },
+                {
+                  "token": "{O1}…{O10}",
+                  "label_key": "mandate_id_token__order_number"
+                },
+                {
+                  "token": "{I1}…{I10}",
+                  "label_key": "mandate_id_token__increment"
+                }
+              ]
+            },
+            "direct_debit_mandate_id_rules_by_provider": {
+              "manual": {
+                "scheme": "sepa",
+                "max_length": 35,
+                "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+                "charset_label_key": "mandate_id_charset_help__sepa",
+                "no_leading_space": false,
+                "not_all_identical": false,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              },
+              "go_cardless": {
+                "scheme": "sepa",
+                "max_length": 35,
+                "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+                "charset_label_key": "mandate_id_charset_help__sepa",
+                "no_leading_space": false,
+                "not_all_identical": false,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              },
+              "fastpay": {
+                "scheme": "bacs",
+                "max_length": 18,
+                "charset": "A-Z0-9 &.\\-\\/",
+                "charset_label_key": "mandate_id_charset_help__bacs",
+                "no_leading_space": true,
+                "not_all_identical": true,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              }
+            },
+            "priority_registration_offset": null,
+            "priority_registration_public_offset": null,
+            "__calc__available_currencies": []
+          },
+          "schedule": null
+        },
+        {
+          "id": 9170720,
+          "company_id": 1,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1,
+          "name": null,
+          "is_custom_replacement_event": false,
+          "summary": null,
+          "summary_public": null,
+          "summary_filled_by": 0,
+          "summary_filled_at": null,
+          "summary_public_locked": false,
+          "summary_public_filled_by": 0,
+          "summary_public_unlocked_by": 0,
+          "summary_public_filled_at": null,
+          "status": "scheduled",
+          "date": "2027-01-11 16:00:00",
+          "attendance": 0,
+          "created": "2026-11-21 15:32:31",
+          "updated": "2026-11-21 15:32:31",
+          "trainer_rate_type_id": 0,
+          "trainer_payout_percentage": 1,
+          "__calc__attendance__going": 0,
+          "__calc__attendance__canceled": 0,
+          "__calc__attendance__waitlist": 0,
+          "__calc__attendance__canceled_late": 0,
+          "__calc__attendance__noshow": 0,
+          "__calc__attendance__ignore": 0,
+          "__calc__attendance__deleted": 0,
+          "__calc__attendance__hold": 0,
+          "__calc__attendance__attended": 0,
+          "duration": 0,
+          "__calc__event_number": 2,
+          "__calc__event_trainer": null,
+          "live_stream": 0,
+          "video_expires_in": 0,
+          "video_expiry": "event",
+          "billable": false,
+          "substituted": false,
+          "original_trainer_id": 0,
+          "cancellation_reasoning": null,
+          "cancellation_reasoning_public": null,
+          "canceled_by": 0,
+          "canceled_at": null,
+          "replaced_by": 0,
+          "replacement_for": 0,
+          "__schedule_segments__id": null,
+          "__schedule_segments__name": null,
+          "__calc__event_place": "Riverside Centre - Studio 1, Old Town, Example City",
+          "original_date": null,
+          "rescheduled_by": 0,
+          "deleted_at": null,
+          "deleted_by_user_id": 0,
+          "status_before_delete": null,
+          "__calc__glue_key": null,
+          "__calc__effective_capacity": 10,
+          "course": {
+            "direct_debit_scheme": "sepa",
+            "direct_debit_mandate_id_rules": {
+              "scheme": "sepa",
+              "max_length": 35,
+              "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+              "charset_label_key": "mandate_id_charset_help__sepa",
+              "no_leading_space": false,
+              "not_all_identical": false,
+              "tokens": [
+                {
+                  "token": "{C}",
+                  "label_key": "mandate_id_token__company_raw"
+                },
+                {
+                  "token": "{c}",
+                  "label_key": "mandate_id_token__company_padded"
+                },
+                {
+                  "token": "{P}",
+                  "label_key": "mandate_id_token__programme_raw"
+                },
+                {
+                  "token": "{p}",
+                  "label_key": "mandate_id_token__programme_padded"
+                },
+                {
+                  "token": "{O1}…{O10}",
+                  "label_key": "mandate_id_token__order_number"
+                },
+                {
+                  "token": "{I1}…{I10}",
+                  "label_key": "mandate_id_token__increment"
+                }
+              ]
+            },
+            "direct_debit_mandate_id_rules_by_provider": {
+              "manual": {
+                "scheme": "sepa",
+                "max_length": 35,
+                "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+                "charset_label_key": "mandate_id_charset_help__sepa",
+                "no_leading_space": false,
+                "not_all_identical": false,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              },
+              "go_cardless": {
+                "scheme": "sepa",
+                "max_length": 35,
+                "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+                "charset_label_key": "mandate_id_charset_help__sepa",
+                "no_leading_space": false,
+                "not_all_identical": false,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              },
+              "fastpay": {
+                "scheme": "bacs",
+                "max_length": 18,
+                "charset": "A-Z0-9 &.\\-\\/",
+                "charset_label_key": "mandate_id_charset_help__bacs",
+                "no_leading_space": true,
+                "not_all_identical": true,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              }
+            },
+            "priority_registration_offset": null,
+            "priority_registration_public_offset": null,
+            "__calc__available_currencies": []
+          },
+          "schedule": null
+        },
+        {
+          "id": 9170721,
+          "company_id": 1,
+          "course_id": 104771,
+          "schedule_id": 1100404,
+          "trainer_id": 645,
+          "place_id": 16,
+          "room_id": 1,
+          "name": null,
+          "is_custom_replacement_event": false,
+          "summary": null,
+          "summary_public": null,
+          "summary_filled_by": 0,
+          "summary_filled_at": null,
+          "summary_public_locked": false,
+          "summary_public_filled_by": 0,
+          "summary_public_unlocked_by": 0,
+          "summary_public_filled_at": null,
+          "status": "scheduled",
+          "date": "2027-01-18 16:00:00",
+          "attendance": 0,
+          "created": "2026-11-21 15:32:31",
+          "updated": "2026-11-21 15:32:31",
+          "trainer_rate_type_id": 0,
+          "trainer_payout_percentage": 1,
+          "__calc__attendance__going": 0,
+          "__calc__attendance__canceled": 0,
+          "__calc__attendance__waitlist": 0,
+          "__calc__attendance__canceled_late": 0,
+          "__calc__attendance__noshow": 0,
+          "__calc__attendance__ignore": 0,
+          "__calc__attendance__deleted": 0,
+          "__calc__attendance__hold": 0,
+          "__calc__attendance__attended": 0,
+          "duration": 0,
+          "__calc__event_number": 3,
+          "__calc__event_trainer": null,
+          "live_stream": 0,
+          "video_expires_in": 0,
+          "video_expiry": "event",
+          "billable": false,
+          "substituted": false,
+          "original_trainer_id": 0,
+          "cancellation_reasoning": null,
+          "cancellation_reasoning_public": null,
+          "canceled_by": 0,
+          "canceled_at": null,
+          "replaced_by": 0,
+          "replacement_for": 0,
+          "__schedule_segments__id": null,
+          "__schedule_segments__name": null,
+          "__calc__event_place": "Riverside Centre - Studio 1, Old Town, Example City",
+          "original_date": null,
+          "rescheduled_by": 0,
+          "deleted_at": null,
+          "deleted_by_user_id": 0,
+          "status_before_delete": null,
+          "__calc__glue_key": null,
+          "__calc__effective_capacity": 10,
+          "course": {
+            "direct_debit_scheme": "sepa",
+            "direct_debit_mandate_id_rules": {
+              "scheme": "sepa",
+              "max_length": 35,
+              "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+              "charset_label_key": "mandate_id_charset_help__sepa",
+              "no_leading_space": false,
+              "not_all_identical": false,
+              "tokens": [
+                {
+                  "token": "{C}",
+                  "label_key": "mandate_id_token__company_raw"
+                },
+                {
+                  "token": "{c}",
+                  "label_key": "mandate_id_token__company_padded"
+                },
+                {
+                  "token": "{P}",
+                  "label_key": "mandate_id_token__programme_raw"
+                },
+                {
+                  "token": "{p}",
+                  "label_key": "mandate_id_token__programme_padded"
+                },
+                {
+                  "token": "{O1}…{O10}",
+                  "label_key": "mandate_id_token__order_number"
+                },
+                {
+                  "token": "{I1}…{I10}",
+                  "label_key": "mandate_id_token__increment"
+                }
+              ]
+            },
+            "direct_debit_mandate_id_rules_by_provider": {
+              "manual": {
+                "scheme": "sepa",
+                "max_length": 35,
+                "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+                "charset_label_key": "mandate_id_charset_help__sepa",
+                "no_leading_space": false,
+                "not_all_identical": false,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              },
+              "go_cardless": {
+                "scheme": "sepa",
+                "max_length": 35,
+                "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+                "charset_label_key": "mandate_id_charset_help__sepa",
+                "no_leading_space": false,
+                "not_all_identical": false,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              },
+              "fastpay": {
+                "scheme": "bacs",
+                "max_length": 18,
+                "charset": "A-Z0-9 &.\\-\\/",
+                "charset_label_key": "mandate_id_charset_help__bacs",
+                "no_leading_space": true,
+                "not_all_identical": true,
+                "tokens": [
+                  {
+                    "token": "{C}",
+                    "label_key": "mandate_id_token__company_raw"
+                  },
+                  {
+                    "token": "{c}",
+                    "label_key": "mandate_id_token__company_padded"
+                  },
+                  {
+                    "token": "{P}",
+                    "label_key": "mandate_id_token__programme_raw"
+                  },
+                  {
+                    "token": "{p}",
+                    "label_key": "mandate_id_token__programme_padded"
+                  },
+                  {
+                    "token": "{O1}…{O10}",
+                    "label_key": "mandate_id_token__order_number"
+                  },
+                  {
+                    "token": "{I1}…{I10}",
+                    "label_key": "mandate_id_token__increment"
+                  }
+                ]
+              }
+            },
+            "priority_registration_offset": null,
+            "priority_registration_public_offset": null,
+            "__calc__available_currencies": []
+          },
+          "schedule": null
+        }
+      ]
+    }
+  },
+  "trimmed": {
+    "/data": "6 items, 3 shown"
+  },
+  "recorded": "2026-11-21",
+  "source": "2026-11-21T14-32-31-691Z-193-POST_events.json",
+  "code": "src/app/terms/new/actions.ts"
+}

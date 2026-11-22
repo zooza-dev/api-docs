@@ -1,0 +1,140 @@
+{
+  "id": "set-up-a-term/01-venues-and-rooms",
+  "operationId": "get_places",
+  "operation": "GET /places",
+  "flow": "set-up-a-term",
+  "title": "Venues and their rooms",
+  "description": "A class and each session need a venue (place_id) and one of its rooms (room_id). GET /places gives the active venues with their active rooms.",
+  "kind": "success",
+  "reference": true,
+  "request": {
+    "method": "GET",
+    "path": "/places",
+    "query": null,
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000019",
+      "x-ratelimit-remaining": "1174",
+      "x-ratelimit-remaining-day": "99948"
+    },
+    "body": {
+      "total": 34,
+      "page": 0,
+      "page_size": 500,
+      "settings": {
+        "status": [
+          "active"
+        ]
+      },
+      "data": [
+        {
+          "id": 4,
+          "company_id": 1,
+          "events": 522,
+          "upcoming": 2,
+          "name": "Hill Studio",
+          "street": "",
+          "region": "",
+          "city": "Example City",
+          "created": "2022-11-17 10:53:05",
+          "modified": "2026-11-20 09:00:04",
+          "status": "active",
+          "subdivision": "SK-ZI",
+          "latitude": 48.1486,
+          "longitude": 17.1077,
+          "__calc__registration_url": "https://booking.example.com/test123/registration?place_id=4_0",
+          "about": null,
+          "instructions": null,
+          "zip": null,
+          "google_review_link_status": "unlinked",
+          "google_location_resource": null,
+          "google_review_url": null,
+          "google_location_title": null,
+          "google_location_address": null,
+          "google_linked_at": null,
+          "subdivisions": [
+            "SK-ZI",
+            "SK-BL"
+          ],
+          "place": "Hill Studio, Example City",
+          "pid": "4_0",
+          "rooms": []
+        },
+        {
+          "id": 8,
+          "company_id": 1,
+          "events": 0,
+          "upcoming": 0,
+          "name": "Park Hall",
+          "street": null,
+          "region": null,
+          "city": "Example City",
+          "created": "2022-11-17 10:53:05",
+          "modified": "2026-11-20 09:00:04",
+          "status": "active",
+          "subdivision": "SK-BL",
+          "latitude": 48.1486,
+          "longitude": 17.1077,
+          "__calc__registration_url": "https://booking.example.com/test123/registration?place_id=8_0",
+          "about": null,
+          "instructions": null,
+          "zip": null,
+          "google_review_link_status": "unlinked",
+          "google_location_resource": null,
+          "google_review_url": null,
+          "google_location_title": null,
+          "google_location_address": null,
+          "google_linked_at": null,
+          "subdivisions": [
+            "SK-BL"
+          ],
+          "place": "Park Hall, Example City",
+          "pid": "8_0",
+          "rooms": []
+        },
+        {
+          "id": 11,
+          "company_id": 1,
+          "events": 4,
+          "upcoming": 0,
+          "name": "Riverside Centre",
+          "street": null,
+          "region": "Old Town",
+          "city": "Example City",
+          "created": "2022-11-17 10:53:05",
+          "modified": "2026-11-20 09:00:04",
+          "status": "active",
+          "subdivision": "SK-BL",
+          "latitude": 48.1486,
+          "longitude": 17.1077,
+          "__calc__registration_url": "https://booking.example.com/test123/registration?place_id=11_0",
+          "about": null,
+          "instructions": null,
+          "zip": null,
+          "google_review_link_status": "unlinked",
+          "google_location_resource": null,
+          "google_review_url": null,
+          "google_location_title": null,
+          "google_location_address": null,
+          "google_linked_at": null,
+          "subdivisions": [
+            "SK-BL"
+          ],
+          "place": "Riverside Centre, Old Town, Example City",
+          "pid": "11_0",
+          "rooms": []
+        }
+      ]
+    }
+  },
+  "trimmed": {
+    "/data": "34 items, 3 shown"
+  },
+  "recorded": "2026-11-21",
+  "source": "2026-11-21T13-53-56-092Z-56-GET_places.json",
+  "code": "src/app/terms/new/page.tsx"
+}

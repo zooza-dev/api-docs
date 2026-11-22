@@ -95,4 +95,5 @@ Tool names and the exact set change as the server evolves. The assistant always 
 ## Related
 
 - [Integration examples](./examples/index.md): patterns with copy-paste code, including an [AI chatbot that knows the logged-in client](./examples/chatbot-logged-in-client.md)
-- [API overview](./api/index.md) and [Authentication](./api/authentication.md)
+- [API overview](./api/index.md) and [Getting started with the API](./api/getting-started.md)
+- [Setup file for AI coding agents](pathname:///agent-setup.md): point Claude Code, Cursor or another coding agent at `https://docs.zooza.online/agent-setup.md` before it writes an integration

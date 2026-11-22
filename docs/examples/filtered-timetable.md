@@ -1,6 +1,6 @@
 ---
 title: Weekly timetable with filters
-description: Build a fast, SEO-friendly weekly class timetable for a kids' activity business from the Zooza REST API — server-side fetch and cache, filters by town, programme and day, live availability, and an Enrol button that opens the booking form on the right class.
+description: Build a fast, SEO-friendly weekly class timetable for a kids' activity business from the Zooza API — server-side fetch and cache, filters by town, programme and day, live availability, and an Enrol button that opens the booking form on the right class.
 sidebar_label: Filtered timetable
 ---
 
@@ -30,37 +30,57 @@ Little Movers' timetable page has filter chips at the top: one row of **towns**,
 ## Architecture
 
 ```
-Browser ──GET /timetable──▶ Your server ──(cached 10 min)──▶ Zooza REST API
-   │                          │                               GET /v1/schedules
-   │◀── HTML + JSON ──────────┘                               GET /v1/courses
-   │                                                          GET /v1/companies/{id}/places
+Browser ──GET /timetable──▶ Your server ──(cached 10 min)──▶ Zooza API
+   │                          │                               POST /v3/token (once an hour)
+   │◀── HTML + JSON ──────────┘                               GET  /v3/schedules
+   │                                                          GET  /v3/courses
+   │                                                          GET  /v3/places
    └─ Enrol ─▶ /book/?course_id=…&schedule_id=…  (registration widget)
 ```
 
-The REST API key and token stay on the server. The page is rendered server-side, so search engines see every class. Filtering happens in the browser.
+The API key, its secret and the access token stay on the server. The page is rendered server-side, so search engines see every class. Filtering happens in the browser.
 
 ## Step 1: fetch and cache on the server
 
 ```javascript
 // timetable.js — Node 18+ (global fetch)
-const API = 'https://api.zooza.app/v1';
-const HEADERS = {
-  'X-ZOOZA-API-KEY': process.env.ZOOZA_API_KEY,
-  'X-ZOOZA-TOKEN': process.env.ZOOZA_TOKEN,       // see Authentication
-  'X-ZOOZA-COMPANY': process.env.ZOOZA_COMPANY_ID,
-};
+// Secrets come from the environment (a git-ignored .env locally), never from code.
+const API = 'https://api.zooza.app/v3'; // UK: https://uk.api.zooza.app/v3, ASIA: https://asia.api.zooza.app/v3
+
+// An access token lasts an hour. Mint one, reuse it, and renew it shortly before it expires.
+let token = { value: null, expires_at: 0 };
+
+async function access_token() {
+  if ( token.value && Date.now() < token.expires_at - 60 * 1000 ) return token.value;
+  const response = await fetch( API + '/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify( {
+      grant_type: 'client_credentials',
+      client_id: process.env.ZOOZA_CLIENT_ID,
+      client_secret: process.env.ZOOZA_CLIENT_SECRET,
+      email: process.env.ZOOZA_OWNER_EMAIL, // an owner of the key's company
+    } ),
+  } );
+  if ( ! response.ok ) throw new Error( `Zooza token: ${ response.status }` );
+  const body = await response.json();
+  token = { value: body.access_token, expires_at: Date.now() + body.expires_in * 1000 };
+  return token.value;
+}
 
 async function get( path ) {
-  const response = await fetch( API + path, { headers: HEADERS } );
+  const response = await fetch( API + path, {
+    headers: { Authorization: `Bearer ${ await access_token() }` },
+  } );
   if ( ! response.ok ) throw new Error( `Zooza ${ path }: ${ response.status }` );
   return response.json();
 }
 
-// /schedules is paginated: { total, page, page_size, data }
-async function get_all_schedules( query ) {
+// Paginated lists return { total, page, page_size, data }
+async function get_all( path, query = '' ) {
   const all = [];
   for ( let page = 1; ; page++ ) {
-    const res = await get( `/schedules?${ query }&page=${ page }&page_size=100` );
+    const res = await get( `${ path }?${ query }${ query ? '&' : '' }page=${ page }&page_size=100` );
     all.push( ...( res.data || [] ) );
     if ( all.length >= ( res.total || 0 ) || ! ( res.data || [] ).length ) return all;
   }
@@ -73,8 +93,8 @@ async function load_timetable() {
 
   const [ courses, places, schedules ] = await Promise.all( [
     get( '/courses' ),
-    get( `/companies/${ process.env.ZOOZA_COMPANY_ID }/places` ),
-    get_all_schedules( 'online_registration=true&ended=false' ),
+    get_all( '/places' ),
+    get_all( '/schedules', 'online_registration=true&ended=false' ),
   ] );
 
   const course_by_id = new Map( courses.map( ( c ) => [ c.id, c ] ) );
@@ -118,7 +138,7 @@ function minutes_to_time( minutes ) {
 module.exports = { load_timetable };
 ```
 
-Check each field against the [schedules](/api/reference/get-list-of-schedules), [courses](/api/reference/get-list-of-courses) and [places](/api/reference/get-places-that-belong-to-a-company) reference before relying on it. In particular, the venue's `name`/`city` keys depend on how your places are set up. `time` is minutes from midnight, and `start`/`end` are the class's date range.
+Check each field against the [classes](/api/reference#tag/classes/GET/schedules), [programmes](/api/reference#tag/programmes/GET/courses) and [venues](/api/reference#tag/company/GET/places) reference before relying on it. A key always acts for its own company, so no company id is needed. In particular, the venue's `name`/`city` keys depend on how your places are set up. `time` is minutes from midnight, and `start`/`end` are the class's date range.
 
 ## Step 2: render with data attributes for filtering
 
@@ -218,14 +238,15 @@ Render each class server-side with its filter values on the element, using any t
 - **Age filter:** keep the age range per programme in your CMS (keyed by `course_id`) and add it as another `data-` attribute.
 - **Instructor names:** add `load_trainers` to the schedules request and render the instructor on the card.
 
-<AiPrompt task="Build a filtered class timetable from the Zooza API">{`I want a weekly class timetable on my site, built from the Zooza REST API.
+<AiPrompt task="Build a filtered class timetable from the Zooza API">{`I want a weekly class timetable on my site, built from the Zooza API.
 
-Read the Zooza docs first: https://docs.zooza.online/llms-full.txt
+Read the setup guide for coding agents first: https://docs.zooza.online/agent-setup.md
+Full docs: https://docs.zooza.online/llms-full.txt
 Use this example as the pattern: https://docs.zooza.online/examples/filtered-timetable/
 
 Tasks:
 1. Ask me for my stack (WordPress/PHP, Node, Next.js, …) and region.
-2. Fetch /courses, /companies/{id}/places and /schedules server-side with cached results; keep the API key and token in environment variables.
+2. Fetch /courses, /places and /schedules server-side with cached results; mint an access token with POST /v3/token and cache it for its lifetime; read ZOOZA_CLIENT_ID, ZOOZA_CLIENT_SECRET and ZOOZA_OWNER_EMAIL from a git-ignored .env (never ask me to paste the secret).
 3. Render a Monday–Sunday grid with filter chips (town, programme) and client-side filtering.
 4. Link each class to my booking page with ?course_id=…&schedule_id=… for the registration widget.
-5. Verify every field name against the OpenAPI spec (https://docs.zooza.online/zooza_api_v1.yaml) before using it.`}</AiPrompt>
+5. Verify every field name against the API reference (https://api.zooza.app/v3/openapi.json) before using it.`}</AiPrompt>

@@ -1,0 +1,48 @@
+{
+  "id": "search-registrations/10-archived-programme-classes",
+  "operationId": "get_schedules",
+  "operation": "GET /schedules",
+  "flow": "search-registrations",
+  "title": "An archived programme's classes",
+  "description": "The classes of an archived programme are left out of GET /schedules: total: 0.",
+  "kind": "pitfall",
+  "reference": false,
+  "request": {
+    "method": "GET",
+    "path": "/schedules",
+    "query": {
+      "course_id": "100",
+      "page_size": 200,
+      "sort_by": "name_asc"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000013",
+      "x-ratelimit-remaining": "1160",
+      "x-ratelimit-remaining-day": "99902"
+    },
+    "body": {
+      "total": 0,
+      "page": 0,
+      "page_size": 200,
+      "settings": {
+        "course_id": [
+          "100"
+        ],
+        "status": [
+          "active",
+          "inactive"
+        ],
+        "exclude_archived_courses": true
+      },
+      "data": []
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-38-23-134Z-22-GET_schedules.json",
+  "code": "src/app/registrations/page.tsx"
+}

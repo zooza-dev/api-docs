@@ -1,0 +1,39 @@
+{
+  "id": "update-registration/09-apply-refused",
+  "operationId": "put_registrations_id",
+  "operation": "PUT /registrations/{ID}",
+  "flow": "update-registration",
+  "title": "Applying a refused change anyway",
+  "description": "Sent without the check, the same refused change is a 400 request error 0033.",
+  "kind": "error",
+  "reference": false,
+  "request": {
+    "method": "PUT",
+    "path": "/registrations/168321",
+    "query": null,
+    "body": {
+      "action": "change_status",
+      "status": "pre_registered"
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000047",
+      "x-ratelimit-remaining": "1117",
+      "x-ratelimit-remaining-day": "99508"
+    },
+    "body": {
+      "errors": [
+        {
+          "0033": "Wrong parameters sent or parameters missing - Invalid status for registration [#1]."
+        }
+      ],
+      "request_valid": false
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-56-50-915Z-34-PUT_registrations_168321.json",
+  "code": "src/app/registrations/[id]/actions.ts"
+}

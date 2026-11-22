@@ -1,0 +1,41 @@
+{
+  "id": "search-registrations/02-without-advanced-search",
+  "operationId": "get_registrations",
+  "operation": "GET /registrations",
+  "flow": "search-registrations",
+  "title": "Forgetting advanced_search=1",
+  "description": "Without advanced_search=1 the search is refused with 422.",
+  "kind": "error",
+  "reference": true,
+  "request": {
+    "method": "GET",
+    "path": "/registrations",
+    "query": null,
+    "body": null
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "x-request-id": "00000000-0000-4000-8000-000000000003",
+      "x-ratelimit-remaining": "1198",
+      "x-ratelimit-remaining-day": "99982"
+    },
+    "body": {
+      "error": "validation_failed",
+      "message": "The request does not match the endpoint's schema.",
+      "request_id": "00000000-0000-4000-8000-000000000004",
+      "errors": [
+        {
+          "location": "query",
+          "path": "advanced_search",
+          "code": "required_missing",
+          "message": "Required field is missing."
+        }
+      ]
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-31-16-087Z-1-GET_registrations.json",
+  "code": "src/app/registrations/page.tsx"
+}

@@ -91,15 +91,15 @@ Combine it with:
 - [Branded booking tiles](./examples/branded-booking-tiles.md), so the booking and profile pages look like your site,
 - [the AI chatbot example](./examples/chatbot-logged-in-client.md), so your chatbot can offer *"Book a make-up for last Tuesday?"* to a logged-in parent.
 
-### From your backend: the REST API
+### From your backend: the API
 
 | Task | API |
 |---|---|
-| Cancel a session for a client (earns a make-up if the rules allow) | `PUT /registrations/{id}` with attendance `canceled`. See [Update a registration](/api/reference/update-a-registrations-based-on-parameters-sent-in-body). |
+| Cancel a session for a client (earns a make-up if the rules allow) | `PUT /registrations/{id}` with attendance `canceled`. See [Update a registration](/api/reference#tag/registrations/PUT/registrations/{ID}). |
 | Book a make-up into a specific session | `PUT /registrations/{id}` with action `set_replacement`, `credit_id` and `event_id` |
 | Give one booking extra make-ups | `PUT /registrations/{id}` with `extra_replacements_limit` |
-| Read programme make-up settings | [`GET /courses/{id}`](/api/reference/get-list-of-courses): `allow_replacements`, `replacements_limit`, `replacements_settings`, `allow_replacements_waitlist`, … |
-| Make-up capacity of a class | [`GET /schedules`](/api/reference/get-list-of-schedules): `extra_capacity`, `extra_capacity_usage` |
+| Read programme make-up settings | [`GET /courses/{id}`](/api/reference#tag/programmes/GET/courses/{ID}): `allow_replacements`, `replacements_limit`, `replacements_settings`, `allow_replacements_waitlist`, … |
+| Make-up capacity of a class | [`GET /schedules`](/api/reference#tag/classes/GET/schedules): `extra_capacity`, `extra_capacity_usage` |
 
 All changes go through the same rules as the widget, so an API call can't book a make-up the business doesn't allow.
 

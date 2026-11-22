@@ -1,0 +1,376 @@
+{
+  "id": "set-up-a-term/04-create-programme",
+  "operationId": "post_courses",
+  "operation": "POST /courses",
+  "flow": "set-up-a-term",
+  "title": "Create the programme",
+  "description": "Five fields are required. registration_type full2 is a term: clients book the whole class. course_type course is a programme of lessons. Payment settings not sent come from the company's defaults.",
+  "kind": "success",
+  "reference": true,
+  "request": {
+    "method": "POST",
+    "path": "/courses",
+    "query": null,
+    "body": {
+      "name": "Little movers (guide)",
+      "price": 90,
+      "public": false,
+      "online_registration": false,
+      "registration_type": "full2",
+      "course_type": "course"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000022",
+      "x-ratelimit-remaining": "1179",
+      "x-ratelimit-remaining-day": "99718"
+    },
+    "body": {
+      "id": 104771,
+      "company_id": 1,
+      "created": "2026-11-21 15:32:30",
+      "name": "Little movers (guide)",
+      "url": "",
+      "price": 90,
+      "registration_fee": 0,
+      "cash": true,
+      "direct_debit": false,
+      "direct_debit_provider": "go_cardless",
+      "online_card": true,
+      "online_transfer": false,
+      "fees_included_in_price": true,
+      "public": false,
+      "archive": false,
+      "online_registration": false,
+      "on_behalf": false,
+      "feedback_during_course": true,
+      "feedback_after_course": true,
+      "get_extra_fields_from": "all",
+      "get_basic_fields_from": "registrant",
+      "registration_type": "full2",
+      "course_type": "course",
+      "registration_slots_min": 1,
+      "registration_slots_max": 5,
+      "registration_open": 0,
+      "show_on_site": 0,
+      "hide_if_full": false,
+      "allow_replacements": false,
+      "allow_custom_replacements": false,
+      "auto_approve_custom_replacements": false,
+      "allow_cancel_until": 0,
+      "allow_replacements_waitlist": false,
+      "waitlist": "",
+      "auto_waitlist_notification": false,
+      "description": null,
+      "use_extra_fields": false,
+      "for_children": false,
+      "replacements_limit": 2,
+      "replacements_settings": [],
+      "theme": null,
+      "custom_email": 0,
+      "custom_email_event_notification": 0,
+      "event_notification": true,
+      "late_registrations": "auto_approve",
+      "allow_registration_after_end": false,
+      "custom_label_note": null,
+      "hide_before": 0,
+      "collect_feedback_start": null,
+      "iban": null,
+      "swift": null,
+      "custom_label_first_name": null,
+      "custom_label_last_name": null,
+      "custom_label_phone": null,
+      "custom_label_email": null,
+      "upcoming_events_notification": false,
+      "__calc__fee_cash": 9,
+      "__calc__fee_online_card": 6.21,
+      "__calc__fee_direct_debit": 0,
+      "__calc__fee_online_transfer": 4.5,
+      "allow_replacement_cancellation": false,
+      "admin_managed_replacements": false,
+      "allow_guest_registrations": false,
+      "color": "none",
+      "allow_replacements_from_other_companies": false,
+      "replacements_settings_other_companies": [],
+      "payment_schedule_is_mandatory": true,
+      "allow_using_replacement_credits_as_discount": false,
+      "replacements_limit_per_events": 0,
+      "flexible_replacements_limit": false,
+      "online_card_provider": "stripe_connect",
+      "online_transfer_provider": "besteron",
+      "allow_reschedule_of_replacements": true,
+      "payments_managed_by_buyer": true,
+      "billable_events": 0,
+      "replacement_time_limit": 0,
+      "replacement_time_limit_type": "after",
+      "unit_price": 0,
+      "price_type": "course_fee",
+      "always_use_total_price": false,
+      "__calc__price": 90,
+      "direct_debit_mandate_id_format": null,
+      "default_email_signature": 0,
+      "aliquot_settings": "automatic",
+      "track_attendance": true,
+      "custom_email_lead": 0,
+      "constant_symbol": 0,
+      "specific_symbol": 0,
+      "money_collection": "one_off",
+      "trial_events_limit": 0,
+      "trial_events_capacity": "all",
+      "trial_events_limit_type": "none",
+      "trial_type": "none",
+      "code": null,
+      "__calc__available_currencies": [],
+      "downpayment": "none",
+      "downpayment_due_type": "before_course",
+      "downpayment_due_days": 15,
+      "downpayment_value": 0,
+      "downpayment_cap": 0,
+      "__calc__registration_url": null,
+      "force_full_first_installment": true,
+      "retention_settings": [],
+      "retention_type": "none",
+      "retention_notify_days_before": 10,
+      "__calc__schedules_count": 0,
+      "__calc__registrations_count": 0,
+      "widgets_published": false,
+      "allow_rescheduling_of_events": false,
+      "auto_approve_rescheduled_events": false,
+      "limit_reschedule_to_once": false,
+      "__calc__min_age": 0,
+      "__calc__max_age": 0,
+      "trial_length": 1,
+      "trial_length_type": "days",
+      "automatically_add_schedules_to_trial": true,
+      "automatically_add_schedules_to_retention": true,
+      "unit_price_trial": 0,
+      "registration_display_mode": "default",
+      "target_audience": "groups",
+      "onboarding": {
+        "version": 1,
+        "price": false,
+        "trial": false,
+        "online_registration": false,
+        "replacements": false,
+        "extra_fields": false,
+        "attendance": false
+      },
+      "iban_account_holder": null,
+      "reserve_seat_for_trial_attendees": false,
+      "require_valid_entrance_voucher": false,
+      "payment_mode": "pass_first",
+      "priority": 0,
+      "retention_message": null,
+      "retention_days": 0,
+      "deleted_at": null,
+      "reviews_after_registration": false,
+      "reviews_after_first_session": false,
+      "reviews_after_class_ended": false,
+      "collect_reviews_start": null,
+      "delayed_start_max_days": 0,
+      "priority_registration": false,
+      "priority_registration_allow_multiple": false,
+      "priority_registration_offset": null,
+      "priority_registration_public_offset": null,
+      "priority_registration_audience": [],
+      "allow_additional_sessions": false,
+      "additional_sessions_settings": [],
+      "additional_session_pricing_mode": "regular_unit_price",
+      "additional_session_unit_price": 0,
+      "additional_sessions_limit": 0,
+      "additional_session_payment_mode": "open",
+      "additional_session_payment_deadline_days": 7,
+      "allow_cancellation_discount": false,
+      "schedule_start_date_format": null,
+      "schedule_end_date_format": null,
+      "schedule_defaults": {
+        "state": "undecided",
+        "values": {}
+      },
+      "direct_debit_scheme": "sepa",
+      "direct_debit_mandate_id_rules": {
+        "scheme": "sepa",
+        "max_length": 35,
+        "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+        "charset_label_key": "mandate_id_charset_help__sepa",
+        "no_leading_space": false,
+        "not_all_identical": false,
+        "tokens": [
+          {
+            "token": "{C}",
+            "label_key": "mandate_id_token__company_raw"
+          },
+          {
+            "token": "{c}",
+            "label_key": "mandate_id_token__company_padded"
+          },
+          {
+            "token": "{P}",
+            "label_key": "mandate_id_token__programme_raw"
+          },
+          {
+            "token": "{p}",
+            "label_key": "mandate_id_token__programme_padded"
+          },
+          {
+            "token": "{O1}…{O10}",
+            "label_key": "mandate_id_token__order_number"
+          },
+          {
+            "token": "{I1}…{I10}",
+            "label_key": "mandate_id_token__increment"
+          }
+        ]
+      },
+      "direct_debit_mandate_id_rules_by_provider": {
+        "manual": {
+          "scheme": "sepa",
+          "max_length": 35,
+          "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+          "charset_label_key": "mandate_id_charset_help__sepa",
+          "no_leading_space": false,
+          "not_all_identical": false,
+          "tokens": [
+            {
+              "token": "{C}",
+              "label_key": "mandate_id_token__company_raw"
+            },
+            {
+              "token": "{c}",
+              "label_key": "mandate_id_token__company_padded"
+            },
+            {
+              "token": "{P}",
+              "label_key": "mandate_id_token__programme_raw"
+            },
+            {
+              "token": "{p}",
+              "label_key": "mandate_id_token__programme_padded"
+            },
+            {
+              "token": "{O1}…{O10}",
+              "label_key": "mandate_id_token__order_number"
+            },
+            {
+              "token": "{I1}…{I10}",
+              "label_key": "mandate_id_token__increment"
+            }
+          ]
+        },
+        "go_cardless": {
+          "scheme": "sepa",
+          "max_length": 35,
+          "charset": "A-Za-z0-9\\/\\-?:().,'+ ",
+          "charset_label_key": "mandate_id_charset_help__sepa",
+          "no_leading_space": false,
+          "not_all_identical": false,
+          "tokens": [
+            {
+              "token": "{C}",
+              "label_key": "mandate_id_token__company_raw"
+            },
+            {
+              "token": "{c}",
+              "label_key": "mandate_id_token__company_padded"
+            },
+            {
+              "token": "{P}",
+              "label_key": "mandate_id_token__programme_raw"
+            },
+            {
+              "token": "{p}",
+              "label_key": "mandate_id_token__programme_padded"
+            },
+            {
+              "token": "{O1}…{O10}",
+              "label_key": "mandate_id_token__order_number"
+            },
+            {
+              "token": "{I1}…{I10}",
+              "label_key": "mandate_id_token__increment"
+            }
+          ]
+        },
+        "fastpay": {
+          "scheme": "bacs",
+          "max_length": 18,
+          "charset": "A-Z0-9 &.\\-\\/",
+          "charset_label_key": "mandate_id_charset_help__bacs",
+          "no_leading_space": true,
+          "not_all_identical": true,
+          "tokens": [
+            {
+              "token": "{C}",
+              "label_key": "mandate_id_token__company_raw"
+            },
+            {
+              "token": "{c}",
+              "label_key": "mandate_id_token__company_padded"
+            },
+            {
+              "token": "{P}",
+              "label_key": "mandate_id_token__programme_raw"
+            },
+            {
+              "token": "{p}",
+              "label_key": "mandate_id_token__programme_padded"
+            },
+            {
+              "token": "{O1}…{O10}",
+              "label_key": "mandate_id_token__order_number"
+            },
+            {
+              "token": "{I1}…{I10}",
+              "label_key": "mandate_id_token__increment"
+            }
+          ]
+        }
+      },
+      "extra_fields": [
+        {
+          "id": 1,
+          "column_name": "dob",
+          "name": "Date of Birth",
+          "description": "date of birth",
+          "custom_label": null,
+          "course_id": 0,
+          "field_order": 0,
+          "active": false,
+          "field_options": []
+        },
+        {
+          "id": 2,
+          "column_name": "full_name",
+          "name": "Full Name",
+          "description": "full name",
+          "custom_label": null,
+          "course_id": 0,
+          "field_order": 0,
+          "active": false,
+          "field_options": []
+        },
+        {
+          "id": 3,
+          "column_name": "address",
+          "name": "Address",
+          "description": "Full address",
+          "custom_label": null,
+          "course_id": 0,
+          "field_order": 0,
+          "active": false,
+          "field_options": []
+        }
+      ],
+      "feedback_questions": []
+    }
+  },
+  "trimmed": {
+    "/extra_fields": "26 items, 3 shown"
+  },
+  "recorded": "2026-11-21",
+  "source": "2026-11-21T14-32-30-682Z-191-POST_courses.json",
+  "code": "src/app/terms/new/actions.ts"
+}

@@ -1,0 +1,38 @@
+{
+  "id": "search-registrations/04-no-match",
+  "operationId": "get_registrations",
+  "operation": "GET /registrations",
+  "flow": "search-registrations",
+  "title": "A search that matches nothing",
+  "description": "No match is a 200 with total: 0 and an empty results list, not an error.",
+  "kind": "success",
+  "reference": false,
+  "request": {
+    "method": "GET",
+    "path": "/registrations",
+    "query": {
+      "advanced_search": 1,
+      "user": "zzzzqqq"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "00000000-0000-4000-8000-000000000006",
+      "x-ratelimit-remaining": "1190",
+      "x-ratelimit-remaining-day": "99970"
+    },
+    "body": {
+      "total": 0,
+      "total_capped": false,
+      "page": null,
+      "results": [],
+      "offset": 0
+    }
+  },
+  "recorded": "2026-11-20",
+  "source": "2026-11-20T20-34-26-927Z-5-GET_registrations.json",
+  "code": "src/app/registrations/page.tsx"
+}
