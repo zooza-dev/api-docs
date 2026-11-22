@@ -9,9 +9,7 @@
         "set-up-a-term/08-sessions-bare-array",
         "set-up-a-term/12-read-sessions",
         "set-up-a-term/14-class-validation-failed",
-        "search-registrations/01-list-newest",
         "search-registrations/02-without-advanced-search",
-        "search-registrations/14-one-registration",
         "search-registrations/15-unknown-registration",
         "update-registration/01-save-staff-note",
         "update-registration/05-check-a-cancel",
@@ -24,6 +22,8 @@
         "set-up-a-term/10-read-class": "Class.priority_registration_phase null (A2)",
         "set-up-a-term/11-read-programme": "ExtraField.field_options comes back as [] (A1)",
         "search-registrations/06-programme-list": "ExtraField.field_options comes back as [] (A1)",
-        "search-registrations/07-classes-of-a-programme": "Class.priority_registration_phase null (A2)"
+        "search-registrations/07-classes-of-a-programme": "Class.priority_registration_phase null (A2)",
+        "search-registrations/01-list-newest": "cancellation_reason / cancellation_category null outside their enum (A2, since 17cf353a)",
+        "search-registrations/14-one-registration": "awaiting_payment_source / cancellation_reason / cancellation_category null outside their enum (A2, since 17cf353a)"
     }
 }

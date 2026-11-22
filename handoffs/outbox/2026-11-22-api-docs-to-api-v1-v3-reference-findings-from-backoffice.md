@@ -33,7 +33,12 @@ publish the examples on these operations, because the generator will check every
    `GET /courses`, `GET /courses/{ID}` and `POST /courses`.
 2. `Class.priority_registration_phase` is `nullable` with an `enum`, and the answer is `null`. In OpenAPI 3.0 the
    enum must also list `null`, or validators refuse it. Seen on `GET /schedules`, `GET /schedules/{ID}` and
-   `POST /schedules`.
+   `POST /schedules`. **Since `17cf353a` this affects 51 properties**: the new enums from the code are `nullable`
+   without `null`, e.g. `Registration.cancellation_reason` / `cancellation_category` / `awaiting_payment_source`,
+   which are `null` on every registration that isn't cancelled. Two more examples (`GET /registrations`,
+   `GET /registrations/{ID}`) are blocked by it. Adding `null` to the enum wherever a field is `nullable` would fix
+   them all at once. On request fields that inherit an enum, check that the gateway then accepts `null` where you
+   mean it to.
 3. `Class.start` / `end` are `format: date`, but a class with no sessions has `"0000-00-00"`. Either the schema
    allows it and the description says it means "no sessions yet", or the API answers `null`. That one would be
    code.
@@ -127,7 +132,7 @@ touching the routes the Zooza app shares. This is a way to make `/v3` stricter w
 ### Why we need it
 
 - The reference examples come from these recordings, and the generator will refuse an example that fails its
-  schema. Six of the 22 examples picked for the reference are blocked by group A.
+  schema. Eight of the 22 examples picked for the reference are blocked by group A.
 - Every item in B and C cost the demo app time to find by trial. A partner would pay the same, and the guides would
   otherwise have to teach workarounds the reference contradicts.
 

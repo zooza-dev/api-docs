@@ -2504,13 +2504,16 @@
                                         "description": "Several programmes to create, each an object with the fields of this body. When sent, the other fields are ignored."
                                     },
                                     "name": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Programme name, shown to clients in the booking form."
                                     },
                                     "public": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Shows the programme in the catalogue of programmes on the company's website."
                                     },
                                     "online_registration": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Allows online booking into the programme through the booking widget. When `false`, none of its classes can be booked online."
                                     },
                                     "registration_type": {
                                         "type": "string",
@@ -2518,7 +2521,8 @@
                                             "full2",
                                             "open",
                                             "single"
-                                        ]
+                                        ],
+                                        "description": "How clients book the programme:\n- `full2`: booking for the full duration; the client is enrolled in every session of the class. Make-up sessions, trials and instalments are available.\n- `open`: pay-as-you-go; the client books each session separately.\n- `single`: a one-off event with one session.\n"
                                     },
                                     "course_type": {
                                         "type": "string",
@@ -2531,46 +2535,57 @@
                                         ]
                                     },
                                     "color": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Colour of the programme in calendars, as a colour name (for example `nicoll_blue`)."
                                     },
                                     "price": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "format": "float",
+                                        "description": "Total price of the programme. Used when payment is collected in one go (`money_collection` = `one_off`) and by single-session programmes; with payment plans it is for reference only. `__calc__price` is the price actually applied."
                                     },
                                     "unit_price": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "description": "Price of one session. Used by pay-as-you-go programmes and by programmes paid in instalments."
                                     },
                                     "price_type": {
                                         "type": "string",
                                         "enum": [
                                             "course_fee",
                                             "membership"
-                                        ]
+                                        ],
+                                        "description": "How the price of a programme paid in instalments works:\n- `course_fee`: term payment; the price is the session price (`unit_price`) times the sessions left in the class, split into instalments.\n- `membership`: a fixed amount per instalment, however many sessions take place.\n- `legacy`: the older pricing model, based on `price`.\n"
                                     },
                                     "money_collection": {
                                         "type": "string",
                                         "enum": [
                                             "one_off",
                                             "installments"
-                                        ]
+                                        ],
+                                        "description": "How clients pay for the programme: `one_off` (in one payment) or `installments` (in scheduled payments, see `price_type`)."
                                     },
                                     "for_children": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Marks the programme as being for children, which changes some booking form wording (for example \"Parent's name\" instead of \"Name\")."
                                     },
                                     "registration_fee": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "format": "float",
+                                        "description": "Registration fee, charged when the booking is created and added to the programme price or the first scheduled payment."
                                     },
                                     "target_audience": {
                                         "type": "string",
                                         "enum": [
                                             "groups",
                                             "individuals"
-                                        ]
+                                        ],
+                                        "description": "Whether the programme runs group classes (`groups`) or 1-to-1 classes (`individuals`)."
                                     },
                                     "payment_schedules": {
                                         "type": "array"
                                     },
                                     "schedules": {
-                                        "type": "array"
+                                        "type": "array",
+                                        "description": "The programme's classes. List endpoint only."
                                     }
                                 }
                             }
@@ -2766,7 +2781,8 @@
                                             "full2",
                                             "open",
                                             "single"
-                                        ]
+                                        ],
+                                        "description": "How clients book the programme:\n- `full2`: booking for the full duration; the client is enrolled in every session of the class. Make-up sessions, trials and instalments are available.\n- `open`: pay-as-you-go; the client books each session separately.\n- `single`: a one-off event with one session.\n"
                                     },
                                     "course_type": {
                                         "type": "string",
@@ -2779,38 +2795,57 @@
                                         ]
                                     },
                                     "description": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Programme description, also shown during online booking."
                                     },
                                     "url": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Address of a web page where clients can find out more about the programme."
                                     },
                                     "name": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Programme name, shown to clients in the booking form."
                                     },
                                     "custom_label_note": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Custom label of the note field on the booking form. Empty = the default label."
                                     },
                                     "custom_label_first_name": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Custom label of the first name field on the booking form. Empty = the default label."
                                     },
                                     "custom_label_last_name": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Custom label of the last name field on the booking form. Empty = the default label."
                                     },
                                     "custom_label_phone": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Custom label of the phone field on the booking form. Empty = the default label."
                                     },
                                     "custom_label_email": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Custom label of the email field on the booking form. Empty = the default label."
                                     },
                                     "collect_feedback_start": {
                                         "type": "string",
-                                        "format": "date-time"
+                                        "format": "date-time",
+                                        "description": "Only bookings created after this date are sent feedback requests. `null` = no feedback requests are sent."
                                     },
                                     "waitlist": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "any",
+                                            "this"
+                                        ]
                                     },
                                     "late_registrations": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "disabled",
+                                            "confirmation_required",
+                                            "auto_approve"
+                                        ],
+                                        "description": "What happens to bookings made after a class has started:\n- `disabled`: not allowed.\n- `confirmation_required`: the booking must be confirmed manually.\n- `auto_approve`: the booking is confirmed automatically, priced according to `aliquot_settings`.\n"
                                     },
                                     "aliquot_settings": {
                                         "type": "string",
@@ -2819,160 +2854,225 @@
                                             "automatic_days",
                                             "no_value",
                                             "full_price"
-                                        ]
+                                        ],
+                                        "description": "How the price of a booking made after the class started is calculated:\n- `automatic`: from the number of sessions left in the class.\n- `automatic_days`: from the days left in the current period plus one full period.\n- `no_value`: nothing is charged until the next period starts.\n- `full_price`: always the full price.\n"
                                     },
                                     "online_card_provider": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "stripe",
+                                            "stripe_connect",
+                                            "global_payments",
+                                            "gp_webpay",
+                                            "tatra_banka",
+                                            "tatra_banka_cz"
+                                        ],
+                                        "description": "Online card payment provider: `stripe` (Stripe via Zooza), `stripe_connect` (the company's own Stripe account), `global_payments` (Global Payments), `gp_webpay` (GP webpay), `tatra_banka` (Tatra Banka via Zooza, Slovakia) or `tatra_banka_cz` (Tatra Banka via Zooza, Czech Republic). Which ones a company can use depends on its region."
                                     },
                                     "online_transfer_provider": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "besteron"
+                                        ],
+                                        "description": "Online bank transfer provider."
                                     },
                                     "direct_debit_provider": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "manual",
+                                            "go_cardless",
+                                            "fastpay"
+                                        ],
+                                        "description": "Direct debit provider: `manual` (mandates managed by the company, SEPA), `go_cardless` (GoCardless) or `fastpay` (FastPay, UK BACS)."
                                     },
                                     "constant_symbol": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Constant symbol (a Czech and Slovak bank payment code) used in QR-code payment instructions."
                                     },
                                     "specific_symbol": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Specific symbol (a Czech and Slovak bank payment code) used in QR-code payment instructions."
                                     },
                                     "online_registration": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Allows online booking into the programme through the booking widget. When `false`, none of its classes can be booked online."
                                     },
                                     "priority": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Display order of the programme for clients: programmes are sorted alphabetically, and a higher priority (0 to 1000) moves the programme up the list. Default `0`."
                                     },
                                     "auto_waitlist_notification": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Emails clients on the waiting list automatically when a place becomes available. Single-session programmes."
                                     },
                                     "money_collection": {
                                         "type": "string",
                                         "enum": [
                                             "one_off",
                                             "installments"
-                                        ]
+                                        ],
+                                        "description": "How clients pay for the programme: `one_off` (in one payment) or `installments` (in scheduled payments, see `price_type`)."
                                     },
                                     "hide_if_full": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Hides a class from the booking form once it is full."
                                     },
                                     "use_extra_fields": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Adds the programme's extra fields (see `extra_fields`) to the booking form."
                                     },
                                     "feedback_during_course": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Sends clients a provisional feedback request while the class is running, once they have attended more than four sessions. Programmes booked for the full duration only."
                                     },
                                     "feedback_after_course": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Sends clients a feedback request after the class has ended."
                                     },
                                     "reviews_after_registration": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Asks clients for a Google review after they book."
                                     },
                                     "reviews_after_first_session": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Asks clients for a Google review after their first attended session."
                                     },
                                     "reviews_after_class_ended": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Asks clients for a Google review after their class has ended."
                                     },
                                     "collect_reviews_start": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "date",
+                                        "description": "Clients who booked before this date are not asked for a Google review."
                                     },
                                     "cash": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Turns on payment in cash and by bank transfer."
                                     },
                                     "online_card": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Turns on online card payment, through `online_card_provider`."
                                     },
                                     "online_transfer": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Turns on online bank transfer, through `online_transfer_provider`."
                                     },
                                     "force_full_first_installment": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "With payment in instalments, charges a full instalment together with the first, prorated one. When `false`, only the prorated amount is charged first."
                                     },
                                     "direct_debit": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Turns on payment by direct debit, through `direct_debit_provider`."
                                     },
                                     "direct_debit_mandate_id_format": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Pattern for generating direct debit mandate references, built from tokens. `direct_debit_mandate_id_rules.tokens` lists the tokens and their meaning."
                                     },
                                     "fees_included_in_price": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated: whether online payment fees are included in the price. Do not rely on it."
                                     },
                                     "public": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Shows the programme in the catalogue of programmes on the company's website."
                                     },
                                     "archive": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Archives the programme: it is listed only among archived programmes."
                                     },
                                     "code": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Product code (SKU) the programme is reported under, one of the company's product codes. `null` when not set."
                                     },
                                     "for_children": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Marks the programme as being for children, which changes some booking form wording (for example \"Parent's name\" instead of \"Name\")."
                                     },
                                     "allow_guest_registrations": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated; not used."
                                     },
                                     "require_valid_entrance_voucher": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Legacy mirror of `payment_mode`: `true` when `payment_mode` is `passes_only`. Use `payment_mode`."
                                     },
                                     "track_attendance": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Tracks attendance. When `false`, make-up sessions and session reminders are not available. Programmes booked for the full duration."
                                     },
                                     "payments_managed_by_buyer": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "When several people are booked at once, the debt of the other bookings moves to the first booking, and any payment plan is created on the first booking only. The person booking gets one payment reference and one confirmation email."
                                     },
                                     "allow_reschedule_of_replacements": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Lets clients change an already booked make-up session. When `false` they can still cancel it."
                                     },
                                     "flexible_replacements_limit": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Applies `replacements_limit` per block of `replacements_limit_per_events` sessions instead of per booking, which suits classes that may be extended with more sessions."
                                     },
                                     "replacements_limit_per_events": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "With `flexible_replacements_limit` on, the number of sessions that `replacements_limit` applies to (for example 3 make-up sessions for every 5 sessions)."
                                     },
                                     "allow_replacements_from_other_companies": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Lets clients of linked partner companies use make-up sessions in this programme. Which companies and sessions is set in `replacements_settings_other_companies`."
                                     },
                                     "payment_schedule_is_mandatory": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "When `true`, a client booking a class that offers payment plans must choose one. When `false` and only one plan is offered, choosing it is optional."
                                     },
                                     "allow_replacements": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Allows make-up sessions: clients who miss a session can attend another one instead. Programmes booked for the full duration only."
                                     },
                                     "allow_replacements_waitlist": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Lets clients join the waiting list of a full session as a make-up session."
                                     },
                                     "allow_custom_replacements": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Allows tailored make-up sessions: instead of picking an existing session, the client proposes a time based on the instructor's working hours and availability."
                                     },
                                     "custom_email": {
                                         "type": "integer",
                                         "description": "Custom registration confirmation email ID."
                                     },
                                     "custom_email_lead": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Id of the email template sent to confirm a lead collection booking (a booking into a class with no session dates). `0` or `null` = the company's standard template."
                                     },
                                     "custom_email_event_notification": {
                                         "type": "integer",
                                         "description": "Custom event notification email ID."
                                     },
                                     "allow_replacement_cancellation": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Gives the client back their make-up entitlement when they cancel a booked make-up session. When `false`, a cancelled make-up session is lost."
                                     },
                                     "admin_managed_replacements": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Make-up sessions are assigned by an administrator: clients can still cancel a missed session, but cannot pick or change the make-up date themselves. Has effect only while `allow_replacements` is on."
                                     },
                                     "allow_using_replacement_credits_as_discount": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Lets clients use unused make-up session credits as a discount when booking a programme. Credits used this way are lost as make-up sessions."
                                     },
                                     "auto_approve_custom_replacements": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Confirms a tailored make-up session automatically when the instructor is free at the proposed time. When `false`, the instructor approves or declines each request."
                                     },
                                     "upcoming_events_notification": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Emails clients the day before about sessions available for booking. Pay-as-you-go programmes."
                                     },
                                     "event_notification": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Emails clients a reminder the day before each session."
                                     },
                                     "replacements_settings": {
                                         "type": "object",
@@ -3011,13 +3111,16 @@
                                         }
                                     },
                                     "replacements_settings_other_companies": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "Which linked partner companies, billing periods, venues and classes are open to make-up sessions from other companies (see `allow_replacements_from_other_companies`). Returned as an empty array `[]` when not set."
                                     },
                                     "allow_additional_sessions": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Lets clients buy additional sessions, on top of those their booking covers, from their client profile. Programmes booked for the full duration only."
                                     },
                                     "additional_sessions_settings": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "Which sessions clients can book as additional sessions, in the same shape as `replacements_settings`. Returned as an empty array `[]` when not set."
                                     },
                                     "additional_session_pricing_mode": {
                                         "type": "string",
@@ -3025,23 +3128,28 @@
                                             "free",
                                             "regular_unit_price",
                                             "custom"
-                                        ]
+                                        ],
+                                        "description": "Price of an additional session: `free`, `regular_unit_price` (the regular session price) or `custom` (`additional_session_unit_price`)."
                                     },
                                     "additional_session_unit_price": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "description": "Price of one additional session when `additional_session_pricing_mode` is `custom`."
                                     },
                                     "additional_sessions_limit": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Maximum number of additional sessions one booking can buy. `0` = no limit."
                                     },
                                     "additional_session_payment_mode": {
                                         "type": "string",
                                         "enum": [
                                             "open",
                                             "enforced"
-                                        ]
+                                        ],
+                                        "description": "Whether paying for an additional session is enforced: `open` (the charge is added to the booking balance and the client keeps the session) or `enforced` (the client must pay within `additional_session_payment_deadline_days`, otherwise they are removed from the session and the charge is cancelled)."
                                     },
                                     "additional_session_payment_deadline_days": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of days a client has to pay for an additional session when `additional_session_payment_mode` is `enforced`. Only sessions starting at least this many days ahead can be booked."
                                     },
                                     "payment_mode": {
                                         "type": "string",
@@ -3050,82 +3158,114 @@
                                             "passes_only",
                                             "payment_only",
                                             "both"
-                                        ]
+                                        ],
+                                        "description": "How clients pay for sessions they book online in a pay-as-you-go programme:\n- `pass_first`: an entry pass while they have one, then payment.\n- `passes_only`: only with a valid entry pass; without one the booking is refused.\n- `payment_only`: every session is paid; entry passes are never used.\n- `both`: the client chooses for each session.\n"
                                     },
                                     "allow_cancellation_discount": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "When a client cancels an additional session, offers a discount code instead of a refund."
                                     },
                                     "target_audience": {
                                         "type": "string",
                                         "enum": [
                                             "groups",
                                             "individuals"
-                                        ]
+                                        ],
+                                        "description": "Whether the programme runs group classes (`groups`) or 1-to-1 classes (`individuals`)."
                                     },
                                     "hide_before": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of hours before a class starts when it stops being offered on the booking form. Applies only when `late_registrations` is `disabled`."
                                     },
                                     "replacements_limit": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Maximum number of make-up sessions one booking can use, on top of any extra limit granted on the booking itself. `0` = no limit."
                                     },
                                     "billable_events": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of sessions in a class that are paid for. `0` = every session in the class counts (except deleted ones). Used with the `course_fee` price type."
                                     },
                                     "price": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "format": "float",
+                                        "description": "Total price of the programme. Used when payment is collected in one go (`money_collection` = `one_off`) and by single-session programmes; with payment plans it is for reference only. `__calc__price` is the price actually applied."
                                     },
                                     "unit_price": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "description": "Price of one session. Used by pay-as-you-go programmes and by programmes paid in instalments."
                                     },
                                     "unit_price_trial": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "description": "Price of one paid trial session. `0` = the regular session price (`unit_price`)."
                                     },
                                     "registration_fee": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "format": "float",
+                                        "description": "Registration fee, charged when the booking is created and added to the programme price or the first scheduled payment."
                                     },
                                     "price_type": {
                                         "type": "string",
                                         "enum": [
                                             "course_fee",
                                             "membership"
-                                        ]
+                                        ],
+                                        "description": "How the price of a programme paid in instalments works:\n- `course_fee`: term payment; the price is the session price (`unit_price`) times the sessions left in the class, split into instalments.\n- `membership`: a fixed amount per instalment, however many sessions take place.\n- `legacy`: the older pricing model, based on `price`.\n"
                                     },
                                     "iban": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "IBAN shown in bank-transfer payment instructions for this programme, copied from its invoice profile or, without one, from the company. See also `billing`."
                                     },
                                     "iban_account_holder": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Account holder name for `iban`, copied with it."
                                     },
                                     "color": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Colour of the programme in calendars, as a colour name (for example `nicoll_blue`)."
                                     },
                                     "swift": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "SWIFT (BIC) code for `iban`."
                                     },
                                     "default_email_signature": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Id of the email signature added to emails sent for this programme. `0` = the company's default signature."
                                     },
                                     "registration_slots_max": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Maximum number of people one booking form can include. `1` unless the programme allows booking several people at once (for example a parent booking twins)."
                                     },
                                     "registration_slots_min": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Minimum number of people one booking form must include. `1` unless the programme allows booking several people at once."
                                     },
                                     "replacement_time_limit": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of days, counted from the end of the class (see `replacement_time_limit_type`), within which clients can use their make-up sessions. `0` = the company's general make-up expiry applies."
                                     },
                                     "replacement_time_limit_type": {
                                         "type": "string",
                                         "enum": [
                                             "before",
                                             "after"
-                                        ]
+                                        ],
+                                        "description": "Whether `replacement_time_limit` counts the days before (`before`) or after (`after`) the end of the class."
                                     },
                                     "get_basic_fields_from": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "all",
+                                            "registrant"
+                                        ],
+                                        "description": "Basic fields ( First name, last name, email, phone ) are required for:\n- all: Every person\n- registrant: Just first person\n"
                                     },
                                     "get_extra_fields_from": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "all",
+                                            "other"
+                                        ],
+                                        "description": "Extra fields are required for:\n- all: Every person\n- other: Every person but registrant (first person)\n"
                                     },
                                     "trial_type": {
                                         "type": "string",
@@ -3136,10 +3276,12 @@
                                             "none",
                                             "free_time_trial",
                                             "paid_time_trial"
-                                        ]
+                                        ],
+                                        "description": "Trial offered for the programme:\n- `none`: no trial.\n- `free_trial`: one free session.\n- `paid_trial`: one paid session, at `unit_price_trial`.\n- `free_time_trial`: free access to sessions for the trial length (`trial_length`).\n- `paid_time_trial`: paid sessions for the trial length.\n- `lead_collection`: the trial booking is created without a session; the company enrols the client into a trial session itself.\n"
                                     },
                                     "reserve_seat_for_trial_attendees": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Keeps the place a trial client used until they book the full programme or the trial is marked lost. Not applicable when `trial_events_capacity` is `extra_capacity`."
                                     },
                                     "trial_events_limit_type": {
                                         "type": "string",
@@ -3147,27 +3289,32 @@
                                             "none",
                                             "date",
                                             "count"
-                                        ]
+                                        ],
+                                        "description": "How the sessions offered for a trial are limited: `none` (no limit), `date` (sessions within `trial_events_limit` days) or `count` (the first `trial_events_limit` sessions with free capacity)."
                                     },
                                     "trial_events_capacity": {
                                         "type": "string",
                                         "enum": [
                                             "all",
                                             "extra_capacity"
-                                        ]
+                                        ],
+                                        "description": "Which places trial clients can take: `all` (any free place in the class) or `extra_capacity` (only the extra capacity set on the class)."
                                     },
                                     "trial_events_limit": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Limit on the sessions offered for a trial: a number of days ahead when `trial_events_limit_type` is `date`, a number of sessions when it is `count`. Not used when the type is `none`."
                                     },
                                     "trial_length": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Length of a multi-session trial (`free_time_trial`, `paid_time_trial`): days or sessions, depending on `trial_length_type`."
                                     },
                                     "trial_length_type": {
                                         "type": "string",
                                         "enum": [
                                             "days",
                                             "events"
-                                        ]
+                                        ],
+                                        "description": "Unit of `trial_length`: `days` (the client is enrolled in available sessions for that many days after their first trial session) or `events` (that many sessions)."
                                     },
                                     "registration_display_mode": {
                                         "type": "string",
@@ -3177,13 +3324,16 @@
                                             "trials_only",
                                             "segments_only",
                                             "trials_and_segments_only"
-                                        ]
+                                        ],
+                                        "description": "Booking options the booking form offers:\n- `default`: the client chooses.\n- `full_course_only`: only booking the full programme.\n- `trials_only`: only trials, if available.\n- `segments_only`: only blocks, if available.\n- `trials_and_segments_only`: trials or blocks, if available.\n"
                                     },
                                     "automatically_add_schedules_to_trial": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Offers every newly created class of the programme for trials. Can be changed per class."
                                     },
                                     "automatically_add_schedules_to_retention": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Offers every newly created class of the programme to clients in auto-enrolment. Can be changed per class."
                                     },
                                     "downpayment": {
                                         "type": "string",
@@ -3191,29 +3341,36 @@
                                             "none",
                                             "relative",
                                             "absolute"
-                                        ]
+                                        ],
+                                        "description": "Down payment: `none`, `relative` (a percentage of the price, `downpayment_value`, capped at `downpayment_cap`) or `absolute` (a fixed amount, `downpayment_value`)."
                                     },
                                     "downpayment_due_type": {
                                         "type": "string",
                                         "enum": [
                                             "before_course",
                                             "after_registration"
-                                        ]
+                                        ],
+                                        "description": "What the down payment deadline (`downpayment_due_days`) counts from: `before_course` (days before the programme starts) or `after_registration` (days after the booking was created)."
                                     },
                                     "downpayment_due_days": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of days for the down payment deadline: days before the programme starts or days after the booking was created, depending on `downpayment_due_type`."
                                     },
                                     "downpayment_value": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "description": "Down payment: a percentage of the price when `downpayment` is `relative`, a fixed amount when it is `absolute`."
                                     },
                                     "downpayment_cap": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "description": "Maximum down payment amount when `downpayment` is `relative`. `0` = no cap."
                                     },
                                     "retention_settings": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "Filters for the classes offered to this programme's clients in auto-enrolment when `retention_type` is `suggest_schedules`: programmes (`courses`), billing periods, age and distance. Returned as an empty array `[]` when not set."
                                     },
                                     "priority_registration_audience": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "Who is eligible for priority registration: clients booked in the listed programmes (`courses`) or billing periods. Returned as an empty array `[]` when not set, which means no narrowing."
                                     },
                                     "retention_type": {
                                         "type": "string",
@@ -3221,55 +3378,72 @@
                                             "none",
                                             "suggest_schedules",
                                             "duplicate_schedule"
-                                        ]
+                                        ],
+                                        "description": "What is offered to clients when their class ends (auto-enrolment):\n- `none`: nothing.\n- `suggest_schedules`: a choice of suitable classes, filtered by `retention_settings`; the client continues with one click.\n- `duplicate_schedule`: for 1-to-1 classes, a copy of the current class is prepared for the next period.\n"
                                     },
                                     "retention_message": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Message sent to clients when their class is ending and auto-enrolment is available."
                                     },
                                     "retention_days": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of days a client whose class ended keeps seeing the auto-enrolment offer in their client profile. `0` = the default of 30 days."
                                     },
                                     "retention_notify_days_before": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of days before a class ends when its clients are emailed about continuing (auto-enrolment). Used when `retention_type` is not `none`."
                                     },
                                     "delayed_start_max_days": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Register now, start later: the maximum number of days after the earliest available date that a client may choose as their start. `0` = clients cannot choose a later start."
                                     },
                                     "priority_registration": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Turns on priority registration: eligible returning clients can book before a class opens to everyone. See `priority_registration_offset`, `priority_registration_public_offset` and `priority_registration_audience`."
                                     },
                                     "priority_registration_allow_multiple": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "With priority registration, keeps the class offered in a returning client's profile after they booked, so the same account can book more people (for example a parent booking several children)."
                                     },
                                     "widgets_published": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Whether the owner has marked the programme as published on their website, a step of the programme setup checklist. Does not affect booking."
                                     },
                                     "allow_rescheduling_of_events": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Lets clients reschedule their sessions themselves, within the instructor's working hours."
                                     },
                                     "auto_approve_rescheduled_events": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Approves client requests to reschedule a session automatically. When `false`, the instructor approves or rejects each request."
                                     },
                                     "limit_reschedule_to_once": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Limits client rescheduling to once per session. Rescheduling by instructors or administrators does not count."
                                     },
                                     "priority_registration_offset": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of days before the billing period starts (or the class starts, when the period has no start date) when priority registration opens. Resolved for each class. `null` when not set."
                                     },
                                     "priority_registration_public_offset": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Number of days before the billing period starts (or the class starts) when a priority class opens to everyone. `null` = it never opens to the public."
                                     },
                                     "schedule_start_date_format": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "How the booking widget shows a class start date: an `Intl.DateTimeFormat` options object. `null` = the default format."
                                     },
                                     "schedule_end_date_format": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "How the booking widget shows a class end date: an `Intl.DateTimeFormat` options object. `null` = the default format."
                                     },
                                     "onboarding": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "Which programme setup steps the owner has answered: `{\"version\": 2, \"answered\": {...}}` with one boolean per step, or, for an older programme, `{\"version\": 1, ...}` with the six legacy checklist booleans."
                                     },
                                     "extra_fields": {
-                                        "type": "array"
+                                        "type": "array",
+                                        "description": "Extra fields (custom booking form fields): one entry for every field type Zooza offers, set up on this programme or not, in form order. `active` says whether a field is on the booking form; the form shows them only while `use_extra_fields` is on."
                                     },
                                     "skip_auto_attach_templates": {
                                         "type": "boolean"
@@ -3655,11 +3829,13 @@
                                     },
                                     "price": {
                                         "type": "number",
-                                        "description": "Price of the class."
+                                        "description": "Price of the class.",
+                                        "format": "float"
                                     },
                                     "registration_fee": {
                                         "type": "number",
-                                        "description": "One-off registration fee."
+                                        "description": "One-off registration fee.",
+                                        "format": "float"
                                     },
                                     "status": {
                                         "type": "string",
@@ -3849,7 +4025,8 @@
                                     },
                                     "price": {
                                         "type": "number",
-                                        "description": "Price of the class."
+                                        "description": "Price of the class.",
+                                        "format": "float"
                                     },
                                     "unit_price": {
                                         "type": "number",
@@ -3857,7 +4034,8 @@
                                     },
                                     "registration_fee": {
                                         "type": "number",
-                                        "description": "One-off registration fee."
+                                        "description": "One-off registration fee.",
+                                        "format": "float"
                                     },
                                     "online_meeting_id": {
                                         "type": "string",
@@ -3868,21 +4046,26 @@
                                         "description": "Online meeting provider; an empty string clears it."
                                     },
                                     "segment_discount_multiplier": {
-                                        "type": "number"
+                                        "type": "number",
+                                        "description": "Deprecated; not used. Block discounts are configured in `segments_config`."
                                     },
                                     "apply_segment_discount": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "description": "Deprecated; not used. Block discounts are configured in `segments_config`."
                                     },
                                     "start": {
                                         "type": "string",
-                                        "description": "Start date (`YYYY-MM-DD`). Sets `custom_start` to `true`."
+                                        "description": "Start date (`YYYY-MM-DD`). Sets `custom_start` to `true`.",
+                                        "format": "date"
                                     },
                                     "end": {
                                         "type": "string",
-                                        "description": "End date (`YYYY-MM-DD`). Sets `custom_end` to `true`."
+                                        "description": "End date (`YYYY-MM-DD`). Sets `custom_end` to `true`.",
+                                        "format": "date"
                                     },
                                     "segments_config": {
-                                        "type": "object"
+                                        "type": "object",
+                                        "description": "Block discount settings: `discount_mode` (`simple` or `advanced`) and `discount_settings`. `simple` scales the discount linearly from `min_segments` to `max_segments` booked blocks, up to `max_discount`; `advanced` lists the discount per number of booked blocks in `discounts`. `null` when not configured: each block's own discount applies."
                                     },
                                     "custom_start": {
                                         "type": "boolean",
@@ -3893,7 +4076,8 @@
                                         "description": "Whether the end date is set by hand rather than taken from the sessions."
                                     },
                                     "lead_collection_money_collection_enabled": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "For `lead_collection` classes only: whether payment is collected from sign-ups. Ignored for other classes."
                                     },
                                     "schedule_type": {
                                         "type": "string",
@@ -3922,7 +4106,8 @@
                                             "inactive",
                                             "active",
                                             "archive"
-                                        ]
+                                        ],
+                                        "description": "`active`: the class is running. `archive`: archived. `deleted`: in the trash."
                                     },
                                     "notify_trainer_on_cancellation": {
                                         "type": "string",
@@ -3930,34 +4115,40 @@
                                             "always",
                                             "never",
                                             "week"
-                                        ]
+                                        ],
+                                        "description": "When the instructor is emailed about a client cancelling attendance at a session. `always`: every time. `never`: never. `week`: only when the session is within the next 7 days."
                                     },
                                     "online_registration": {
                                         "type": "boolean",
                                         "description": "Whether clients can book the class online."
                                     },
                                     "all_day": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Whether the class's sessions are all-day (no start time)."
                                     },
                                     "in_trial": {
                                         "type": "boolean",
                                         "description": "Whether the class offers trial lessons."
                                     },
                                     "in_retention": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Whether the class is offered to clients through auto-enrolment (as a follow-up when their current class ends). The programme's auto-enrolment settings must allow it too."
                                     },
                                     "priority_registration": {
                                         "type": "boolean",
                                         "description": "Whether the class takes part in the programme's priority booking window. Default `true`."
                                     },
                                     "name": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Name of the class."
                                     },
                                     "note": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Free-text note on the class."
                                     },
                                     "description": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Description of the class shown to clients during booking."
                                     },
                                     "extra_capacity": {
                                         "type": "integer",
@@ -3965,7 +4156,11 @@
                                     },
                                     "extra_capacity_usage": {
                                         "type": "string",
-                                        "description": "`add`: the company's extra make-up places count on top of `extra_capacity`; `override`: only `extra_capacity` counts."
+                                        "description": "`add`: the company's extra make-up places count on top of `extra_capacity`; `override`: only `extra_capacity` counts.",
+                                        "enum": [
+                                            "add",
+                                            "override"
+                                        ]
                                     },
                                     "billing_period_id": {
                                         "type": "integer",
@@ -5519,7 +5714,25 @@
                     "status": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Booking status. `registered`: enrolled. `waitlist`: on the waiting list. `late`: booked after the class started and waiting for the company to confirm it. Trials: `trial_not_started` (trial requested, but the class has no session to attend yet), `trial_started` (trial booked), `trial_ended` (the trial sessions are over and no decision has been made), `trial_won` (converted into a registration, see `next`), `trial_lost` (did not convert). `canceled`: cancelled. `deleted`: deleted; it can be restored for 30 days. A `pre_` prefix (`pre_registered`, `pre_waitlist`, ...) marks a booking a client made that is waiting for them to confirm it with a one-time code (OTP); the prefix is dropped once they confirm. Bookings the company makes have no prefix. `pre_insert` exists only while a booking is being created."
+                        "description": "Booking status. `registered`: enrolled. `waitlist`: on the waiting list. `late`: booked after the class started and waiting for the company to confirm it. Trials: `trial_not_started` (trial requested, but the class has no session to attend yet), `trial_started` (trial booked), `trial_ended` (the trial sessions are over and no decision has been made), `trial_won` (converted into a registration, see `next`), `trial_lost` (did not convert). `canceled`: cancelled. `deleted`: deleted; it can be restored for 30 days. A `pre_` prefix (`pre_registered`, `pre_waitlist`, `pre_late`, `pre_trial_not_started`, `pre_trial_started`) marks a booking a client made that is waiting for them to confirm it with a one-time code (OTP); the prefix is dropped once they confirm. Bookings the company makes have no prefix. `pre_insert` exists only while a booking is being created.",
+                        "enum": [
+                            "pre_insert",
+                            "pre_registered",
+                            "registered",
+                            "trial_not_started",
+                            "pre_trial_not_started",
+                            "trial_started",
+                            "pre_trial_started",
+                            "trial_ended",
+                            "trial_won",
+                            "trial_lost",
+                            "waitlist",
+                            "pre_waitlist",
+                            "pre_late",
+                            "late",
+                            "canceled",
+                            "deleted"
+                        ]
                     },
                     "user_id": {
                         "type": "integer",
@@ -5587,7 +5800,22 @@
                     "payment_status": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Payment state of the booking. `no_debt`: nothing to pay. `unpaid`, `partially_paid`, `paid`, `overpaid`. With a downpayment (`downpayment`), until its due date: `downpayment_unpaid`, `downpayment_partially_paid`, `downpayment_paid`; after the due date, once the downpayment is paid: `final_payment_unpaid`, `final_payment_partially_paid`, `final_payment_paid`, `final_payment_overpaid`. `awaiting_payment`: not paid yet, but within the grace period in `awaiting_payment_until`, so not overdue. `null` when not set."
+                        "description": "Payment state of the booking. `no_debt`: nothing to pay. `unpaid`, `partially_paid`, `paid`, `overpaid`. With a downpayment (`downpayment`), until its due date: `downpayment_unpaid`, `downpayment_partially_paid`, `downpayment_paid`; after the due date, once the downpayment is paid: `final_payment_unpaid`, `final_payment_partially_paid`, `final_payment_paid`, `final_payment_overpaid`. `awaiting_payment`: not paid yet, but within the grace period in `awaiting_payment_until`, so not overdue. `null` when not set.",
+                        "enum": [
+                            "no_debt",
+                            "unpaid",
+                            "partially_paid",
+                            "paid",
+                            "overpaid",
+                            "downpayment_unpaid",
+                            "downpayment_partially_paid",
+                            "downpayment_paid",
+                            "final_payment_unpaid",
+                            "final_payment_partially_paid",
+                            "final_payment_paid",
+                            "final_payment_overpaid",
+                            "awaiting_payment"
+                        ]
                     },
                     "awaiting_payment_until": {
                         "type": "string",
@@ -5597,7 +5825,12 @@
                     "awaiting_payment_source": {
                         "type": "string",
                         "nullable": true,
-                        "description": "What set `awaiting_payment_until`: `default` (the company's payment due rules, when the debt was created), `scheduled_payment` (a payment-plan instalment was charged) or `manual` (set by the company; only the company can replace or remove it). `null` when there is no grace period."
+                        "description": "What set `awaiting_payment_until`: `default` (the company's payment due rules, when the debt was created), `scheduled_payment` (a payment-plan instalment was charged) or `manual` (set by the company; only the company can replace or remove it). `null` when there is no grace period.",
+                        "enum": [
+                            "default",
+                            "scheduled_payment",
+                            "manual"
+                        ]
                     },
                     "awaiting_payment_note": {
                         "type": "string",
@@ -5617,12 +5850,34 @@
                     "cancellation_reason": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Zooza's built-in cancellation reason, as a code: `not_paid_default`, `dissatisfied_default`, `schedule_or_logistics_default`, `personal_default`, `price_default`, `other_default`, `admin_correction_default`, `automation_unpaid` (cancelled automatically for not paying) or `network_transfer`. `null` when the company's own reason was used (`cancellation_reason_id`) or the booking is not cancelled."
+                        "description": "Zooza's built-in cancellation reason, as a code: `not_paid_default`, `dissatisfied_default`, `schedule_or_logistics_default`, `personal_default`, `price_default`, `other_default`, `admin_correction_default`, `automation_unpaid` (cancelled automatically for not paying) or `network_transfer`. `null` when the company's own reason was used (`cancellation_reason_id`) or the booking is not cancelled.",
+                        "enum": [
+                            "not_paid_default",
+                            "dissatisfied_default",
+                            "schedule_or_logistics_default",
+                            "personal_default",
+                            "price_default",
+                            "other_default",
+                            "admin_correction_default",
+                            "automation_unpaid",
+                            "network_transfer"
+                        ]
                     },
                     "cancellation_category": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Reporting category of the cancellation: `not_paid`, `dissatisfied`, `schedule_or_logistics`, `personal`, `price`, `other`, `admin_correction` (a correction by the company, not churn), `transfer` (moved to another company of the network) or `unknown` (cancelled before categories existed). The API returns the code; translate it for display. `null` when the booking is not cancelled."
+                        "description": "Reporting category of the cancellation: `not_paid`, `dissatisfied`, `schedule_or_logistics`, `personal`, `price`, `other`, `admin_correction` (a correction by the company, not churn), `transfer` (moved to another company of the network) or `unknown` (cancelled before categories existed). The API returns the code; translate it for display. `null` when the booking is not cancelled.",
+                        "enum": [
+                            "not_paid",
+                            "dissatisfied",
+                            "schedule_or_logistics",
+                            "personal",
+                            "price",
+                            "other",
+                            "admin_correction",
+                            "transfer",
+                            "unknown"
+                        ]
                     },
                     "cancellation_reason_id": {
                         "type": "integer",
@@ -6171,6 +6426,7 @@
                     "status": {
                         "type": "string",
                         "nullable": true,
+                        "description": "Booking status. `registered`: enrolled. `waitlist`: on the waiting list. `late`: booked after the class started and waiting for the company to confirm it. Trials: `trial_not_started` (trial requested, but the class has no session to attend yet), `trial_started` (trial booked), `trial_ended` (the trial sessions are over and no decision has been made), `trial_won` (converted into a registration, see `next`), `trial_lost` (did not convert). `canceled`: cancelled. `deleted`: deleted; it can be restored for 30 days. A `pre_` prefix (`pre_registered`, `pre_waitlist`, `pre_late`, `pre_trial_not_started`, `pre_trial_started`) marks a booking a client made that is waiting for them to confirm it with a one-time code (OTP); the prefix is dropped once they confirm. Bookings the company makes have no prefix. `pre_insert` exists only while a booking is being created.",
                         "enum": [
                             "pre_insert",
                             "pre_registered",
@@ -6188,8 +6444,7 @@
                             "late",
                             "canceled",
                             "deleted"
-                        ],
-                        "description": "Booking status. `registered`: enrolled. `waitlist`: on the waiting list. `late`: booked after the class started and waiting for the company to confirm it. Trials: `trial_not_started` (trial requested, but the class has no session to attend yet), `trial_started` (trial booked), `trial_ended` (the trial sessions are over and no decision has been made), `trial_won` (converted into a registration, see `next`), `trial_lost` (did not convert). `canceled`: cancelled. `deleted`: deleted; it can be restored for 30 days. A `pre_` prefix (`pre_registered`, `pre_waitlist`, ...) marks a booking a client made that is waiting for them to confirm it with a one-time code (OTP); the prefix is dropped once they confirm. Bookings the company makes have no prefix. `pre_insert` exists only while a booking is being created."
+                        ]
                     },
                     "created": {
                         "type": "string",
@@ -6226,7 +6481,22 @@
                     "payment_status": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Payment state of the booking. `no_debt`: nothing to pay. `unpaid`, `partially_paid`, `paid`, `overpaid`. With a downpayment (`downpayment`), until its due date: `downpayment_unpaid`, `downpayment_partially_paid`, `downpayment_paid`; after the due date, once the downpayment is paid: `final_payment_unpaid`, `final_payment_partially_paid`, `final_payment_paid`, `final_payment_overpaid`. `awaiting_payment`: not paid yet, but within the grace period in `awaiting_payment_until`, so not overdue. `null` when not set."
+                        "description": "Payment state of the booking. `no_debt`: nothing to pay. `unpaid`, `partially_paid`, `paid`, `overpaid`. With a downpayment (`downpayment`), until its due date: `downpayment_unpaid`, `downpayment_partially_paid`, `downpayment_paid`; after the due date, once the downpayment is paid: `final_payment_unpaid`, `final_payment_partially_paid`, `final_payment_paid`, `final_payment_overpaid`. `awaiting_payment`: not paid yet, but within the grace period in `awaiting_payment_until`, so not overdue. `null` when not set.",
+                        "enum": [
+                            "no_debt",
+                            "unpaid",
+                            "partially_paid",
+                            "paid",
+                            "overpaid",
+                            "downpayment_unpaid",
+                            "downpayment_partially_paid",
+                            "downpayment_paid",
+                            "final_payment_unpaid",
+                            "final_payment_partially_paid",
+                            "final_payment_paid",
+                            "final_payment_overpaid",
+                            "awaiting_payment"
+                        ]
                     },
                     "__users__full_name": {
                         "type": "string",
@@ -6268,12 +6538,12 @@
                     "attendance_management": {
                         "type": "string",
                         "nullable": true,
+                        "description": "Who manages attendance in the class. `default`: the booking manages its own. `king_of_schedule`: this booking manages attendance for everyone in the class; cancelling a session cancels it for all of them. `limited`: another booking in the class manages it, so this one cannot cancel or reschedule its own sessions.",
                         "enum": [
                             "default",
                             "king_of_schedule",
                             "limited"
-                        ],
-                        "description": "Who manages attendance in the class. `default`: the booking manages its own. `king_of_schedule`: this booking manages attendance for everyone in the class; cancelling a session cancels it for all of them. `limited`: another booking in the class manages it, so this one cannot cancel or reschedule its own sessions."
+                        ]
                     },
                     "iban": {
                         "type": "string",
@@ -6403,7 +6673,12 @@
                     "awaiting_payment_source": {
                         "type": "string",
                         "nullable": true,
-                        "description": "What set `awaiting_payment_until`: `default` (the company's payment due rules, when the debt was created), `scheduled_payment` (a payment-plan instalment was charged) or `manual` (set by the company; only the company can replace or remove it). `null` when there is no grace period."
+                        "description": "What set `awaiting_payment_until`: `default` (the company's payment due rules, when the debt was created), `scheduled_payment` (a payment-plan instalment was charged) or `manual` (set by the company; only the company can replace or remove it). `null` when there is no grace period.",
+                        "enum": [
+                            "default",
+                            "scheduled_payment",
+                            "manual"
+                        ]
                     },
                     "awaiting_payment_note": {
                         "type": "string",
@@ -6443,7 +6718,18 @@
                     "cancellation_reason": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Zooza's built-in cancellation reason, as a code: `not_paid_default`, `dissatisfied_default`, `schedule_or_logistics_default`, `personal_default`, `price_default`, `other_default`, `admin_correction_default`, `automation_unpaid` (cancelled automatically for not paying) or `network_transfer`. `null` when the company's own reason was used (`cancellation_reason_id`) or the booking is not cancelled."
+                        "description": "Zooza's built-in cancellation reason, as a code: `not_paid_default`, `dissatisfied_default`, `schedule_or_logistics_default`, `personal_default`, `price_default`, `other_default`, `admin_correction_default`, `automation_unpaid` (cancelled automatically for not paying) or `network_transfer`. `null` when the company's own reason was used (`cancellation_reason_id`) or the booking is not cancelled.",
+                        "enum": [
+                            "not_paid_default",
+                            "dissatisfied_default",
+                            "schedule_or_logistics_default",
+                            "personal_default",
+                            "price_default",
+                            "other_default",
+                            "admin_correction_default",
+                            "automation_unpaid",
+                            "network_transfer"
+                        ]
                     },
                     "nudge_state": {
                         "type": "string",
@@ -6453,7 +6739,18 @@
                     "cancellation_category": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Reporting category of the cancellation: `not_paid`, `dissatisfied`, `schedule_or_logistics`, `personal`, `price`, `other`, `admin_correction` (a correction by the company, not churn), `transfer` (moved to another company of the network) or `unknown` (cancelled before categories existed). The API returns the code; translate it for display. `null` when the booking is not cancelled."
+                        "description": "Reporting category of the cancellation: `not_paid`, `dissatisfied`, `schedule_or_logistics`, `personal`, `price`, `other`, `admin_correction` (a correction by the company, not churn), `transfer` (moved to another company of the network) or `unknown` (cancelled before categories existed). The API returns the code; translate it for display. `null` when the booking is not cancelled.",
+                        "enum": [
+                            "not_paid",
+                            "dissatisfied",
+                            "schedule_or_logistics",
+                            "personal",
+                            "price",
+                            "other",
+                            "admin_correction",
+                            "transfer",
+                            "unknown"
+                        ]
                     },
                     "cancellation_reason_label": {
                         "type": "string",
@@ -6469,6 +6766,26 @@
                         "type": "string",
                         "nullable": true,
                         "description": "When the booking was cancelled. `null` when it is not cancelled."
+                    },
+                    "utm_source": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "utm_medium": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "utm_campaign": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "utm_term": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "utm_content": {
+                        "type": "string",
+                        "nullable": true
                     },
                     "cancellation_reason_id": {
                         "description": "The company's own cancellation reason used. `null` when a built-in reason was used (`cancellation_reason`) or the booking is not cancelled.",
@@ -7327,12 +7644,12 @@
                         "nullable": true,
                         "description": "Trial offered for the programme:\n- `none`: no trial.\n- `free_trial`: one free session.\n- `paid_trial`: one paid session, at `unit_price_trial`.\n- `free_time_trial`: free access to sessions for the trial length (`trial_length`).\n- `paid_time_trial`: paid sessions for the trial length.\n- `lead_collection`: the trial booking is created without a session; the company enrols the client into a trial session itself.\n",
                         "enum": [
-                            "none",
                             "free_trial",
                             "paid_trial",
+                            "lead_collection",
+                            "none",
                             "free_time_trial",
-                            "paid_time_trial",
-                            "lead_collection"
+                            "paid_time_trial"
                         ]
                     },
                     "code": {
@@ -8075,6 +8392,9 @@
                         "description": "Id of the shared-room set the class has opted into; `0` when none. Filled only when a single class is requested by id; always `0` in lists.",
                         "type": "integer"
                     },
+                    "previous": {
+                        "type": "integer"
+                    },
                     "name": {
                         "type": "string",
                         "nullable": true,
@@ -8186,6 +8506,10 @@
                         "nullable": true,
                         "description": "The class's `status` before it was moved to the trash, restored if the class is restored; `null` when it is not deleted."
                     },
+                    "origin": {
+                        "type": "string",
+                        "nullable": true
+                    },
                     "__view__admin_url": {
                         "type": "string",
                         "nullable": true,
@@ -8209,6 +8533,10 @@
                         "type": "string",
                         "nullable": true,
                         "description": "Date (`YYYY-MM-DD`) this class opens to everyone after the priority window. `null` when the programme has no priority window, when the class never opens to the public, or when the date cannot be worked out."
+                    },
+                    "billing_period_id": {
+                        "type": "integer",
+                        "nullable": true
                     },
                     "all_day": {
                         "description": "Whether the class's sessions are all-day (no start time).",
@@ -8350,6 +8678,20 @@
                         "type": "object",
                         "nullable": true,
                         "description": "Only on `GET /schedules/{ID}`: the class's billing settings, i.e. which billing profile and bank account its invoices use and whether they are set on the company, the programme or the class itself. Change them with `billing` on `PUT /schedules/{ID}`."
+                    },
+                    "events": {
+                        "type": "array",
+                        "description": "Only on `GET /schedules/{ID}`: the class's sessions, scheduled and cancelled, oldest first. Left out when the class has none, or with `load_events=false`.",
+                        "items": {
+                            "$ref": "#/components/schemas/Session"
+                        }
+                    },
+                    "trainers_schedules": {
+                        "type": "array",
+                        "description": "Only on `GET /schedules/{ID}`: the class's additional instructors, besides `trainer_id`. Left out when it has none.",
+                        "items": {
+                            "type": "object"
+                        }
                     }
                 },
                 "example": {
@@ -8871,7 +9213,14 @@
                     "type": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Kind of booking: `regular`, `make_up`, `free_event`, `additional_session` (a purchased extra session) or `waitlist`. `null` on older records that are not classified; use `replacement`, `is_free_event` and `attendance` for them."
+                        "description": "Kind of booking: `regular`, `make_up`, `free_event`, `additional_session` (a purchased extra session) or `waitlist`. `null` on older records that are not classified; use `replacement`, `is_free_event` and `attendance` for them.",
+                        "enum": [
+                            "regular",
+                            "make_up",
+                            "free_event",
+                            "additional_session",
+                            "waitlist"
+                        ]
                     },
                     "waitlist_credit_id": {
                         "type": "integer",
@@ -9488,7 +9837,7 @@
                     "engine": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Invoicing provider that issues the invoice. `faktury_online` is Zooza's default invoicing.",
+                        "description": "Invoicing provider that issues the invoice: `faktury_online` (Zooza's default invoicing), `zooza_invoice` (Zooza Invoice), `smart_bill` (SmartBill), `szamlazz` (Számlázz.hu), `oblio` (Oblio), `xero` (Xero), `abra_flexi` (ABRA Flexi), `fakturoid` (Fakturoid) or `superfaktura` (SuperFaktura).",
                         "enum": [
                             "faktury_online",
                             "smart_bill",
@@ -9866,12 +10215,10 @@
                     "apply_for": {
                         "type": "string",
                         "nullable": true,
-                        "description": "*everyone: The agreement is always shown\n*course: Agreement is required only for courses that match course_ids within courses property\n*feedback: Feedback form\n*members: Internal consents for company members\n",
+                        "description": "Where the agreement applies: `everyone` (always shown) or `course` (only for the programmes listed in `courses`).",
                         "enum": [
                             "everyone",
-                            "course",
-                            "feedback",
-                            "members"
+                            "course"
                         ]
                     },
                     "sites": {
@@ -13170,6 +13517,14 @@
             "description": "Returned when Meta does not accept the authorisation while connecting a Meta account. Connect Meta again.",
             "message": "Meta did not accept the connection. Please connect Meta again.",
             "value": "none"
+        },
+        {
+            "code": "0368",
+            "name": "schedule_already_copied_to_billing_period",
+            "area": "Programmes and classes",
+            "description": "Returned when a class is copied into a billing period that already holds a copy of it. The value lists the id(s) of the existing copy.",
+            "message": "This class has already been copied into this billing period. Existing copy: {value}",
+            "value": "in_message"
         },
         {
             "code": "9999",
